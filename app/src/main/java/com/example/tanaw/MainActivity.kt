@@ -66,6 +66,30 @@ class MainActivity : AppCompatActivity() {
                 startActivity(i)
             }
         )
+
+        val contentBtn = findViewById<View>(R.id.contentBtn)
+        contentBtn.setOnClickListener(
+            View.OnClickListener {
+                Log.d("tag", "heree")
+                val i = Intent(
+                    this@MainActivity,
+                    SdgContent::class.java
+                )
+                startActivity(i)
+            }
+        )
+
+        val uploadBtn = findViewById<View>(R.id.uploadBtn)
+        uploadBtn.setOnClickListener(
+            View.OnClickListener {
+                Log.d("tag", "heree upload")
+                val i = Intent(
+                    this@MainActivity,
+                    SdgUpload::class.java
+                )
+                startActivity(i)
+            }
+        )
     }
 }
 

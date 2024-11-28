@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="27dp"
-        android:text="Gallery"
+        android:text="GALLERY"
         app:layout_constraintEnd_toEndOf="@+id/loginBtn"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/loginBtn"
@@ -45,11 +45,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="27dp"
-        android:text="Gallery"
+        android:text="PROFILE"
         app:layout_constraintEnd_toEndOf="@+id/galleryBtn"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/galleryBtn"
         app:layout_constraintTop_toBottomOf="@+id/galleryBtn" />
+
+    <Button
+        android:id="@+id/contentBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="SDG CONTENT"
+        app:layout_constraintEnd_toEndOf="@+id/profileBtn"
+        app:layout_constraintHorizontal_bias="0.325"
+        app:layout_constraintStart_toStartOf="@+id/profileBtn"
+        app:layout_constraintTop_toBottomOf="@+id/profileBtn" />
+
+    <Button
+        android:id="@+id/uploadBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="UPLOAD"
+        app:layout_constraintEnd_toEndOf="@+id/contentBtn"
+        app:layout_constraintHorizontal_bias="0.575"
+        app:layout_constraintStart_toStartOf="@+id/contentBtn"
+        app:layout_constraintTop_toBottomOf="@+id/contentBtn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SdgUpload">
+
+    <TextView
+        android:id="@+id/sdgUpload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:text="SDG UPLOAD"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/cameraView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/cameraView"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/cameraView"
+        app:layout_constraintTop_toBottomOf="@+id/cameraView" />
+
+    <Button
+        android:id="@+id/flipBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Flip"
+        app:layout_constraintEnd_toEndOf="@+id/imgView"
+        app:layout_constraintHorizontal_bias="0.596"
+        app:layout_constraintStart_toStartOf="@+id/imgView"
+        app:layout_constraintTop_toBottomOf="@+id/imgView" />
+
+    <Button
+        android:id="@+id/flashBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Flash"
+        app:layout_constraintEnd_toEndOf="@+id/flipBtn"
+        app:layout_constraintStart_toStartOf="@+id/flipBtn"
+        app:layout_constraintTop_toBottomOf="@+id/flipBtn" />
+
+    <Button
+        android:id="@+id/captureBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Capture"
+        app:layout_constraintEnd_toEndOf="@+id/flashBtn"
+        app:layout_constraintStart_toStartOf="@+id/flashBtn"
+        app:layout_constraintTop_toBottomOf="@+id/flashBtn" />
+
+    <Button
+        android:id="@+id/retakeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Retake"
+        app:layout_constraintEnd_toEndOf="@+id/captureBtn"
+        app:layout_constraintStart_toStartOf="@+id/captureBtn"
+        app:layout_constraintTop_toBottomOf="@+id/captureBtn" />
+
+    <Button
+        android:id="@+id/uploadBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Upload"
+        app:layout_constraintEnd_toEndOf="@+id/retakeBtn"
+        app:layout_constraintStart_toStartOf="@+id/retakeBtn"
+        app:layout_constraintTop_toBottomOf="@+id/retakeBtn" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

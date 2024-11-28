@@ -15,11 +15,24 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
+import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.postgrest.query.Columns
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class UserData(
+    @SerialName("sr_code") val sr_code: String,
+    @SerialName("email") val email: String?,
+    @SerialName("first_name") val first_name: String,
+    @SerialName("last_name") val last_name: String,
+    @SerialName("department") val department: String
+)
+
+
 
 class Login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +74,6 @@ class Login : AppCompatActivity() {
 
             loginBtn.setOnClickListener(object: View.OnClickListener {
                 override fun onClick(view: View) {
-                    Log.d("tag", "nnn")
 
                     val srCode = srCodeText.text.toString();
                     val institution = institutionSpinner.selectedItem.toString();
@@ -81,7 +93,6 @@ class Login : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 val emaill = srCode + emailExtension
-                Log.d("tag", emaill)
 
                 val user = supabase.auth.signInWith(Email) {
                     email=emaill
@@ -92,14 +103,15 @@ class Login : AppCompatActivity() {
                     Log.d("tag", user.toString())
                     errorText.text = "logged in!"
 
-                    val i = Intent(
-                        this@Login,
-                        SdgContent::class.java
-                    )
-                    val user_id = getUserId();
-//                    Log.d("tag", "aaaa" + user.toString());
-                    i.putExtra("user_id", user_id)
-                    startActivity(i)
+                    // redirect ??
+//                    val i = Intent(
+//                        this@Login,
+//                        SdgContent::class.java
+//                    )
+//                    val user_id = getUserId();
+////                    Log.d("tag", "aaaa" + user.toString());
+//                    i.putExtra("user_id", user_id)
+//                    startActivity(i)
 
                 } else {
                     errorText.text = "Failed to login up user. Response is null."
@@ -119,6 +131,26 @@ public suspend fun getUserId(): String {
 
         if (user != null) {
             Log.d("tag", "${user.id}")
+
+            // upsert data to db
+            val user_data = supabase
+                .from("users")
+                .select(columns = Columns.list("user_id")){
+                    filter { eq("user_id", user.id)} }
+                .decodeList<String>()
+
+            if (user_data.isEmpty()) {
+                Log.d("tag", "${user.toString()}")
+                val add_user = UserData(sr_code = user.identities?.firstOrNull()?.identityData?.get("srCode").toString(),
+                    email = user.email,
+                    first_name = user.identities?.firstOrNull()?.identityData?.get("firstName").toString(),
+                    last_name  = user.identities?.firstOrNull()?.identityData?.get("lastName").toString(),
+                    department = "temp")
+                supabase.from("users").upsert(add_user)
+            } else {
+                Log.d("tag", "user_data: ${user_data.toString()}")
+            }
+
 
             user.id
         } else {

@@ -46,4 +46,6 @@
     </string>
     <string name="title_activity_home_page">HomePage</string>
     <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_sdg_upload">SdgUpload</string>
 </resources>
