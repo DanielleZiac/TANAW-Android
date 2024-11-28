@@ -1,4 +1,4 @@
-package com.example.tanaw
+package com.example.tanawapp
 
 import org.junit.Test
 

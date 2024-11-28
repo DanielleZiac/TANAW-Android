@@ -1,14 +1,14 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
-    namespace = "com.example.tanaw"
-    compileSdk = 34
+    namespace = "com.example.tanawapp"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.tanaw"
+        applicationId = "com.example.tanawapp"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -45,4 +45,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+
 }

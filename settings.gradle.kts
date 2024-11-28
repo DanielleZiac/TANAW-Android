@@ -19,5 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "TANAW"
+rootProject.name = "TanawApp"
 include(":app")
+ 
