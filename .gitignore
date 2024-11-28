@@ -4,6 +4,8 @@ app/build/
 
 .gradle/
 .idea/
+.kotlin
+gradle/
 gradle/wrapper/gradle-wrapper.properties
 gradle/wrapper/gradle-wrapper.jar
 

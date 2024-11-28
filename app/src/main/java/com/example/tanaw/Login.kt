@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -35,6 +36,7 @@ data class UserData(
 
 
 class Login : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -55,7 +57,6 @@ class Login : AppCompatActivity() {
             val loginBtn = findViewById<Button>(R.id.loginBtn)
 
             val institutions = fetchAndDisplayInstitutions(institutionSpinner, errorText, this@Login)
-
 
 
             institutionSpinner.onItemSelectedListener = object :
@@ -79,11 +80,16 @@ class Login : AppCompatActivity() {
                     val institution = institutionSpinner.selectedItem.toString();
                     val password = passwordText.text.toString();
 
-                    Log.d("tag", srCode)
-                    Log.d("tag", institution)
-                    Log.d("tag", password)
+                    if (srCode.isNotEmpty() && institution.isNotEmpty() && password.isNotEmpty()) {
+                        Log.d("tag", srCode)
+                        Log.d("tag", institution)
+                        Log.d("tag", password)
 
-                    login(srCode, institution, password, emailExtensionText.text.toString(), errorText);
+                        login(srCode, institution, password, emailExtensionText.text.toString(), errorText);
+                    } else {
+                        Toast.makeText(this@Login, "Please fill in all fields.", Toast.LENGTH_SHORT).show()
+//                        errorText.text = "all fields are required"
+                    }
                 }
             })
         }
@@ -104,14 +110,13 @@ class Login : AppCompatActivity() {
                     errorText.text = "logged in!"
 
                     // redirect ??
-//                    val i = Intent(
-//                        this@Login,
-//                        SdgContent::class.java
-//                    )
-//                    val user_id = getUserId();
-////                    Log.d("tag", "aaaa" + user.toString());
-//                    i.putExtra("user_id", user_id)
-//                    startActivity(i)
+                    val i = Intent(
+                        this@Login,
+                        Home::class.java
+                    )
+                    val user_id = getUserId();
+                    i.putExtra("user_id", user_id)
+                    startActivity(i)
 
                 } else {
                     errorText.text = "Failed to login up user. Response is null."
