@@ -7,6 +7,8 @@
         android:required="false" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -20,7 +22,7 @@
         tools:targetApi="31">
 
         <!--
-             TODO: Before you run your application, you need a Google Maps API key.
+             TODO: Before you run your application, you need a Google com.example.tanaw.Maps API key.
 
              To get one, follow the directions here:
 
@@ -32,22 +34,16 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY" />
+            android:value="${MAPS_API_KEY}" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".SdgUpload"
+            android:name=".Home"
             android:exported="false"
-            android:label="@string/title_activity_sdg_upload"
-            android:theme="@style/Theme.TANAW" />
-
-        <activity
-            android:name=".SdgGallery"
-            android:exported="false"
-            android:theme="@style/Theme.TANAW" />
-        <activity
-            android:name=".Profile"
-            android:exported="false"
-            android:label="@string/title_activity_profile"
+            android:label="@string/title_activity_home"
             android:theme="@style/Theme.TANAW" />
         <activity
             android:name=".Login"
@@ -55,9 +51,29 @@
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.TANAW" />
         <activity
+            android:name=".Maps"
+            android:exported="false"
+            android:label="@string/title_activity_maps"
+            android:theme="@style/Theme.TANAW" />
+        <activity
+            android:name=".Profile"
+            android:exported="false"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/Theme.TANAW" />
+        <activity
             android:name=".SdgContent"
             android:exported="false"
-            android:label="@string/title_activity_home_page"
+            android:label="@string/title_activity_sdg_content"
+            android:theme="@style/Theme.TANAW" />
+        <activity
+            android:name=".SdgGallery"
+            android:exported="false"
+            android:label="@string/title_activity_sdg_gallery"
+            android:theme="@style/Theme.TANAW" />
+        <activity
+            android:name=".SdgUpload"
+            android:exported="false"
+            android:label="@string/title_activity_sdg_upload"
             android:theme="@style/Theme.TANAW" />
         <activity
             android:name=".Signup"

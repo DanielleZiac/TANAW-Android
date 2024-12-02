@@ -12,6 +12,7 @@ gradle/wrapper/gradle-wrapper.jar
 
 *.iml
 local.properties
+secrets.properties
 .idea/libraries/
 .idea/modules.xml
 .idea/workspace.xml

@@ -12,6 +12,9 @@ import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        val mLocationPermissionGranted = false
+
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
@@ -86,6 +89,18 @@ class MainActivity : AppCompatActivity() {
                 val i = Intent(
                     this@MainActivity,
                     SdgUpload::class.java
+                )
+                startActivity(i)
+            }
+        )
+
+        val mapBtn = findViewById<View>(R.id.mapBtn)
+        mapBtn.setOnClickListener(
+            View.OnClickListener {
+                Log.d("tag", "heree map")
+                val i = Intent(
+                    this@MainActivity,
+                    Maps::class.java
                 )
                 startActivity(i)
             }
