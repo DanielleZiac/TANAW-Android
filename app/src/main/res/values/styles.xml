@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="NavigationMenuStyle">
+        <item name="android:textSize">18sp</item> <!-- Adjust text size -->
+        <item name="android:textColor">@color/black</item> <!-- Adjust text color -->
+        <item name="itemIconSize">32dp</item> <!-- Adjust icon size -->
+        <item name="android:paddingTop">26dp</item>  <!-- Top padding -->
+        <item name="android:paddingBottom">26dp</item>  <!-- Top padding -->
+    </style>
+</resources>

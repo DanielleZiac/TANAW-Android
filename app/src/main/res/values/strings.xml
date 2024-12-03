@@ -9,8 +9,18 @@
     <string name="profile">profile</string>
 
     <!-- Hamburger Menu -->
+    <string name="username">UserName</string>
 
     <!-- Bottom Nav -->
+    <string name="home">Home</string>
+    <string name="gallery">Gallery</string>
+    <string name="explore">Explore</string>
+    <string name="inbox">Inbox</string>
+    <string name="stickers">Stickers</string>
+
+    <!-- Maps -->
+    <string name="title_activity_maps">Maps</string>
+
 
     <!-- SDG Images -->
     <string name="sdg1">SDG1</string>

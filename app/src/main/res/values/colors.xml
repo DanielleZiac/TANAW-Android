@@ -7,4 +7,6 @@
 
     <color name="teal_300">#9DCCDD</color>
     <color name="teal_700">#67A8BF</color>
+    <color name="navy_300">#193367</color>
+    <color name="navy_500">#132853</color>
 </resources>
