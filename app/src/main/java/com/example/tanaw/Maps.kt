@@ -1,43 +1,37 @@
 package com.example.tanaw
 
 import android.Manifest
-import android.app.Activity
-import android.app.Dialog
-import android.content.Context
 import android.content.pm.PackageManager
-import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.PackageManagerCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
+import com.example.tanaw.models.ClusterMarker
+import com.example.tanaw.util.ClusterManagerRenderer
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.clustering.ClusterManager
+import android.location.Location
+import android.util.Log
+import android.widget.Toast
 
 
 class Maps : AppCompatActivity(), OnMapReadyCallback {
-    private  var mGoogleMap: GoogleMap? = null
-    private var mLocationPermissionGranted: Boolean = false
+    private val FINE_PERMISSION_CODE: Int = 1
+    lateinit var curLocation: Location
+    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
-    val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-        if (isGranted) {
-            Log.d("tag", "Location permission granted")
-            mLocationPermissionGranted = true
-//            enableMap()
-        } else {
-            Log.d("tag", "permission denied")
-            mLocationPermissionGranted = false
-        }
-    }
+    private var mClusterManager: ClusterManager<ClusterMarker>? = null
+    private var mClusterManagerRenderer: ClusterManagerRenderer? = null
+    private val mClusterMarkers = ArrayList<ClusterMarker>()
+    private lateinit var mGoogleMap: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,65 +43,92 @@ class Maps : AppCompatActivity(), OnMapReadyCallback {
             insets
         }
 
-        val curLoc = findViewById<TextView>(R.id.curLoc)
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        getLastLocation();
 
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragemnt) as SupportMapFragment
-        mapFragment.getMapAsync(this)
+//        val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragemnt) as SupportMapFragment
+//        mapFragment.getMapAsync(this)
 
-        if (checkServices() && mLocationPermissionGranted) {
-            Log.d("tag", "Setting up map")
+
+    }
+
+    private fun getLastLocation() {
+
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            // Request permissions if they haven't been granted yet
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_PERMISSION_CODE)
+            return
+        }
+
+        // Now that permissions are granted, get the last known location
+        val task = fusedLocationProviderClient.lastLocation
+        task.addOnSuccessListener { location: Location? ->
+            if (location != null) {
+                curLocation = location
+
+                Log.d(
+                    "tag",
+                    curLocation.longitude.toString() + " " + curLocation.latitude.toString()
+                )
+
+                val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragemnt) as SupportMapFragment
+                mapFragment.getMapAsync(this)
+            } else {
+                Log.d("tag", "NO LOCATION")
+            }
         }
 
     }
 
-    override fun onMapReady(gooleMap: GoogleMap) {
-        mGoogleMap = gooleMap
-    }
+    private fun addMapMarkers() {
+        if (mGoogleMap != null) {
+            if (mClusterManager == null) {
+                mClusterManager = ClusterManager<ClusterMarker>(applicationContext, mGoogleMap)
+            }
 
-    private fun isServicesOk(): Boolean {
-        Log.d("tag", "isServicesOk: checking google services version")
+            if (mClusterManagerRenderer == null) {
+                mClusterManagerRenderer = ClusterManagerRenderer(applicationContext, mGoogleMap, mClusterManager)
+                mClusterManager!!.setRenderer(mClusterManagerRenderer)
+            }
 
-        val available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this)
+            val avatar: Int = R.drawable.avatar
 
-        if (available === ConnectionResult.SUCCESS) {
-            Log.d("tag", "isServicesOK: Google Play Services is working");
-            return true
-        } else if (GoogleApiAvailability.getInstance().isUserResolvableError((available))) {
-            Log.d("tag", "isServicesOK: an error occured but we can fix it");
-            val dialog: Dialog? = GoogleApiAvailability.getInstance().getErrorDialog(
-                this@Maps, available, 9001
+            val newClusterMarker: ClusterMarker = ClusterMarker(
+                LatLng(curLocation.latitude, curLocation.longitude),
+                "name",
+                "caption",
+                1.0F,
+                avatar
             )
-            dialog?.show()
-        } else {
-            Log.d("tag", "You can't make map requests")
-        }
-        return false
-    }
+            mClusterManager!!.addItem(newClusterMarker);
+            mClusterMarkers.add(newClusterMarker);
 
-    // Request location permission
-    private fun requestLocPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mLocationPermissionGranted = true
-        } else {
-            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            mClusterManager!!.cluster()
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(curLocation.latitude, curLocation.longitude)));
         }
     }
 
-    fun isMapEnabled(): Boolean {
-        val manager: LocationManager  = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-        if (!manager.isProviderEnabled( LocationManager.GPS_PROVIDER )) {
-            Log.d("tag", "GPS is disabled, asking user to enable it.")
-            // send request
-            requestLocPermission()
-            Log.d("tag", "asdasdsadbcuxbciad"+manager.isProviderEnabled( LocationManager.GPS_PROVIDER));
-            return false
-        }
-        Log.d("tag", "GPS is enabled.")
-        return true
+    override fun onMapReady(googleMap: GoogleMap) {
+        mGoogleMap = googleMap
+        addMapMarkers()
     }
 
-    private fun checkServices(): Boolean {
-        return isServicesOk() && isMapEnabled()
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == FINE_PERMISSION_CODE) {
+            if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLastLocation()
+            } else {
+                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

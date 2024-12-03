@@ -132,4 +132,10 @@ dependencies {
     // Maps SDK for Android
     implementation("com.google.android.gms:play-services-maps:19.0.0")
     implementation("com.google.android.gms:play-services-location:21.3.0")
+
+
+    implementation("com.google.maps.android:android-maps-utils:3.8.2")
+    implementation("com.google.maps.android:maps-utils-ktx:5.1.1")
+
+    implementation("com.github.bumptech.glide:glide:4.13.2")
 }
