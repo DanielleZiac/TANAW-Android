@@ -10,15 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Logo Image -->
-        <ImageView
-            android:id="@+id/logo_image"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/logoexplore"
-            android:contentDescription="Logo"
-            android:layout_marginBottom="16dp" />
+
 
         <!-- United Nations Images Section -->
         <TextView
