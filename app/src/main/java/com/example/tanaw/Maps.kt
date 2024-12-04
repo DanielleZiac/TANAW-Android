@@ -2,6 +2,7 @@ package com.example.tanaw
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -22,16 +23,20 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.maps.android.clustering.ClusterManager
+import kotlinx.serialization.json.Json
 
 
 class Maps : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
     private val FINE_PERMISSION_CODE: Int = 1
     lateinit var curLocation: Location
+    var sdgPhotoList: List<SdgPhoto> = emptyList()
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     private var mClusterManager: ClusterManager<ClusterMarker>? = null
     private var mClusterManagerRenderer: ClusterManagerRenderer? = null
     private val mClusterMarkers = ArrayList<ClusterMarker>()
+    private var institutions: HashMap<String, Int> = mutableMapOf<String, Int>() as HashMap<String, Int>
+    val predefinedColors = listOf(Color.BLACK, Color.DKGRAY, Color.GRAY, Color.LTGRAY, Color.WHITE, Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.CYAN, Color.MAGENTA)
 
     private lateinit var mGoogleMap: GoogleMap
 
@@ -45,13 +50,20 @@ class Maps : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClic
             insets
         }
 
+        val extras = intent.extras
+        Log.d("tag", "extras: ${extras.toString()}")
+
+        if (extras != null && extras.containsKey("sdgPhoto")) {
+            val sdgPhotoJson = extras.getString("sdgPhoto")
+            if (sdgPhotoJson != null) {
+                sdgPhotoList = Json.decodeFromString(sdgPhotoJson)
+                Log.d("tag", "MAPS " + sdgPhotoList)
+            }
+        }
+
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         getLastLocation();
-
-//        val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragemnt) as SupportMapFragment
-//        mapFragment.getMapAsync(this)
-
-
     }
 
     private fun getLastLocation() {
@@ -97,26 +109,41 @@ class Maps : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClic
                 mClusterManager!!.setRenderer(mClusterManagerRenderer)
             }
 
-            val coordinates = listOf(
-                LatLng(14.6042, 120.9822), // Manila
-                LatLng(10.3157, 123.8854), // Cebu
-                LatLng(7.1907, 125.4553),  // Davao
-                LatLng(9.7263, 123.8507),  // Tagbilaran
-                LatLng(16.4023, 120.5960)  // Baguio
-            )
+            if (sdgPhotoList != null && sdgPhotoList.size > 0) {
+                Log.d("tag", "sdgPhotoList: ${sdgPhotoList.toString()}")
+                sdgPhotoList.forEach { sdgPhoto ->
+                    Log.d("tag", sdgPhoto.toString())
 
-            // Loop through the coordinates and create a ClusterMarker for each
-            coordinates.forEach { coordinate ->
-                val newClusterMarker: ClusterMarker = ClusterMarker(
-                    coordinate,
-                    "name",
-                    "caption",
-                    1.0F
-                )
-                mClusterManager!!.addItem(newClusterMarker);
-                mClusterMarkers.add(newClusterMarker);
+                    val newClusterMarker: ClusterMarker = ClusterMarker(
+                        userSdgId = sdgPhoto.userSdgId,
+                        userId = sdgPhoto.userId,
+                        sdgNumber = sdgPhoto.sdgNumber,
+                        url = sdgPhoto.url,
+                        caption = sdgPhoto.caption,
+                        createdDate = sdgPhoto.createdDate,
+                        institutionId = sdgPhoto.institutionId,
+                        phototChall = sdgPhoto.phototChall,
+                        institution = sdgPhoto.institution,
+                        campus = sdgPhoto.campus,
+                        institutionLogo = sdgPhoto.institutionLogo,
+                        lat = sdgPhoto.lat,
+                        long = sdgPhoto.long,
+                        avatarUrl = sdgPhoto.avatarUrl
+                    )
+
+                    mClusterManager!!.addItem(newClusterMarker)
+                    mClusterMarkers.add(newClusterMarker)
+                }
             }
+
+
+            // add cur loc
+//            val myClusterMarker: ClusterMarker = ClusterMarker()
+//            mClusterManager.addItem()
+//            mClusterMarkers.add()
             mClusterManager!!.cluster()
+
+            Log.d("tag", "cluster markers: ${mClusterMarkers.size.toString()}, ${mClusterManager?.algorithm?.items?.size.toString()}")
 
             val zoomLevel = 12.0f
             mGoogleMap.uiSettings.isZoomControlsEnabled = true

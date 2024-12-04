@@ -1,5 +1,6 @@
 package com.example.tanaw
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -22,22 +23,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
 
-@Serializable
-data class SdgPhoto (
-    @SerialName("avatar_url") val avatarUrl: String,
-    @SerialName("caption") val caption: String,
-    @SerialName("created_date") val createdDate: String,
-    @SerialName("sdg_number") val sdgNumber: String,
-    @SerialName("url") val url: String,
-    @SerialName("user_sdg_id") val userSdgId: String
-)
-
-
 class SdgContent : AppCompatActivity() {
+    lateinit var sdgPhoto: List<SdgPhoto>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -51,9 +45,20 @@ class SdgContent : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch {
             val user_id = intent.getStringExtra("user_id")
             val sdg = 1;
-            val sdgPhoto = getPhotoSdg(sdg)         // xxxxxxxxxxxxxxxxx
+            sdgPhoto = getPhotoSdg(sdg)         // xxxxxxxxxxxxxxxxx
+            Log.d("tag", sdgPhoto.toString())
 
-//            Log.d("tag", sdgPhoto.toString())
+            val mapBtn: Button = findViewById(R.id.mapBtn)
+            mapBtn.setOnClickListener(View.OnClickListener {
+                val i = Intent(
+                    this@SdgContent,
+                    Maps::class.java
+                )
+                val jsonString = Json.encodeToString(ListSerializer(SdgPhoto.serializer()), sdgPhoto)
+                i.putExtra("sdgPhoto", jsonString)
+                startActivity(i)
+            })
+
         }
     }
 

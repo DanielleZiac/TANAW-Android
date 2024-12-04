@@ -4,47 +4,170 @@ import android.graphics.Bitmap
 import com.example.tanaw.R
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
+import kotlinx.serialization.SerialName
 
 class ClusterMarker(
-    private var position: LatLng,
-    private var title: String,
-    private var snippet: String,
-    private var zindex: Float,
+    title: String? = null,
+    snippet: String? = null,
+    userSdgId: String? = null,
+    userId: String,
+    sdgNumber: String? = null,
+    url: String? = null,
+    caption: String? = null,
+    createdDate: String? = null,
+    institutionId: String? = null,
+    phototChall: String? = null,
+    institution: String? = null,
+    campus: String? = null,
+    institutionLogo: String? = null,
+    lat: Double,
+    long: Double,
+    avatarUrl: String
 ) : ClusterItem {
+    private  val title: String?
+    private val snippet: String?
+    private val userSdgId: String?
+    private val userId: String
+    private val sdgNumber: String?
+    private val url: String?
+    private val caption: String?
+    private val createdDate: String?
+    private val institutionId: String?
+    private val phototChall: String?
+    private val institution: String?
+    private val campus: String?
+    private val institutionLogo: String?
+    private val position: LatLng
+    private val avatarUrl: String
+
+    init {
+        this.title = title
+        this.snippet = snippet
+        this.userSdgId = userSdgId
+        this.userId = userId
+        this.sdgNumber = sdgNumber
+        this.url = url
+        this.caption = caption
+        this.createdDate = createdDate
+        this.institutionId = institutionId
+        this.phototChall = phototChall
+        this.institution = institution
+        this.campus = campus
+        this.institutionLogo = institutionLogo
+        this.position = LatLng(lat, long)
+        this.avatarUrl = avatarUrl
+    }
 
     override fun getPosition(): LatLng {
         return position
     }
 
-    fun setPosition(postition: LatLng) {
-        this.position = position
-    }
-
-    override fun getTitle(): String {
-        return title
-    }
-    val avatar: Int = R.drawable.avatar
-    fun getIconPicture(): Int {
-        return avatar// Replace with actual default icon resource ID
-    }
-
-    fun setTitle(title: String) {
-        this.title = title
+    override fun getTitle(): String? {
+        return caption
     }
 
     override fun getSnippet(): String? {
-        return snippet
+        return phototChall
     }
 
-    fun setSnippet(snippet: String) {
-        this.snippet = snippet
+    override fun getZIndex(): Float {
+        return 0f
     }
 
-    override fun getZIndex(): Float? {
-        return zindex
+    fun getUserSdgId(): String? {
+        return userSdgId
     }
 
-    fun setZIndex(zindex: Float) {
-        this.zindex = zindex
+    fun getUserId(): String {
+        return userId
+    }
+
+    fun getSdgNumber(): String? {
+        return sdgNumber
+    }
+
+    fun getUrl(): String? {
+        return url
+    }
+
+    fun getCaption(): String? {
+        return caption
+    }
+
+    fun getCreatedDate(): String? {
+        return createdDate
+    }
+
+    fun getInstitutionId(): String? {
+        return institutionId
+    }
+
+    fun getPhototChall(): String? {
+        return phototChall
+    }
+
+    fun getInstitution(): String? {
+        return institution
+    }
+
+    fun getCampus(): String? {
+        return campus
+    }
+
+    fun getInstitutionLogo(): String? {
+        return institutionLogo
+    }
+
+    fun getAvatarUrl(): String {
+        return avatarUrl
     }
 }
+
+
+
+
+//
+//
+//class ClusterMarker(
+//    private var position: LatLng,
+//    private var title: String,
+//    private var snippet: String,
+//    private var zindex: Float,
+//) : ClusterItem {
+//
+//    override fun getPosition(): LatLng {
+//        return position
+//    }
+//
+//    fun setPosition(postition: LatLng) {
+//        this.position = position
+//    }
+//
+//    override fun getTitle(): String {
+//        return title
+//    }
+//    val avatar: Int = R.drawable.avatar
+//    fun getIconPicture(): Int {
+//        return avatar// Replace with actual default icon resource ID
+//    }
+//
+//    fun setTitle(title: String) {
+//        this.title = title
+//    }
+//
+//    override fun getSnippet(): String? {
+//        return snippet
+//    }
+//
+//    fun setSnippet(snippet: String) {
+//        this.snippet = snippet
+//    }
+//
+//    override fun getZIndex(): Float? {
+//        return zindex
+//    }
+//
+//    fun setZIndex(zindex: Float) {
+//        this.zindex = zindex
+//    }
+//}

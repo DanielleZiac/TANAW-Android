@@ -72,4 +72,20 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="20dp"
+        android:layout_margin="0dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:padding="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/baseline_arrow_drop_down_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:tint="@color/white" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

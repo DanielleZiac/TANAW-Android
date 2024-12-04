@@ -17,10 +17,12 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.tanaw.CustomInfoWindowAdapter
+import com.example.tanaw.CustomInfoWindowData
 import com.example.tanaw.R
 import com.example.tanaw.models.ClusterMarker
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.clustering.Cluster
@@ -37,42 +39,24 @@ import java.net.URL
 
 
 class ClusterManagerRenderer(
-    context: Context,
+    private val context: Context,
     private val map: GoogleMap?,
     private val clusterManager: ClusterManager<ClusterMarker>?,
     private val clusterMarkers: ArrayList<ClusterMarker>,
 ) : DefaultClusterRenderer<ClusterMarker>(context, map, clusterManager) {
-
     private val iconGenerator: IconGenerator = IconGenerator(context.applicationContext)
-    private val imageView: ImageView = ImageView(context.applicationContext)
-//    private val markerWidth = context.resources?.getDimension(R.dimen.custom_marker_image)
-//    private val markerHeight = context.resources?.getDimension(R.dimen.custom_marker_image)
-    private val context = context
-    private val url = "https://srxhcymqociarjinmkpp.supabase.co/storage/v1/object/public/avatars/308e180d-0d08-480a-a626-5d0c2da7bc04/9355f132-4fa3-4dd9-84bc-bec78e001e3e"
 
-    init {
-
-
-//        imageView.layoutParams = ViewGroup.LayoutParams(
-//            markerWidth?.toInt() ?: 0,
-//            markerHeight?.toInt() ?: 0
-//        )
-
-//        val padding: Int = 2
-//        imageView.setPadding(padding, padding, padding, padding)
-//        iconGenerator.setContentView(imageView)
-    }
 
     override fun onBeforeClusterItemRendered(item: ClusterMarker, markerOptions: MarkerOptions) {
         // Set the placeholder/default icon initially
         val defaultIcon: Bitmap = iconGenerator.makeIcon()
-        markerOptions.title(item.title).snippet(item.snippet)
+        markerOptions.title("Loading...").snippet("Please wait")
 
         val oldMarker = map?.addMarker(markerOptions)
 
         // Asynchronously fetch the bitmap
         CoroutineScope(Dispatchers.IO).launch {
-            val fetchedBitmap = getBitmapFromURL(url, context) // Use the correct URL from your item
+            val fetchedBitmap = getBitmapFromURL(item.getAvatarUrl(), context) // Use the correct URL from your item
             if (fetchedBitmap != null) {
                 withContext(Dispatchers.Main) {
                     // Create a new marker with the same properties as the old one but with the fetched bitmap
@@ -86,6 +70,21 @@ class ClusterManagerRenderer(
                     val newMarker = map?.addMarker(newMarkerOptions)
 
                     try {
+                        newMarker?.tag = CustomInfoWindowData(
+                            userSdgId = item.getUserSdgId(),
+                            userId = item.getUserId(),
+                            sdgNumber = item.getSdgNumber(),
+                            url = item.getUrl(),
+                            caption = item.getCaption(),
+                            createdDate = item.getCreatedDate(),
+                            institutionId = item.getInstitutionId(),
+                            phototChall = item.getPhototChall(),
+                            institution = item.getInstitution(),
+                            campus = item.getCampus(),
+                            institutionLogo = item.getInstitutionLogo(),
+                            position = item.position,
+                            avatarUrl = item.getAvatarUrl()
+                        )
                         map?.setInfoWindowAdapter(CustomInfoWindowAdapter(context))
                     } catch (e: Exception) {
                         Log.d("tag", "errorrorororoorr" + e.message)
