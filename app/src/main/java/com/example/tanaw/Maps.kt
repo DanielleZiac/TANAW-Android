@@ -2,7 +2,10 @@ package com.example.tanaw
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -17,13 +20,11 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.maps.android.clustering.ClusterManager
-import android.location.Location
-import android.util.Log
-import android.widget.Toast
 
 
-class Maps : AppCompatActivity(), OnMapReadyCallback {
+class Maps : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
     private val FINE_PERMISSION_CODE: Int = 1
     lateinit var curLocation: Location
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -31,6 +32,7 @@ class Maps : AppCompatActivity(), OnMapReadyCallback {
     private var mClusterManager: ClusterManager<ClusterMarker>? = null
     private var mClusterManagerRenderer: ClusterManagerRenderer? = null
     private val mClusterMarkers = ArrayList<ClusterMarker>()
+
     private lateinit var mGoogleMap: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,29 +87,41 @@ class Maps : AppCompatActivity(), OnMapReadyCallback {
 
     private fun addMapMarkers() {
         if (mGoogleMap != null) {
+
             if (mClusterManager == null) {
                 mClusterManager = ClusterManager<ClusterMarker>(applicationContext, mGoogleMap)
             }
 
             if (mClusterManagerRenderer == null) {
-                mClusterManagerRenderer = ClusterManagerRenderer(applicationContext, mGoogleMap, mClusterManager)
+                mClusterManagerRenderer = ClusterManagerRenderer(applicationContext, mGoogleMap, mClusterManager, mClusterMarkers)
                 mClusterManager!!.setRenderer(mClusterManagerRenderer)
             }
 
-            val avatar: Int = R.drawable.avatar
-
-            val newClusterMarker: ClusterMarker = ClusterMarker(
-                LatLng(curLocation.latitude, curLocation.longitude),
-                "name",
-                "caption",
-                1.0F,
-                avatar
+            val coordinates = listOf(
+                LatLng(14.6042, 120.9822), // Manila
+                LatLng(10.3157, 123.8854), // Cebu
+                LatLng(7.1907, 125.4553),  // Davao
+                LatLng(9.7263, 123.8507),  // Tagbilaran
+                LatLng(16.4023, 120.5960)  // Baguio
             )
-            mClusterManager!!.addItem(newClusterMarker);
-            mClusterMarkers.add(newClusterMarker);
 
+            // Loop through the coordinates and create a ClusterMarker for each
+            coordinates.forEach { coordinate ->
+                val newClusterMarker: ClusterMarker = ClusterMarker(
+                    coordinate,
+                    "name",
+                    "caption",
+                    1.0F
+                )
+                mClusterManager!!.addItem(newClusterMarker);
+                mClusterMarkers.add(newClusterMarker);
+            }
             mClusterManager!!.cluster()
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(curLocation.latitude, curLocation.longitude)));
+
+            val zoomLevel = 12.0f
+            mGoogleMap.uiSettings.isZoomControlsEnabled = true
+            mGoogleMap.uiSettings.isZoomGesturesEnabled = true
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(curLocation.latitude, curLocation.longitude), zoomLevel));
         }
     }
 
@@ -130,5 +144,9 @@ class Maps : AppCompatActivity(), OnMapReadyCallback {
                 Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    override fun onInfoWindowClick(p0: Marker) {
+        TODO("Not yet implemented")
     }
 }

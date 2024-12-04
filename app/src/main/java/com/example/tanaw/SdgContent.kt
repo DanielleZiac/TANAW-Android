@@ -55,7 +55,6 @@ class SdgContent : AppCompatActivity() {
 
 //            Log.d("tag", sdgPhoto.toString())
         }
-
     }
 
     private suspend fun getPhotoSdg(sdg: Int): List<SdgPhoto> {

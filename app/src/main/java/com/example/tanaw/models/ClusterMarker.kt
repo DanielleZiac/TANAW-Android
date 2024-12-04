@@ -1,5 +1,7 @@
 package com.example.tanaw.models
 
+import android.graphics.Bitmap
+import com.example.tanaw.R
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
 
@@ -8,9 +10,7 @@ class ClusterMarker(
     private var title: String,
     private var snippet: String,
     private var zindex: Float,
-    private var iconPicture: Int
 ) : ClusterItem {
-    //    private lateinit var user: User
 
     override fun getPosition(): LatLng {
         return position
@@ -22,6 +22,10 @@ class ClusterMarker(
 
     override fun getTitle(): String {
         return title
+    }
+    val avatar: Int = R.drawable.avatar
+    fun getIconPicture(): Int {
+        return avatar// Replace with actual default icon resource ID
     }
 
     fun setTitle(title: String) {
@@ -42,13 +46,5 @@ class ClusterMarker(
 
     fun setZIndex(zindex: Float) {
         this.zindex = zindex
-    }
-
-    fun getIconPicture(): Int {
-        return iconPicture
-    }
-
-    fun setIconPicture(iconPicture: Int) {
-        this.iconPicture = iconPicture
     }
 }
