@@ -38,3 +38,4 @@ class InboxFragment : Fragment() {
         return view
     }
 }
+

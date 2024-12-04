@@ -56,8 +56,8 @@ class MainActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_settings -> {
-//                   val intent = Intent(this, ProfileActivity::class.java)
-//                    startActivity(intent)
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    startActivity(intent)
                 }
                 R.id.nav_about -> {
                     // Handle Abous Us click

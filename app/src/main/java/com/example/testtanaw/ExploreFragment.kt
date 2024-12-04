@@ -13,7 +13,7 @@ import androidx.transition.TransitionInflater
 class ExploreFragment : Fragment() {
 
     private lateinit var unImagesAdapter: UNImagesAdapter
-    private lateinit var sdgAdapter: SDGAdapter
+    private lateinit var sdgAdapter: ExploreSDGAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,7 +61,7 @@ class ExploreFragment : Fragment() {
             SDG("Goal 17: Partnerships for the Goals", "Strengthen the means of implementation and revitalize the global partnership for sustainable development.", R.drawable.sdglink_17)
         )
 
-        sdgAdapter = SDGAdapter(sdgGoals)
+        sdgAdapter = ExploreSDGAdapter(sdgGoals)
         sdgRecyclerView.adapter = sdgAdapter
     }
 
