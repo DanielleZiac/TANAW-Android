@@ -75,7 +75,7 @@ android {
 
 
 secrets {
-    propertiesFileName = "secrets.properties"
+
     defaultPropertiesFileName = "local.properties"
 
     ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
