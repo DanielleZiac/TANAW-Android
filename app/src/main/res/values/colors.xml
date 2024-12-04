@@ -9,4 +9,6 @@
     <color name="teal_700">#67A8BF</color>
     <color name="explore">#dbdfe2</color>
     <color name="footerBlue">#2D6589</color>
+    <color name="navy_300">#193367</color>
+    <color name="navy_500">#132853</color>
 </resources>
