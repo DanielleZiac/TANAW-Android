@@ -6,32 +6,97 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.testtanaw.R
+import com.example.testtanaw.models.SDGItem
 
-// SDG data class to hold information about each goal
-data class SDG(val title: String, val description: String, val imageRes: Int)
+class SDGAdapter(
+    private val sdgList: List<SDGItem>,
+    private val onItemClick: (SDGItem) -> Unit // Click listener
+) : RecyclerView.Adapter<SDGAdapter.SDGViewHolder>() {
 
-class SDGAdapter(private val sdgGoals: List<SDG>) : RecyclerView.Adapter<SDGAdapter.ViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_sdg_goal, parent, false)
-        return ViewHolder(view)
+    // ViewHolder to represent a single SDG item
+    class SDGViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val sdgIcon: ImageView = view.findViewById(R.id.sdgIcon)
+        val sdgTitle: TextView = view.findViewById(R.id.sdgTitle)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val sdg = sdgGoals[position]
-        holder.titleTextView.text = sdg.title
-        holder.descriptionTextView.text = sdg.description
-        holder.imageView.setImageResource(sdg.imageRes)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SDGViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_sdg, parent, false)
+        return SDGViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return sdgGoals.size
+    override fun onBindViewHolder(holder: SDGViewHolder, position: Int) {
+        val sdg = sdgList[position]
+        holder.sdgIcon.setImageResource(sdg.iconResId) // Set image resource
+        holder.sdgTitle.text = sdg.title // Set title text
+
+        // Apply alignment logic based on the index
+//        val alignmentClass: Int
+        val marginTop: Int
+        val marginBottom: Int
+        val marginLeft: Int
+        val marginRight: Int
+
+        when (position % 6) {
+            1, 4 -> {
+                // Justify-center
+//                alignmentClass = ViewGroup.LayoutParams.MATCH_PARENT
+                marginTop = 0
+                marginBottom = 0
+                marginLeft = 0
+                marginRight = 0
+            }
+            2, 3 -> {
+                // Justify-end
+//                alignmentClass = ViewGroup.LayoutParams.MATCH_PARENT
+                marginTop = 50
+                marginBottom = -50
+                marginLeft = 0
+                marginRight = 0
+            }
+            else -> {
+                // Justify-start
+//                alignmentClass = ViewGroup.LayoutParams.MATCH_PARENT
+                marginTop = -50
+                marginBottom = 50
+                marginLeft = 0
+                marginRight = 0
+            }
+        }
+
+        // Dynamically set layout parameters
+//        val params = holder.itemView.layoutParams
+//        params.width = alignmentClass
+//        holder.itemView.layoutParams = params
+//
+//        // Set additional margins and padding
+//        holder.itemView.setPadding(paddingLeft, marginTop, paddingRight, marginBottom)
+
+        // Apply dynamic margins
+        val params = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
+        params.setMargins(marginLeft, marginTop, marginRight, marginBottom)
+        holder.itemView.layoutParams = params
+
+        // Apply dynamic padding
+        holder.itemView.setPadding(16, 8, 16, 8)
+
+        // Show title on focus and hide when unfocused
+        holder.itemView.setOnFocusChangeListener { _, hasFocus ->
+            holder.sdgTitle.visibility = if (hasFocus) View.VISIBLE else View.GONE
+        }
+
+        // Show title on card click
+        holder.itemView.setOnClickListener {
+            holder.sdgTitle.visibility = View.VISIBLE  // Show title
+            onItemClick(sdg)  // Handle click event
+        }
+
+        // Optionally hide the title when the card is unclicked or after a delay
+        holder.itemView.setOnLongClickListener {
+            holder.sdgTitle.visibility = View.GONE  // Hide title
+            true  // Handle long click
+        }
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val titleTextView: TextView = view.findViewById(R.id.sdg_title)
-        val descriptionTextView: TextView = view.findViewById(R.id.sdg_description)
-        val imageView: ImageView = view.findViewById(R.id.sdg_image)
-    }
+    override fun getItemCount(): Int = sdgList.size
 }

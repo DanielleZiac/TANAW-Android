@@ -7,11 +7,20 @@
     <string name="hamburger">hamburger menu</string>
     <string name="logo">logo</string>
     <string name="profile">profile</string>
-    <string name="username">username</string>
 
     <!-- Hamburger Menu -->
+    <string name="username">UserName</string>
 
     <!-- Bottom Nav -->
+    <string name="home">Home</string>
+    <string name="gallery">Gallery</string>
+    <string name="explore">Explore</string>
+    <string name="inbox">Inbox</string>
+    <string name="stickers">Stickers</string>
+
+    <!-- Maps -->
+    <string name="title_activity_maps">Maps</string>
+
 
     <!-- SDG Images -->
     <string name="sdg1">SDG1</string>
@@ -31,6 +40,7 @@
     <string name="sdg15">SDG15</string>
     <string name="sdg16">SDG16</string>
     <string name="sdg17">SDG17</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

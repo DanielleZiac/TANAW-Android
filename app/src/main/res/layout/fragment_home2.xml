@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeFragment">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabToggleMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_loyalty_24"
+        app:backgroundTint="@android:color/white"
+        android:contentDescription="toggle_menu"
+        android:layout_gravity="end|top"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <!-- Floating Dropdown Menu -->
+    <LinearLayout
+        android:id="@+id/floatingMenu"
+        android:layout_width="56dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:padding="8dp"
+        android:background="@drawable/rounded_menu_background"
+        android:elevation="4dp"
+        android:layout_gravity="end|top"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="16dp">
+
+        <ImageView
+            android:id="@+id/sdg_home"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:contentDescription="SDGs"
+            android:src="@drawable/baseline_loyalty_24"
+            app:tint="@color/navy_300" />
+
+        <ImageView
+            android:id="@+id/institutions"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:contentDescription="Institutions"
+            android:src="@drawable/baseline_home_work_24"
+            app:tint="@color/navy_300" />
+
+        <ImageView
+            android:id="@+id/hallOfFame"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:contentDescription="Hall of Fame"
+            android:src="@drawable/baseline_local_fire_department_24"
+            app:tint="@color/navy_300" />
+
+        <ImageView
+            android:id="@+id/leaderboard"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:contentDescription="Leaderboard"
+            android:src="@drawable/baseline_leaderboard_24"
+            app:tint="@color/navy_300" />
+    </LinearLayout>
+
+    <!-- NestedScrollView for vertically scrollable images -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_marginTop="0dp"
+        android:background="@color/teal_700">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="0dp">
+
+            <ImageView
+                android:id="@+id/homebg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/homebg" />
+
+            <!-- SDG Image 1-3 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:orientation="horizontal"
+                android:padding="0dp"
+                android:gravity="center">
+
+                <!-- SDG Image 1 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="36dp"
+                    android:background="@android:color/transparent"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"> <!-- Adds ripple effect -->
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/sdg1"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sdg_1" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- SDG Image 2 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="14dp"
+                    android:background="@android:color/transparent"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="4dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/sdg2"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sdg_2" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- SDG Image 3 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:background="@android:color/transparent"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="4dp"
+                    android:layout_marginTop="36dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/sdg3"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sdg_3" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <!-- SDG Image 4-6 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:orientation="horizontal"
+                android:padding="0dp"
+                android:gravity="center">
+
+                <!-- SDG Image 6 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="36dp"
+                    android:background="@android:color/transparent"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="4dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/sdg6"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sdg_6" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- SDG Image 5 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="14dp"
+                    android:background="@android:color/transparent"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="4dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/sdg5"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sdg_5" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- SDG Image 4 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:background="@android:color/transparent"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="4dp"
+                    android:layout_marginBottom="36dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/sdg4"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sdg_4" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <!-- SDG Image 7-9 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:orientation="horizontal"
+                android:padding="0dp"
+                android:gravity="center">
+
+                <!-- SDG Image 7 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="36dp"
+                    android:background="@android:color/transparent"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="4dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/sdg7"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sdg_7" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- SDG Image 8 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="14dp"
+                    android:background="@android:color/transparent"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="4dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/sdg8"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sdg_8" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- SDG Image 9 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:background="@android:color/transparent"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="4dp"
+                    android:layout_marginTop="36dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/sdg9"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sdg_9" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <!-- SDG Image 10-12 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:orientation="horizontal"
+                android:padding="0dp"
+                android:gravity="center">
+
+                <!-- SDG Image 12 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="36dp"
+                    android:background="@android:color/transparent"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="4dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/sdg12"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sdg_12" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- SDG Image 11 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="14dp"
+                    android:background="@android:color/transparent"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="4dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/sdg11"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sdg_11" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- SDG Image 10 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:background="@android:color/transparent"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="4dp"
+                    android:layout_marginBottom="36dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/sdg10"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sdg_10" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <!-- SDG Image 13-15 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:orientation="horizontal"
+                android:padding="0dp"
+                android:gravity="center">
+
+                <!-- SDG Image 13 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="36dp"
+                    android:background="@android:color/transparent"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="4dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/sdg13"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sdg_13" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- SDG Image 14 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="14dp"
+                    android:background="@android:color/transparent"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="4dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/sdg14"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sdg_14" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- SDG Image 15 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:background="@android:color/transparent"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="4dp"
+                    android:layout_marginTop="36dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/sdg15"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sdg_15" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <!-- SDG Image 16-17 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:orientation="horizontal"
+                android:padding="0dp"
+                android:gravity="center"
+                android:layout_marginBottom="50dp">
+
+                <!-- SDG Image 0 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="36dp"
+                    android:background="@color/teal_700"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="0dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/sdg12"
+                        android:background="@color/teal_700"
+                        android:scaleType="centerCrop" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- SDG Image 17 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="14dp"
+                    android:background="@android:color/transparent"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="4dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/sdg17"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sdg_17" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- SDG Image 16 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:background="@android:color/transparent"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="4dp"
+                    android:layout_marginBottom="36dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/sdg16"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sdg_16" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>

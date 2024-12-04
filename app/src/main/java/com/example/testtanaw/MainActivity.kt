@@ -1,20 +1,27 @@
 package com.example.testtanaw
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.activity.enableEdgeToEdge
+import android.util.Log
+import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
+import android.widget.ImageButton
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentTransaction
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.widget.Toolbar
+
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var fabToggleMenu: FloatingActionButton
-    private lateinit var floatingMenu: View
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var toolbar: Toolbar
+    private lateinit var navigationView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,44 +35,56 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        // Initialize components
-        fabToggleMenu = findViewById(R.id.fabToggleMenu)
-        floatingMenu = findViewById(R.id.floatingMenu)
+        // Initialize views
+        drawerLayout = findViewById(R.id.drawer_layout)
+        toolbar = findViewById(R.id.toolbar)
+        navigationView = findViewById(R.id.navigationView)
 
-        val sdgHome: ImageView = findViewById(R.id.sdg_home)
-        val institutions: ImageView = findViewById(R.id.institutions)
-        val hallOfFame: ImageView = findViewById(R.id.hallOfFame)
-        val leaderboard: ImageView = findViewById(R.id.leaderboard)
+        // Set the toolbar as the action bar
+        setSupportActionBar(toolbar)
 
-        // Toggle dropdown menu visibility
-        fabToggleMenu.setOnClickListener {
-            floatingMenu.visibility = if (floatingMenu.visibility == View.VISIBLE) {
-                View.GONE
-            } else {
-                View.VISIBLE
+        // Disable the toolbar title display
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        // Handle hamburger icon click
+        val hamburgerMenu: ImageButton = findViewById(R.id.hamburgerMenu)
+        hamburgerMenu.setOnClickListener {
+            drawerLayout.openDrawer(navigationView)  // Open the navigation drawer
+        }
+
+        // Handle item clicks in the navigation menu
+        navigationView.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_settings -> {
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.nav_about -> {
+                    // Handle Abous Us click
+                }
+                R.id.nav_contact -> {
+                    // Handle Contacts click
+                }
+                R.id.nav_feedback -> {
+                    // Handle Feedback click
+                }
+                R.id.nav_help -> {
+                    // Handle Help Center click
+                }
+                R.id.nav_terms -> {
+                    // Handle Terms and Conditions click
+                }
+                R.id.nav_logout -> {
+                    // Handle Logout click
+                }
+                else -> {
+                    return@setNavigationItemSelectedListener false
+                }
             }
+            drawerLayout.closeDrawer(navigationView)  // Close the drawer after item selection
+            true
         }
 
-        // Set click listeners for dropdown menu items
-        sdgHome.setOnClickListener {
-            fabToggleMenu.setImageResource(R.drawable.baseline_loyalty_24)
-            floatingMenu.visibility = View.GONE
-        }
-
-        institutions.setOnClickListener {
-            fabToggleMenu.setImageResource(R.drawable.baseline_home_work_24)
-            floatingMenu.visibility = View.GONE
-        }
-
-        hallOfFame.setOnClickListener {
-            fabToggleMenu.setImageResource(R.drawable.baseline_local_fire_department_24)
-            floatingMenu.visibility = View.GONE
-        }
-
-        leaderboard.setOnClickListener {
-            fabToggleMenu.setImageResource(R.drawable.baseline_leaderboard_24)
-            floatingMenu.visibility = View.GONE
-        }
 
         // Bottom Navigation setup
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomAppBar)
@@ -77,36 +96,39 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Set up listener for bottom navigation item selection
-        bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    // Load Home Fragment or activity
-                    loadFragment(HomeFragment())
-                    true
-                }
-                R.id.nav_search -> {
-                    // Load Search Fragment or activity
-                    loadFragment(ExploreFragment())
-                    true
-                }
-                R.id.nav_explore -> {
-                    // Load Explore Fragment or activity
-                    loadFragment(ExploreFragment())
-                    true
-                }
-                R.id.nav_inbox -> {
-                    // Load Inbox Fragment or activity
-                    loadFragment(InboxFragment())
-                    true
-                }
-                R.id.nav_stickers -> {
-                    // Load Stickers Fragment or activity
-                    loadFragment(StickersFragment())
-                    true
-                }
+                R.id.nav_home -> loadFragment(HomeFragment())
+                R.id.nav_gallery -> loadFragment(GalleryFragment())
+                R.id.nav_explore -> loadFragment(ExploreFragment())  // Merged identical cases
+                R.id.nav_inbox -> loadFragment(InboxFragment())
+                R.id.nav_stickers -> loadFragment(StickersFragment())
                 else -> false
             }
+            true
+
         }
+
+        val mapBtn = findViewById<View>(R.id.mapBtn)
+        mapBtn.setOnClickListener(
+            View.OnClickListener {
+                Log.d("tag", "heree map")
+                val i = Intent(
+                    this@MainActivity,
+                    Maps::class.java
+                )
+                startActivity(i)
+            }
+        )
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle the back button for the drawer if it's open
+        if (item.itemId == android.R.id.home) {
+            drawerLayout.openDrawer(navigationView)
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     // Method to load fragment
@@ -116,14 +138,4 @@ class MainActivity : AppCompatActivity() {
         transaction.addToBackStack(null)  // Optional: allows back navigation
         transaction.commit()
     }
-
-//    // Method to toggle dropdown menu visibility
-//    private fun toggleDropdownMenu() {
-//        val floatingMenu = findViewById<LinearLayout>(R.id.floatingMenu)
-//        if (floatingMenu.visibility == View.GONE) {
-//            floatingMenu.visibility = View.VISIBLE
-//        } else {
-//            floatingMenu.visibility = View.GONE
-//        }
-//    }
 }
