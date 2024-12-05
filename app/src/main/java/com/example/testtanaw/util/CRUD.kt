@@ -141,4 +141,9 @@ class CRUD: Supabase() {
             }
         }
     }
+
+
+    fun getPhotoByUserId(userId: String) {
+
+    }
 }

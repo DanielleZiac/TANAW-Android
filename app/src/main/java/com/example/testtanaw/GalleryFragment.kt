@@ -49,11 +49,13 @@ class GalleryFragment : Fragment() {
     }
 
     private fun setupGalleryRecyclerView() {
-        val images = if (isUploadsTab) {
-            (1..6).map { "sdglink_$it" }
-        } else {
-            (7..12).map { "sdglink_$it" }
-        }
+//        val images = if (isUploadsTab) {
+//            (1..6).map { "sdglink_$it" }
+//        } else {
+//            (7..12).map { "sdglink_$it" }
+//        }
+//
+        val images =
 
         galleryAdapter = GalleryAdapter(images)
         binding.galleryRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)

@@ -62,7 +62,7 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
         val sdgTitle = intent.getStringExtra("SDG_TITLE")
 
         CoroutineScope(Dispatchers.Main).launch {
-            sdgPhotoList = crud.getSdgPhoto(sdgNumber, null, null)
+            sdgPhotoList = crud.getSdgPhoto(sdgNumber, "today", null)
 
             val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragemnt) as SupportMapFragment
             mapFragment.getMapAsync(this@SdgMapActivity)
@@ -79,7 +79,6 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 
 
     private fun addMapMarkers() {
@@ -144,6 +143,7 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
         mGoogleMap = googleMap
         addMapMarkers()
     }
+
 
     override fun onInfoWindowClick(p0: Marker) {
         TODO("Not yet implemented")
