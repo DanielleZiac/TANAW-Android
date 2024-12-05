@@ -11,7 +11,7 @@
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="match_parent"
-        android:layout_height="476dp"
+        android:layout_height="714dp"
         app:srcCompat="@drawable/signin_bg"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,8 +20,8 @@
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="170dp"
-        android:layout_height="70dp"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
@@ -33,13 +33,13 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="220dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="320dp"
+        android:layout_marginEnd="40dp"
         android:background="@drawable/sign_up_card"
         android:elevation="10dp"
         android:orientation="vertical"
-        android:padding="20dp"
+        android:padding="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Welcome Back!"
-            android:textSize="27sp"
+            android:textSize="40sp"
             android:textStyle="bold"
             android:textColor="@color/navy_300"/>
 
@@ -59,33 +59,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Let's pick up where you left off. "
-            android:textSize="14sp"
+            android:textSize="20sp"
             android:textColor="@color/navy_300"/>
 
-       <!-- SR Code Input -->
+        <!-- SR Code Input -->
         <EditText
             android:id="@+id/sr_code_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/input_box_bg"
             android:hint="SR Code"
             android:inputType="text"
-            android:textSize="15sp"
             android:drawableStart="@drawable/baseline_person_24"
             android:drawableTint="@color/gray_500"
-            android:drawablePadding="5dp"
-            android:padding="10dp" />
+            android:drawablePadding="10dp"
+            android:padding="20dp" />
 
         <!-- Spinner for selecting institution -->
         <Spinner
             android:id="@+id/institution_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/input_box_bg"
             android:hint="Institution"
-            android:padding="2dp"
+            android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -96,39 +95,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/sr_code_input"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/input_box_bg"
             android:hint="Password"
-            android:textSize="15sp"
             android:inputType="textPassword"
             android:drawableStart="@drawable/baseline_password_24"
             android:drawableTint="@color/gray_500"
-            android:drawablePadding="5dp"
-            android:padding="10dp" />
+            android:drawablePadding="10dp"
+            android:padding="20dp" />
 
         <!-- Sign Up Link -->
         <TextView
             android:id="@+id/signup_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:onClick="openSignUp"
             android:text="Don't have an account yet? Sign Up"
             android:textColor="@color/blue"
-            android:textSize="13sp" />
+            android:textSize="16sp" />
 
         <!-- Login Button -->
         <Button
             android:id="@+id/login_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:backgroundTint="@color/navy_300"
             android:onClick="onLoginClicked"
             android:padding="10dp"
             android:text="Log In"
             android:textColor="#fff"
-            android:textSize="16sp" />
+            android:textSize="24sp" />
     </LinearLayout>
 
 
