@@ -145,7 +145,7 @@ dependencies {
     implementation("com.google.maps.android:maps-utils-ktx:5.1.1")
 
     implementation(libs.circleimageview)
-    implementation(libs.picasso)
-    implementation(libs.roundedimageview)
+    implementation("com.squareup.picasso:picasso:2.8")
+    implementation("com.makeramen:roundedimageview:2.3.0")
     implementation("com.google.android.material:material:1.9.0")
 }

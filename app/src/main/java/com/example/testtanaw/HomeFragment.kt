@@ -28,7 +28,7 @@ class HomeFragment : Fragment() {
 
         val sdgHome: ImageView = view.findViewById(R.id.sdg_home)
         val institutions: ImageView = view.findViewById(R.id.institutions)
-        val hallOfFame: ImageView = view.findViewById(R.id.hallOfFame)
+//        val hallOfFame: ImageView = view.findViewById(R.id.hallOfFame)
         val leaderboard: ImageView = view.findViewById(R.id.leaderboard)
 
         // Toggle dropdown menu visibility
@@ -53,11 +53,11 @@ class HomeFragment : Fragment() {
             floatingMenu.visibility = View.GONE
         }
 
-        hallOfFame.setOnClickListener {
-            fabToggleMenu.setImageResource(R.drawable.baseline_local_fire_department_24)
-            replaceFragment(HallOfFameFragment())
-            floatingMenu.visibility = View.GONE
-        }
+//        hallOfFame.setOnClickListener {
+//            fabToggleMenu.setImageResource(R.drawable.baseline_local_fire_department_24)
+//            replaceFragment(HallOfFameFragment())
+//            floatingMenu.visibility = View.GONE
+//        }
 
         leaderboard.setOnClickListener {
             fabToggleMenu.setImageResource(R.drawable.baseline_leaderboard_24)

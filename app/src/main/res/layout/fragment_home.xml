@@ -51,14 +51,14 @@
             android:src="@drawable/baseline_home_work_24"
             app:tint="@color/navy_300" />
 
-        <ImageView
-            android:id="@+id/hallOfFame"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="6dp"
-            android:contentDescription="Hall of Fame"
-            android:src="@drawable/baseline_local_fire_department_24"
-            app:tint="@color/navy_300" />
+<!--        <ImageView-->
+<!--            android:id="@+id/hallOfFame"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="6dp"-->
+<!--            android:contentDescription="Hall of Fame"-->
+<!--            android:src="@drawable/baseline_local_fire_department_24"-->
+<!--            app:tint="@color/navy_300" />-->
 
         <ImageView
             android:id="@+id/leaderboard"
@@ -74,5 +74,5 @@
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 </FrameLayout>
