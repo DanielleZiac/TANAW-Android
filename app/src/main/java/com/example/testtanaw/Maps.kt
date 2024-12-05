@@ -54,12 +54,22 @@ class Maps : AppCompatActivity(), OnMapReadyCallback {
 
     private fun getLastLocation() {
 
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
 
             // Request permissions if they haven't been granted yet
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_PERMISSION_CODE)
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                FINE_PERMISSION_CODE
+            )
             return
         }
 
@@ -74,7 +84,8 @@ class Maps : AppCompatActivity(), OnMapReadyCallback {
                     curLocation.longitude.toString() + " " + curLocation.latitude.toString()
                 )
 
-                val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragemnt) as SupportMapFragment
+                val mapFragment =
+                    supportFragmentManager.findFragmentById(R.id.mapFragemnt) as SupportMapFragment
                 mapFragment.getMapAsync(this)
             } else {
                 Log.d("tag", "NO LOCATION")
@@ -90,7 +101,8 @@ class Maps : AppCompatActivity(), OnMapReadyCallback {
             }
 
             if (mClusterManagerRenderer == null) {
-                mClusterManagerRenderer = ClusterManagerRenderer(applicationContext, mGoogleMap, mClusterManager)
+                mClusterManagerRenderer =
+                    ClusterManagerRenderer(applicationContext, mGoogleMap, mClusterManager)
                 mClusterManager!!.setRenderer(mClusterManagerRenderer)
             }
 
@@ -107,7 +119,14 @@ class Maps : AppCompatActivity(), OnMapReadyCallback {
             mClusterMarkers.add(newClusterMarker);
 
             mClusterManager!!.cluster()
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(curLocation.latitude, curLocation.longitude)));
+            mGoogleMap.moveCamera(
+                CameraUpdateFactory.newLatLng(
+                    LatLng(
+                        curLocation.latitude,
+                        curLocation.longitude
+                    )
+                )
+            );
         }
     }
 

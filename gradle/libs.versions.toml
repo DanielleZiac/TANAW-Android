@@ -15,6 +15,7 @@ gridlayout = "1.0.0"
 bom = "3.0.2"
 cameraCore = "1.2.2"
 cameraLifecycle = "1.4.0-alpha02"
+picasso = "2.8"
 runtimeAndroid = "1.7.5"
 foundationAndroid = "1.7.5"
 
@@ -58,6 +59,7 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
+picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 protolite-well-known-types = { group = "com.google.firebase", name = "protolite-well-known-types", version.ref = "protoliteWellKnownTypes" }
 #postgrest-kt = { module = "io.github.jan-tennert.supabase:realtime-kt" }

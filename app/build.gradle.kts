@@ -143,7 +143,6 @@ dependencies {
     implementation("com.google.maps.android:android-maps-utils:3.8.2")
     implementation("com.google.maps.android:maps-utils-ktx:5.1.1")
 
-    implementation("com.github.bumptech.glide:glide:4.13.2")
-
     implementation(libs.circleimageview)
+    implementation(libs.picasso)
 }

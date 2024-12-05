@@ -11,10 +11,12 @@ import com.example.testtanaw.R
 // SDG data class to hold information about each goal
 data class SDG(val title: String, val description: String, val imageRes: Int)
 
-class ExploreSDGAdapter(private val sdgGoals: List<SDG>) : RecyclerView.Adapter<ExploreSDGAdapter.ViewHolder>() {
+class ExploreSDGAdapter(private val sdgGoals: List<SDG>) :
+    RecyclerView.Adapter<ExploreSDGAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_sdg_goal, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_sdg_goal, parent, false)
         return ViewHolder(view)
     }
 

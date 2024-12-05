@@ -8,7 +8,8 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 
-class InstitutionAdapter(context: Context, private val institutions: List<String>) : ArrayAdapter<String>(context, 0, institutions) {
+class InstitutionAdapter(context: Context, private val institutions: List<String>) :
+    ArrayAdapter<String>(context, 0, institutions) {
 
     // This is used to customize the view of the spinner item when it is selected
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

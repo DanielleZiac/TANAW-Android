@@ -11,9 +11,6 @@ import android.util.Log
 import android.util.Log.*
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.target.SimpleTarget
 import com.example.testtanaw.R
 import com.example.testtanaw.models.ClusterMarker
 import com.google.android.gms.maps.GoogleMap
@@ -37,7 +34,8 @@ class ClusterManagerRenderer(
     private val imageView: ImageView = ImageView(context?.applicationContext)
     private val markerWidth = context?.resources?.getDimension(R.dimen.custom_marker_image)
     private val markerHeight = context?.resources?.getDimension(R.dimen.custom_marker_image)
-    private val url = "https://srxhcymqociarjinmkpp.supabase.co/storage/v1/object/public/avatars/2e540f74-c560-43ca-b2fd-0311f49209c9/045ceb47-788d-471c-84c3-62093577d3e9?t=2024-12-02T09%3A45%3A32.671Z"
+    private val url =
+        "https://srxhcymqociarjinmkpp.supabase.co/storage/v1/object/public/avatars/2e540f74-c560-43ca-b2fd-0311f49209c9/045ceb47-788d-471c-84c3-62093577d3e9?t=2024-12-02T09%3A45%3A32.671Z"
 
     init {
 
@@ -55,7 +53,8 @@ class ClusterManagerRenderer(
     override fun onBeforeClusterItemRendered(item: ClusterMarker, markerOptions: MarkerOptions) {
         imageView.setImageResource(item.getIconPicture())
         val icon: Bitmap = iconGenerator.makeIcon()
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(item.title).snippet(item.snippet);
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(item.title)
+            .snippet(item.snippet);
     }
 
 

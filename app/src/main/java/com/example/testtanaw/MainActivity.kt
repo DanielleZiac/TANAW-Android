@@ -46,96 +46,103 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (userData != null) {
-            Log.d("xxxxxx", "email: ${userData.email}, avatarUrl: ${userData.avatarUrl}")
-        }
 
+            // Initialize views
+            drawerLayout = findViewById(R.id.drawer_layout)
+            toolbar = findViewById(R.id.toolbar)
+            navigationView = findViewById(R.id.navigationView)
 
-        // Initialize views
-        drawerLayout = findViewById(R.id.drawer_layout)
-        toolbar = findViewById(R.id.toolbar)
-        navigationView = findViewById(R.id.navigationView)
+            // Set the toolbar as the action bar
+            setSupportActionBar(toolbar)
 
-        // Set the toolbar as the action bar
-        setSupportActionBar(toolbar)
+            // Disable the toolbar title display
+            supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        // Disable the toolbar title display
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        // Handle hamburger icon click
-        val hamburgerMenu: ImageButton = findViewById(R.id.hamburgerMenu)
-        hamburgerMenu.setOnClickListener {
-            drawerLayout.openDrawer(navigationView)  // Open the navigation drawer
-        }
-
-        // Handle item clicks in the navigation menu
-        navigationView.setNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_settings -> {
-                    val intent = Intent(this, ProfileActivity::class.java)
-                    startActivity(intent)
-                }
-                R.id.nav_about -> {
-                    // Handle Abous Us click
-                }
-                R.id.nav_contact -> {
-                    // Handle Contacts click
-                }
-                R.id.nav_feedback -> {
-                    // Handle Feedback click
-                }
-                R.id.nav_help -> {
-                    // Handle Help Center click
-                }
-                R.id.nav_terms -> {
-                    // Handle Terms and Conditions click
-                }
-                R.id.nav_logout -> {
-                    // Handle Logout click
-                }
-                else -> {
-                    return@setNavigationItemSelectedListener false
-                }
+            // Handle hamburger icon click
+            val hamburgerMenu: ImageButton = findViewById(R.id.hamburgerMenu)
+            hamburgerMenu.setOnClickListener {
+                drawerLayout.openDrawer(navigationView)  // Open the navigation drawer
             }
-            drawerLayout.closeDrawer(navigationView)  // Close the drawer after item selection
-            true
-        }
 
+            // Handle item clicks in the navigation menu
+            navigationView.setNavigationItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.nav_settings -> {
+                        val intent = Intent(this, ProfileActivity::class.java)
+                        intent.putExtra("userData", userData)
+                        startActivity(intent)
+                    }
 
-        // Bottom Navigation setup
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomAppBar)
+                    R.id.nav_about -> {
+                        // Handle Abous Us click
+                    }
 
-        // Set HomeFragment as the default fragment when the app starts
-        if (savedInstanceState == null) {
-            loadFragment(HomeFragment()) // Load HomeFragment on app start
-            bottomNavigationView.selectedItemId = R.id.nav_home // Set nav_home as selected
-        }
+                    R.id.nav_contact -> {
+                        // Handle Contacts click
+                    }
 
-        // Set up listener for bottom navigation item selection
-        bottomNavigationView.setOnItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_home -> loadFragment(HomeFragment())
-                R.id.nav_gallery -> loadFragment(GalleryFragment())
-                R.id.nav_explore -> loadFragment(ExploreFragment())  // Merged identical cases
-                R.id.nav_inbox -> loadFragment(InboxFragment())
-                R.id.nav_stickers -> loadFragment(StickersFragment())
-                else -> false
+                    R.id.nav_feedback -> {
+                        // Handle Feedback click
+                    }
+
+                    R.id.nav_help -> {
+                        // Handle Help Center click
+                    }
+
+                    R.id.nav_terms -> {
+                        // Handle Terms and Conditions click
+                    }
+
+                    R.id.nav_logout -> {
+                        // Handle Logout click
+                    }
+
+                    else -> {
+                        return@setNavigationItemSelectedListener false
+                    }
+                }
+                drawerLayout.closeDrawer(navigationView)  // Close the drawer after item selection
+                true
             }
-            true
 
-        }
 
-        val mapBtn = findViewById<View>(R.id.mapBtn)
-        mapBtn.setOnClickListener(
-            View.OnClickListener {
-                Log.d("tag", "heree map")
-                val i = Intent(
-                    this@MainActivity,
-                    Maps::class.java
-                )
-                startActivity(i)
+            // Bottom Navigation setup
+            val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomAppBar)
+
+            // Set HomeFragment as the default fragment when the app starts
+            if (savedInstanceState == null) {
+                loadFragment(HomeFragment()) // Load HomeFragment on app start
+                bottomNavigationView.selectedItemId = R.id.nav_home // Set nav_home as selected
             }
-        )
+
+            // Set up listener for bottom navigation item selection
+            bottomNavigationView.setOnItemSelectedListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.nav_home -> loadFragment(HomeFragment())
+                    R.id.nav_gallery -> loadFragment(GalleryFragment())
+                    R.id.nav_explore -> loadFragment(ExploreFragment())  // Merged identical cases
+                    R.id.nav_inbox -> loadFragment(InboxFragment())
+                    R.id.nav_stickers -> loadFragment(StickersFragment())
+                    else -> false
+                }
+                true
+
+            }
+
+            val mapBtn = findViewById<View>(R.id.mapBtn)
+            mapBtn.setOnClickListener(
+                View.OnClickListener {
+                    Log.d("tag", "heree map")
+                    val i = Intent(
+                        this@MainActivity,
+                        Maps::class.java
+                    )
+                    startActivity(i)
+                }
+            )
+        }
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle the back button for the drawer if it's open

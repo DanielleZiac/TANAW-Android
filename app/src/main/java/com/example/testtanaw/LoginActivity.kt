@@ -50,11 +50,12 @@ class LoginActivity : AppCompatActivity() {
     }
 
     // Login button click handler
-    fun onLoginClicked (view: View) {
+    fun onLoginClicked(view: View) {
         val srCode = srCodeInput.text.toString()
         val password = passwordInput.text.toString()
         val selectedInstitution = institutions[institutionSpinner.selectedItemPosition].institution
-        val emailExtension: String = institutions[institutionSpinner.selectedItemPosition].emailExtension
+        val emailExtension: String =
+            institutions[institutionSpinner.selectedItemPosition].emailExtension
 
         // Ensure the institution is valid and selected
         if (institutionSpinner.selectedItemPosition == 0) {
@@ -86,19 +87,10 @@ class LoginActivity : AppCompatActivity() {
 
                         if (userDbData != null) {
                             if (userDbData.avatars?.get("avatar_url")?.isEmpty() == true ||
-                                (userDbData.departments?.get("department")?.isEmpty() == true)) {
+                                (userDbData.departments?.get("department")?.isEmpty() == true)
+                            ) {
                                 // redirect sa create avatar???
 
-//                            var userId: String,
-//                            var email: String,
-//                            var srCode: String,
-//                            var firstName: String,
-//                            var lastName: String,
-//                            var institution: String,
-//                            var institutionLogo: String,
-//                            var campus: String,
-//                            var department: String? = null,
-//                            var avatarUrl: String? = null
                             } else {
                                 val userData = UserParcelable(
                                     userDbData.userId,
@@ -124,10 +116,18 @@ class LoginActivity : AppCompatActivity() {
                         }
                     }
                 } catch (e: Exception) {
-                    Toast.makeText(this@LoginActivity, "Error signing up: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Error signing up: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             } else {
-                Toast.makeText(this@LoginActivity, "Please fill in both fields.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@LoginActivity,
+                    "Please fill in both fields.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
