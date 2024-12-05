@@ -16,6 +16,7 @@ bom = "3.0.2"
 cameraCore = "1.2.2"
 cameraLifecycle = "1.4.0-alpha02"
 picasso = "2.8"
+roundedimageview = "2.3.0"
 runtimeAndroid = "1.7.5"
 foundationAndroid = "1.7.5"
 
@@ -68,6 +69,7 @@ protolite-well-known-types = { group = "com.google.firebase", name = "protolite-
 # Add CircleImageView
 circleimageview = { group = "de.hdodenhof", name = "circleimageview", version = "3.1.0" }
 androidx-gridlayout = { group = "androidx.gridlayout", name = "gridlayout", version.ref = "gridlayout" }
+roundedimageview = { module = "com.makeramen:roundedimageview", version.ref = "roundedimageview" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

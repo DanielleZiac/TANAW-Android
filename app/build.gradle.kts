@@ -127,6 +127,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // camera
     val camerax_version = "1.4.0-alpha02"
     implementation("androidx.camera:camera-core:${camerax_version}")
     implementation("androidx.camera:camera-camera2:${camerax_version}")
@@ -145,4 +146,6 @@ dependencies {
 
     implementation(libs.circleimageview)
     implementation(libs.picasso)
+    implementation(libs.roundedimageview)
+    implementation("com.google.android.material:material:1.9.0")
 }

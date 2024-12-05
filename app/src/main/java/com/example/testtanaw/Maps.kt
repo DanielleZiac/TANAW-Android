@@ -23,7 +23,7 @@ import com.example.testtanaw.models.ClusterMarker
 import com.example.testtanaw.util.ClusterManagerRenderer
 
 
-class Maps : AppCompatActivity(), OnMapReadyCallback {
+class Maps : AppCompatActivity() {
     private val FINE_PERMISSION_CODE: Int = 1
     lateinit var curLocation: Location
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -84,9 +84,6 @@ class Maps : AppCompatActivity(), OnMapReadyCallback {
                     curLocation.longitude.toString() + " " + curLocation.latitude.toString()
                 )
 
-                val mapFragment =
-                    supportFragmentManager.findFragmentById(R.id.mapFragemnt) as SupportMapFragment
-                mapFragment.getMapAsync(this)
             } else {
                 Log.d("tag", "NO LOCATION")
             }
@@ -94,46 +91,6 @@ class Maps : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    private fun addMapMarkers() {
-        if (mGoogleMap != null) {
-            if (mClusterManager == null) {
-                mClusterManager = ClusterManager<ClusterMarker>(applicationContext, mGoogleMap)
-            }
-
-            if (mClusterManagerRenderer == null) {
-                mClusterManagerRenderer =
-                    ClusterManagerRenderer(applicationContext, mGoogleMap, mClusterManager)
-                mClusterManager!!.setRenderer(mClusterManagerRenderer)
-            }
-
-            val avatar: Int = R.drawable.avatar
-
-            val newClusterMarker: ClusterMarker = ClusterMarker(
-                LatLng(curLocation.latitude, curLocation.longitude),
-                "name",
-                "caption",
-                1.0F,
-                avatar
-            )
-            mClusterManager!!.addItem(newClusterMarker);
-            mClusterMarkers.add(newClusterMarker);
-
-            mClusterManager!!.cluster()
-            mGoogleMap.moveCamera(
-                CameraUpdateFactory.newLatLng(
-                    LatLng(
-                        curLocation.latitude,
-                        curLocation.longitude
-                    )
-                )
-            );
-        }
-    }
-
-    override fun onMapReady(googleMap: GoogleMap) {
-        mGoogleMap = googleMap
-        addMapMarkers()
-    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,

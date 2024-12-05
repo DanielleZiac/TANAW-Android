@@ -1,12 +1,16 @@
 package com.example.testtanaw
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -16,8 +20,16 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import com.example.testtanaw.models.UserParcelable
+import com.example.testtanaw.util.CRUD
 import com.example.testtanaw.util.DB
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.SupportMapFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,6 +37,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toolbar: Toolbar
     private lateinit var navigationView: NavigationView
+    private lateinit var userId: String
+
+    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    lateinit var curLocation: Location
+    private val FINE_PERMISSION_CODE: Int = 1
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +56,8 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+
+        // user data
         val userData: UserParcelable? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra("userData", UserParcelable::class.java)
         } else {
@@ -46,6 +66,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (userData != null) {
+            userId = userData.userId
+
+            // loc
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+            getLastLocation();
 
             // Initialize views
             drawerLayout = findViewById(R.id.drawer_layout)
@@ -140,6 +165,52 @@ class MainActivity : AppCompatActivity() {
                     startActivity(i)
                 }
             )
+        }
+    }
+
+    private fun getLastLocation() {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            // Request permissions if they haven't been granted yet
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_PERMISSION_CODE)
+            return
+        }
+
+        // Now that permissions are granted, get the last known location
+        val task = fusedLocationProviderClient.lastLocation
+        task.addOnSuccessListener { location: Location? ->
+            if (location != null) {
+                curLocation = location
+                val crud = CRUD()
+                crud.saveUserLastLocation(userId, curLocation.latitude, curLocation.longitude);
+                Log.d(
+                    "tag",
+                    curLocation.longitude.toString() + " " + curLocation.latitude.toString()
+                )
+            } else {
+                Log.d("tag", "NO LOCATION")
+            }
+        }
+    }
+
+    // Handle permission result in the Activity
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == FINE_PERMISSION_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, get the last location
+                getLastLocation()
+            } else {
+                // Permission denied
+                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
