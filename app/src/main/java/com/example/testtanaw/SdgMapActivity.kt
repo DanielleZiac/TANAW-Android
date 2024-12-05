@@ -72,8 +72,8 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
         val sdgTitle = intent.getStringExtra("SDG_TITLE")
 
         // Set the SDG title to a TextView
-        val titleTextView = findViewById<TextView>(R.id.sdgTitleTextView)
-        titleTextView.text = sdgTitle
+//        val titleTextView = findViewById<TextView>(R.id.sdgTitleTextView)
+//        titleTextView.text = sdgTitle
 
         CoroutineScope(Dispatchers.Main).launch {
             sdgPhotoList = crud.getSdgPhoto(sdgNumber, null, null)
