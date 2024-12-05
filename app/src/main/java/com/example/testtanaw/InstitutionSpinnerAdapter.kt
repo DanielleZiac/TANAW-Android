@@ -8,11 +8,13 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 
-class InstitutionAdapter(context: Context, private val institutions: List<String>) : ArrayAdapter<String>(context, R.layout.spinner_institution, institutions) {
+class InstitutionAdapter(context: Context, private val institutions: List<String>) : ArrayAdapter<String>(context, 0, institutions) {
 
     // This is used to customize the view of the spinner item when it is selected
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view = LayoutInflater.from(context).inflate(R.layout.spinner_institution, parent, false)
+        val view = convertView ?: LayoutInflater.from(context).inflate(
+            R.layout.spinner_institution, parent, false
+        )
         val icon = view.findViewById<ImageView>(R.id.spinner_icon)
         val text = view.findViewById<TextView>(R.id.spinner_text)
 
@@ -25,7 +27,9 @@ class InstitutionAdapter(context: Context, private val institutions: List<String
 
     // This is used to customize the drop-down view of the spinner
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view = LayoutInflater.from(context).inflate(R.layout.spinner_institution, parent, false)
+        val view = convertView ?: LayoutInflater.from(context).inflate(
+            R.layout.spinner_institution, parent, false
+        )
         val icon = view.findViewById<ImageView>(R.id.spinner_icon)
         val text = view.findViewById<TextView>(R.id.spinner_text)
 

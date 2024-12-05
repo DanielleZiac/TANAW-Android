@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class SdgHomeFragment : Fragment() {
+
+    private var lastToastTime: Long = 0 // Track the last toast time
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,31 +41,36 @@ class SdgHomeFragment : Fragment() {
             // Add more SDGItem objects here...
         )
 
-        // Initialize the adapter with the list of SDGItems
+        // Initialize the adapter with a click listener
         val adapter = SDGAdapter(sdgList) { sdgItem ->
-            // Handle item click
-            Toast.makeText(context, "Clicked SDG: ${sdgItem.title}", Toast.LENGTH_SHORT).show()
+            val currentTime = System.currentTimeMillis()
+            if (currentTime - lastToastTime > 2000) { // Show Toast if 2 seconds have passed
+                Toast.makeText(context, "Clicked SDG: ${sdgItem.title}", Toast.LENGTH_SHORT).show()
+                lastToastTime = currentTime
+            }
+
+            // Uncomment the following to use Snackbar instead of Toast:
+            // Snackbar.make(view, "Clicked SDG: ${sdgItem.title}", Snackbar.LENGTH_SHORT).show()
         }
 
         // Use GridLayoutManager with custom span size
-        val layoutManager = object : GridLayoutManager(context, 3) {
-            override fun getSpanSizeLookup(): GridLayoutManager.SpanSizeLookup {
-                return object : GridLayoutManager.SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-                        // Customize span size logic
-                        return when (position) {
-                            16 -> 0  // Skip the last item, SDG 16
-                            else -> 1  // Normal items take 1 span
-                        }
-                    }
-                }
-            }
-        }
+//        val layoutManager = object : GridLayoutManager(context, 3) {
+//            override fun getSpanSizeLookup(): GridLayoutManager.SpanSizeLookup {
+//                return object : GridLayoutManager.SpanSizeLookup() {
+//                    override fun getSpanSize(position: Int): Int {
+//                        // Customize span size logic
+//                        return when (position) {
+//                            16 -> 0  // Skip the last item, SDG 16
+//                            else -> 1  // Normal items take 1 span
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.sdgRecyclerView)
         recyclerView.layoutManager = GridLayoutManager(context, 3) // 3 items per row
         recyclerView.adapter = adapter
-
 
         return view
 

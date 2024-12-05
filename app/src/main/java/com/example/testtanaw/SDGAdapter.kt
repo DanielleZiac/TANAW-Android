@@ -1,6 +1,8 @@
 package com.example.testtanaw
 
+import android.content.Intent
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -16,7 +18,7 @@ class SDGAdapter(
     // ViewHolder to represent a single SDG item
     class SDGViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val sdgIcon: ImageView = view.findViewById(R.id.sdgIcon)
-        val sdgTitle: TextView = view.findViewById(R.id.sdgTitle)
+        val sdgNumber: TextView = view.findViewById(R.id.sdgNumber)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SDGViewHolder {
@@ -27,11 +29,11 @@ class SDGAdapter(
 
     override fun onBindViewHolder(holder: SDGViewHolder, position: Int) {
         val sdg = sdgList[position]
+
         holder.sdgIcon.setImageResource(sdg.iconResId) // Set image resource
-        holder.sdgTitle.text = sdg.title // Set title text
+        holder.sdgNumber.text = "SDG ${position + 1}" // Display SDG number (position + 1)
 
         // Apply alignment logic based on the index
-//        val alignmentClass: Int
         val marginTop: Int
         val marginBottom: Int
         val marginLeft: Int
@@ -40,37 +42,26 @@ class SDGAdapter(
         when (position % 6) {
             1, 4 -> {
                 // Justify-center
-//                alignmentClass = ViewGroup.LayoutParams.MATCH_PARENT
-                marginTop = 0
-                marginBottom = 0
-                marginLeft = 0
-                marginRight = 0
-            }
-            2, 3 -> {
-                // Justify-end
-//                alignmentClass = ViewGroup.LayoutParams.MATCH_PARENT
                 marginTop = 50
                 marginBottom = -50
                 marginLeft = 0
                 marginRight = 0
             }
+            2, 3 -> {
+                // Justify-end
+                marginTop = 100
+                marginBottom = -100
+                marginLeft = 0
+                marginRight = 0
+            }
             else -> {
                 // Justify-start
-//                alignmentClass = ViewGroup.LayoutParams.MATCH_PARENT
-                marginTop = -50
-                marginBottom = 50
+                marginTop = 0
+                marginBottom = 0
                 marginLeft = 0
                 marginRight = 0
             }
         }
-
-        // Dynamically set layout parameters
-//        val params = holder.itemView.layoutParams
-//        params.width = alignmentClass
-//        holder.itemView.layoutParams = params
-//
-//        // Set additional margins and padding
-//        holder.itemView.setPadding(paddingLeft, marginTop, paddingRight, marginBottom)
 
         // Apply dynamic margins
         val params = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
@@ -78,24 +69,50 @@ class SDGAdapter(
         holder.itemView.layoutParams = params
 
         // Apply dynamic padding
-        holder.itemView.setPadding(16, 8, 16, 8)
+//        holder.itemView.setPadding(16, 8, 16, 8)
 
-        // Show title on focus and hide when unfocused
-        holder.itemView.setOnFocusChangeListener { _, hasFocus ->
-            holder.sdgTitle.visibility = if (hasFocus) View.VISIBLE else View.GONE
+        // Initially hide the title
+        holder.sdgNumber.visibility = View.GONE
+
+        // Set the touch listener to detect press and release
+        holder.itemView.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    // Show title when pressed
+                    holder.sdgNumber.visibility = View.VISIBLE
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    // Hide title when released
+                    holder.sdgNumber.visibility = View.GONE
+                }
+            }
+
+            // Detect click event and call performClick for accessibility
+            if (event.action == MotionEvent.ACTION_UP) {
+                v.performClick() // Call performClick to ensure proper accessibility behavior
+            }
+
+            // Return true to indicate that the touch event has been handled
+            true
         }
 
-        // Show title on card click
+        // Set onClickListener for SDG image to navigate to the new activity
         holder.itemView.setOnClickListener {
-            holder.sdgTitle.visibility = View.VISIBLE  // Show title
-            onItemClick(sdg)  // Handle click event
+            // Create an Intent to open the SDGDetailActivity
+            val intent = Intent(holder.itemView.context, SdgMapActivity::class.java)
+
+            // Pass the SDG title (or other relevant information) to the new activity
+            intent.putExtra("SDG_TITLE", sdg.title)
+            intent.putExtra("SDG_NUMBER", position + 1)
+
+            // Start the new activity
+            holder.itemView.context.startActivity(intent)
         }
 
-        // Optionally hide the title when the card is unclicked or after a delay
-        holder.itemView.setOnLongClickListener {
-            holder.sdgTitle.visibility = View.GONE  // Hide title
-            true  // Handle long click
-        }
+        // Optionally handle item click logic here
+//        holder.itemView.setOnClickListener {
+//            onItemClick(sdg)
+//        }
     }
 
     override fun getItemCount(): Int = sdgList.size
