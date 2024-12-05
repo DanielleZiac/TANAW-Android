@@ -102,8 +102,8 @@
 
                 <!-- SDG Image 1 -->
                 <androidx.cardview.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:layout_marginBottom="36dp"
                     android:background="@android:color/transparent"
                     app:cardCornerRadius="75dp"
@@ -122,8 +122,8 @@
 
                 <!-- SDG Image 2 -->
                 <androidx.cardview.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:layout_margin="14dp"
                     android:background="@android:color/transparent"
                     app:cardCornerRadius="75dp"
@@ -139,8 +139,8 @@
 
                 <!-- SDG Image 3 -->
                 <androidx.cardview.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:background="@android:color/transparent"
                     app:cardCornerRadius="75dp"
                     app:cardElevation="4dp"
@@ -165,8 +165,8 @@
 
                 <!-- SDG Image 6 -->
                 <androidx.cardview.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:layout_marginTop="36dp"
                     android:background="@android:color/transparent"
                     app:cardCornerRadius="75dp"
@@ -182,8 +182,8 @@
 
                 <!-- SDG Image 5 -->
                 <androidx.cardview.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:layout_margin="14dp"
                     android:background="@android:color/transparent"
                     app:cardCornerRadius="75dp"
@@ -199,8 +199,8 @@
 
                 <!-- SDG Image 4 -->
                 <androidx.cardview.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:background="@android:color/transparent"
                     app:cardCornerRadius="75dp"
                     app:cardElevation="4dp"
@@ -225,8 +225,8 @@
 
                 <!-- SDG Image 7 -->
                 <androidx.cardview.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:layout_marginBottom="36dp"
                     android:background="@android:color/transparent"
                     app:cardCornerRadius="75dp"
@@ -242,8 +242,8 @@
 
                 <!-- SDG Image 8 -->
                 <androidx.cardview.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:layout_margin="14dp"
                     android:background="@android:color/transparent"
                     app:cardCornerRadius="75dp"
@@ -259,8 +259,8 @@
 
                 <!-- SDG Image 9 -->
                 <androidx.cardview.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:background="@android:color/transparent"
                     app:cardCornerRadius="75dp"
                     app:cardElevation="4dp"
@@ -285,8 +285,8 @@
 
                 <!-- SDG Image 12 -->
                 <androidx.cardview.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:layout_marginTop="36dp"
                     android:background="@android:color/transparent"
                     app:cardCornerRadius="75dp"
@@ -302,8 +302,8 @@
 
                 <!-- SDG Image 11 -->
                 <androidx.cardview.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:layout_margin="14dp"
                     android:background="@android:color/transparent"
                     app:cardCornerRadius="75dp"
@@ -319,8 +319,8 @@
 
                 <!-- SDG Image 10 -->
                 <androidx.cardview.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:background="@android:color/transparent"
                     app:cardCornerRadius="75dp"
                     app:cardElevation="4dp"
@@ -345,8 +345,8 @@
 
                 <!-- SDG Image 13 -->
                 <androidx.cardview.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:layout_marginBottom="36dp"
                     android:background="@android:color/transparent"
                     app:cardCornerRadius="75dp"
@@ -362,8 +362,8 @@
 
                 <!-- SDG Image 14 -->
                 <androidx.cardview.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:layout_margin="14dp"
                     android:background="@android:color/transparent"
                     app:cardCornerRadius="75dp"
@@ -379,8 +379,8 @@
 
                 <!-- SDG Image 15 -->
                 <androidx.cardview.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:background="@android:color/transparent"
                     app:cardCornerRadius="75dp"
                     app:cardElevation="4dp"
@@ -406,8 +406,8 @@
 
                 <!-- SDG Image 0 -->
                 <androidx.cardview.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:layout_marginTop="36dp"
                     android:background="@color/teal_700"
                     app:cardCornerRadius="75dp"
@@ -423,8 +423,8 @@
 
                 <!-- SDG Image 17 -->
                 <androidx.cardview.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:layout_margin="14dp"
                     android:background="@android:color/transparent"
                     app:cardCornerRadius="75dp"
@@ -440,8 +440,8 @@
 
                 <!-- SDG Image 16 -->
                 <androidx.cardview.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:background="@android:color/transparent"
                     app:cardCornerRadius="75dp"
                     app:cardElevation="4dp"

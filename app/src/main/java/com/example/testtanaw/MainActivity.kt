@@ -129,17 +129,17 @@ class MainActivity : AppCompatActivity() {
 
             }
 
-            val mapBtn = findViewById<View>(R.id.mapBtn)
-            mapBtn.setOnClickListener(
-                View.OnClickListener {
-                    Log.d("tag", "heree map")
-                    val i = Intent(
-                        this@MainActivity,
-                        Maps::class.java
-                    )
-                    startActivity(i)
-                }
-            )
+//            val mapBtn = findViewById<View>(R.id.mapBtn)
+//            mapBtn.setOnClickListener(
+//                View.OnClickListener {
+//                    Log.d("tag", "heree map")
+//                    val i = Intent(
+//                        this@MainActivity,
+//                        Maps::class.java
+//                    )
+//                    startActivity(i)
+//                }
+//            )
         }
     }
 
