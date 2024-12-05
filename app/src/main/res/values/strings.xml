@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">TANAW</string>
+    <!-- Background Images -->
+    <string name="homebg">homebg</string>
+
+
+    <!-- Sign In -->
+    <string-array name="institutions">
+        <item>Select Institution</item>
+        <item>Batangas State University</item>
+        <item>De La Salle University</item>
+        <item>Far Eastern University</item>
+    </string-array>
+
+    <!-- Top Nav -->
+    <string name="hamburger">hamburger menu</string>
+    <string name="logo">logo</string>
+    <string name="profile">profile</string>
+
+    <!-- Hamburger Menu -->
+    <string name="username">UserName</string>
+
+    <!-- Bottom Nav -->
+    <string name="home">Home</string>
+    <string name="gallery">Gallery</string>
+    <string name="explore">Explore</string>
+    <string name="inbox">Inbox</string>
+    <string name="stickers">Stickers</string>
+
+    <!-- Maps -->
+    <string name="title_activity_maps">Maps</string>
+
+
+    <!-- SDG Images -->
+    <string name="sdg1">SDG1</string>
+    <string name="sdg2">SDG2</string>
+    <string name="sdg3">SDG3</string>
+    <string name="sdg4">SDG4</string>
+    <string name="sdg5">SDG5</string>
+    <string name="sdg6">SDG6</string>
+    <string name="sdg7">SDG7</string>
+    <string name="sdg8">SDG8</string>
+    <string name="sdg9">SDG9</string>
+    <string name="sdg10">SDG10</string>
+    <string name="sdg11">SDG11</string>
+    <string name="sdg12">SDG12</string>
+    <string name="sdg13">SDG13</string>
+    <string name="sdg14">SDG14</string>
+    <string name="sdg15">SDG15</string>
+    <string name="sdg16">SDG16</string>
+    <string name="sdg17">SDG17</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

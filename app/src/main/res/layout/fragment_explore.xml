@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/explore">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+        <!-- United Nations Images Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UNITED NATIONS"
+            android:textSize="22sp"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-medium" />
+
+        <!-- United Nations Images RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/un_images_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+        <!-- SDG Goals Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="THE 17 GOALS"
+            android:textSize="22sp"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="24dp"
+            android:fontFamily="sans-serif-medium"
+            />
+
+        <!-- SDG Goals RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+
+            android:id="@+id/sdg_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            />
+
+        <!-- Description Text -->
+        <TextView
+            android:id="@+id/description_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Here you can learn about the United Nations and the 17 Sustainable Development Goals."
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="16dp"
+            android:alpha="0"
+            />
+
+    </LinearLayout>
+</ScrollView>

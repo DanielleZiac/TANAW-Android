@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".HomeFragment">
+
+    <!-- Floating Action Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabToggleMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_loyalty_24"
+        app:backgroundTint="@android:color/white"
+        android:contentDescription="toggle_menu"
+        android:layout_gravity="end|top"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <!-- Floating Dropdown Menu -->
+    <LinearLayout
+        android:id="@+id/floatingMenu"
+        android:layout_width="56dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:padding="8dp"
+        android:background="@drawable/rounded_menu_background"
+        android:elevation="4dp"
+        android:layout_gravity="end|top"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="16dp">
+
+        <ImageView
+            android:id="@+id/sdg_home"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:contentDescription="SDGs"
+            android:src="@drawable/baseline_loyalty_24"
+            app:tint="@color/navy_300" />
+
+        <ImageView
+            android:id="@+id/institutions"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:contentDescription="Institutions"
+            android:src="@drawable/baseline_home_work_24"
+            app:tint="@color/navy_300" />
+
+        <ImageView
+            android:id="@+id/hallOfFame"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:contentDescription="Hall of Fame"
+            android:src="@drawable/baseline_local_fire_department_24"
+            app:tint="@color/navy_300" />
+
+        <ImageView
+            android:id="@+id/leaderboard"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:contentDescription="Leaderboard"
+            android:src="@drawable/baseline_leaderboard_24"
+            app:tint="@color/navy_300" />
+    </LinearLayout>
+
+    <!-- Fragment Container -->
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</FrameLayout>

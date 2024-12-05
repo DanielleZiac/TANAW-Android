@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@android:color/black"
+        android:left="2dp"
+        android:right="2dp"
+        android:top="2dp"
+        android:bottom="2dp" /> <!-- Add shadow offsets -->
+    <item>
+        <shape
+            android:shape="rectangle">
+            <solid android:color="@android:color/transparent" /> <!-- Card color -->
+            <corners android:radius="55dp" /> <!-- Round corners -->
+        </shape>
+    </item>
+</layer-list>
