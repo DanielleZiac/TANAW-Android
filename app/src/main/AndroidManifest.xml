@@ -47,7 +47,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- SignUp Activity -->
+        </activity>
+
+        <!-- SignUp Activity -->
         <activity android:name=".SignUpActivity" />
         <activity
             android:name=".Maps"

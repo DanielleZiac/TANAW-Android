@@ -47,7 +47,7 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
         // Enable back button
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // Handle back button click (optional)
+        // Handle back button click
         toolbar.setNavigationOnClickListener {
             onBackPressed()  // Go back when the back button is pressed
         }
