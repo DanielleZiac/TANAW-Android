@@ -1,0 +1,13 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Gradient Background -->
+    <gradient
+        android:startColor="@color/teal_700"
+        android:endColor="@color/navy_300"
+        android:angle="45" />
+
+    <!-- Rounded Corners -->
+    <corners android:radius="16dp" />
+
+    <!-- Optional: Add a solid color for the interior if you need more styling -->
+    <solid android:color="@android:color/white"/>
+</shape>
