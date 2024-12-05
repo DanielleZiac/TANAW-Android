@@ -37,6 +37,7 @@ class SdgMapActivity : AppCompatActivity() {
         val titleTextView = findViewById<TextView>(R.id.sdgTitleTextView)
         titleTextView.text = sdgTitle
     }
+
     // Handle the back button press to navigate back
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
         return when (item.itemId) {

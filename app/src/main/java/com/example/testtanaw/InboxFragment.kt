@@ -26,9 +26,27 @@ class InboxFragment : Fragment() {
 
         // Mock data
         val messages = listOf(
-            Message(1, "Image Uploaded Successfully", "Your image has been uploaded successfully!", "2024-11-25 02:34 PM", false),
-            Message(2, "Action Reminder", "Check out the latest updates in your dashboard.", "2024-11-24 08:34 AM", false),
-            Message(3, "Profile Update Confirmation", "Your profile has been updated successfully.", "2024-11-22 09:15 AM", true)
+            Message(
+                1,
+                "Image Uploaded Successfully",
+                "Your image has been uploaded successfully!",
+                "2024-11-25 02:34 PM",
+                false
+            ),
+            Message(
+                2,
+                "Action Reminder",
+                "Check out the latest updates in your dashboard.",
+                "2024-11-24 08:34 AM",
+                false
+            ),
+            Message(
+                3,
+                "Profile Update Confirmation",
+                "Your profile has been updated successfully.",
+                "2024-11-22 09:15 AM",
+                true
+            )
         )
 
         // Set adapter

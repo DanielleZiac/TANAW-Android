@@ -37,7 +37,8 @@ class UNImagesAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_un_image, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_un_image, parent, false)
         return ViewHolder(view)
     }
 
@@ -56,6 +57,7 @@ class UNImagesAdapter(
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView = view.findViewById(R.id.un_image)
-        val overlayTextView: TextView = view.findViewById(R.id.overlay_text)  // Reference to TextView
+        val overlayTextView: TextView =
+            view.findViewById(R.id.overlay_text)  // Reference to TextView
     }
 }

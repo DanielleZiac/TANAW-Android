@@ -23,7 +23,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-class DB: Supabase() {
+class DB : Supabase() {
     @Serializable
     data class Institution(
         @SerialName("institution") val institution: String,
@@ -41,7 +41,7 @@ class DB: Supabase() {
     )
 
     @Serializable
-    data class UserData (
+    data class UserData(
         @SerialName("user_id") val userId: String,
         @SerialName("email") val email: String,
         @SerialName("sr_code") val srCode: String,
@@ -49,7 +49,7 @@ class DB: Supabase() {
         @SerialName("last_name") val lastName: String,
         @SerialName("institutions") val institutions: HashMap<String, String>,
         @SerialName("departments") val departments: HashMap<String, String>? = null,
-        @SerialName("avatars") val avatars:HashMap<String, String>? = null
+        @SerialName("avatars") val avatars: HashMap<String, String>? = null
     )
 
 
@@ -63,17 +63,22 @@ class DB: Supabase() {
                 // cur user has no data -- upsert data to db
                 val user_data = supabase
                     .from("users")
-                    .select(){
-                        filter { eq("user_id", user.id)} }.decodeList<UserDataLogin>()
+                    .select() {
+                        filter { eq("user_id", user.id) }
+                    }.decodeList<UserDataLogin>()
 
                 if (user_data.isEmpty()) {
                     Log.d("xxxxxx", "$user")
                     val add_user = UserDataLogin(
-                        srCode = user.identities?.firstOrNull()?.identityData?.get("srCode").toString(),
+                        srCode = user.identities?.firstOrNull()?.identityData?.get("srCode")
+                            .toString(),
                         email = user.email,
-                        firstName = user.identities?.firstOrNull()?.identityData?.get("firstName").toString(),
-                        lastName  = user.identities?.firstOrNull()?.identityData?.get("lastName").toString(),
-                        institutionId = user.identities?.firstOrNull()?.identityData?.get("institutionId").toString()
+                        firstName = user.identities?.firstOrNull()?.identityData?.get("firstName")
+                            .toString(),
+                        lastName = user.identities?.firstOrNull()?.identityData?.get("lastName")
+                            .toString(),
+                        institutionId = user.identities?.firstOrNull()?.identityData?.get("institutionId")
+                            .toString()
                     )
                     supabase.from("users").upsert(add_user)
                 } else {
@@ -96,7 +101,13 @@ class DB: Supabase() {
             val results = withContext(Dispatchers.IO) {
                 supabase
                     .from("institutions")
-                    .select(columns = Columns.list("institution", "email_extension", "institution_id"))
+                    .select(
+                        columns = Columns.list(
+                            "institution",
+                            "email_extension",
+                            "institution_id"
+                        )
+                    )
                     .decodeList<Institution>()
             }
 
@@ -127,7 +138,8 @@ class DB: Supabase() {
     }
 
     suspend fun getUserDataByUserId(userId: String): UserData? {
-        val columns = Columns.raw("""
+        val columns = Columns.raw(
+            """
                 user_id,
                 email,
                 sr_code,
@@ -144,7 +156,8 @@ class DB: Supabase() {
                 avatars (
                     avatar_url
                 )
-            """.trimIndent())
+            """.trimIndent()
+        )
         return try {
             Log.d("xxxxxx", "hzxcxasd $userId")
             val userData = supabase
