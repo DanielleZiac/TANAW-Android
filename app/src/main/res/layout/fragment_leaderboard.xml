@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Leaderboard"
         android:textSize="24sp"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:layout_gravity="center"
         android:paddingBottom="24dp"
         android:textStyle="bold"/>

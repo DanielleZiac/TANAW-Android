@@ -60,7 +60,8 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 R.id.nav_about -> {
-                    // Handle Abous Us click
+                    val intent = Intent(this, AboutUsActivity::class.java)
+                    startActivity(intent)
                 }
                 R.id.nav_contact -> {
                     // Handle Contacts click

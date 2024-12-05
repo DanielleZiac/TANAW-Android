@@ -38,6 +38,9 @@
             android:name=".MainActivity"
             android:exported="true" />
 
+        <activity android:name=".AboutUsActivity">
+            <!-- Optional intent filter can be added here -->
+        </activity>
         <!-- Login Activity (Now the landing page) -->
         <activity
             android:name=".LoginActivity"
@@ -54,6 +57,8 @@
             android:exported="false"
             android:label="@string/title_activity_maps"
             android:theme="@style/Theme.TestTANAW" />
+
+
     </application>
 
 </manifest>

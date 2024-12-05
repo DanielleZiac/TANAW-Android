@@ -31,7 +31,7 @@ class LeaderboardFragment : Fragment() {
             LeaderboardItem("User1", 50),
             LeaderboardItem("User2", 45),
             LeaderboardItem("User3", 40),
-            LeaderboardItem("User4", 30)
+
         )
 
         // Set the Adapter

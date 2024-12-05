@@ -28,7 +28,7 @@ class InstitutionFragment : Fragment() {
 
         // Example data
         val institutionList = listOf(
-            Institution("BSU", "Benguet State University", R.drawable.bsulogo),
+            Institution("BSU", "Batangas State University", R.drawable.bsulogo),
             Institution("ADMU", "Ateneo de Manila University", R.drawable.admulogo),
             Institution("DLSU", "De La Salle University", R.drawable.dlsulogo)
         )
