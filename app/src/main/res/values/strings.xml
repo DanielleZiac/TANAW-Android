@@ -3,6 +3,15 @@
     <!-- Background Images -->
     <string name="homebg">homebg</string>
 
+
+    <!-- Sign In -->
+    <string-array name="institutions">
+        <item>Select Institution</item>
+        <item>Batangas State University</item>
+        <item>De La Salle University</item>
+        <item>Far Eastern University</item>
+    </string-array>
+
     <!-- Top Nav -->
     <string name="hamburger">hamburger menu</string>
     <string name="logo">logo</string>
