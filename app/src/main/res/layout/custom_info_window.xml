@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/transparent">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        android:theme="@style/Theme.Material3.DayNight.NoActionBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeWidth="0dp"
+        app:strokeColor="@null"
+        app:cardBackgroundColor="@color/white"
+        android:background="@android:color/transparent"
+        app:flow_horizontalBias="0.5">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="8dp">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/sdgContentImageView"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_marginHorizontal="8dp"
+                android:scaleType="fitXY"
+                app:riv_corner_radius="16dp"
+                android:src="@drawable/tanaw_darkblue"
+                app:flow_horizontalBias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_editor_absoluteY="8dp" />
+
+            <TextView
+                android:id="@+id/sdgCaptionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="9dp"
+                android:text="CAPTION"
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                app:flow_horizontalBias="0.5"
+                android:layout_marginTop="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sdgContentImageView" />
+
+            <TextView
+                app:layout_constraintTop_toBottomOf="@id/sdgCaptionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "Photo Challenge"
+                android:id="@+id/sdgPhotoChallTextView"
+                android:textSize="12dp"
+                app:flow_horizontalBias="0.5"
+                android:layout_marginTop="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textColor="@color/black" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="20dp"
+        android:layout_margin="0dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:padding="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/baseline_arrow_drop_down_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:tint="@color/white" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

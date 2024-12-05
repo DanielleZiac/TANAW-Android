@@ -1,27 +1,45 @@
 // SDGDetailActivity.kt
 package com.example.testtanaw
 
-import android.Manifest
-import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.PopupMenu
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.testtanaw.data.PhotoChallenges.PHOTO_CHALLENGES
+import com.example.testtanaw.models.ClusterMarker
+import com.example.testtanaw.util.CRUD
+import com.example.testtanaw.util.ClusterManagerRenderer
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.clustering.ClusterManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback {
-    private val FINE_PERMISSION_CODE = 1
+class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
+    val crud = CRUD()
+    private val FINE_PERMISSION_CODE: Int = 1
+    lateinit var curLocation: Location
+    var sdgPhotoList: List<CRUD.SdgPhoto> = emptyList()
+    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+
+    private var mClusterManager: ClusterManager<ClusterMarker>? = null
+    private var mClusterManagerRenderer: ClusterManagerRenderer? = null
+    private val mClusterMarkers = ArrayList<ClusterMarker>()
     private lateinit var mGoogleMap: GoogleMap
     private lateinit var photoChallengeText: TextView
     private val challenges = PHOTO_CHALLENGES // Import your photo challenges
@@ -57,6 +75,9 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback {
         val titleTextView = findViewById<TextView>(R.id.sdgTitleTextView)
         titleTextView.text = sdgTitle
 
+        CoroutineScope(Dispatchers.Main).launch {
+            sdgPhotoList = crud.getSdgPhoto(sdgNumber, null, null)
+        }
         // Initialize the map
         val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -100,31 +121,73 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        mGoogleMap = googleMap
 
-        // Check location permissions
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_PERMISSION_CODE)
-            return
+    private fun addMapMarkers() {
+        if (mClusterManager == null) {
+            mClusterManager = ClusterManager<ClusterMarker>(applicationContext, mGoogleMap)
+        }
+        if (mClusterManagerRenderer == null) {
+            mClusterManagerRenderer = ClusterManagerRenderer(applicationContext, mGoogleMap, mClusterManager, mClusterMarkers)
+            mClusterManager!!.setRenderer(mClusterManagerRenderer)
         }
 
-        // Enable location and set a marker
-        mGoogleMap.isMyLocationEnabled = true
-        val sdgLocation = LatLng(14.5995, 120.9842) // Example coordinates
-        mGoogleMap.addMarker(com.google.android.gms.maps.model.MarkerOptions().position(sdgLocation).title("SDG Location"))
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sdgLocation, 12f))
+        try {
+
+            if (sdgPhotoList.size > 0) {
+                Log.d("tag", "sdgPhotoList: ${sdgPhotoList.toString()}")
+                sdgPhotoList.forEach { sdgPhoto ->
+                    Log.d("tag", sdgPhoto.toString())
+
+                    val newClusterMarker: ClusterMarker = ClusterMarker(
+                        userSdgId = sdgPhoto.userSdgId,
+                        userId = sdgPhoto.userId,
+                        sdgNumber = sdgPhoto.sdgNumber,
+                        url = sdgPhoto.url,
+                        caption = sdgPhoto.caption,
+                        createdDate = sdgPhoto.createdDate,
+                        institutionId = sdgPhoto.institutionId,
+                        phototChall = sdgPhoto.phototChall,
+                        institution = sdgPhoto.institution,
+                        campus = sdgPhoto.campus,
+                        institutionLogo = sdgPhoto.institutionLogo,
+                        lat = sdgPhoto.lat,
+                        long = sdgPhoto.long,
+                        avatarUrl = sdgPhoto.avatarUrl
+                    )
+
+                    mClusterManager!!.addItem(newClusterMarker)
+                    mClusterMarkers.add(newClusterMarker)
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("xxxxxx", "${e.message}")
+        }
+
+//        // add cur loc
+//        val newMarkerOptions = MarkerOptions()
+//            .position(LatLng(curLocation.latitude, curLocation.longitude))
+//            .title("This is you")
+//            .snippet("????")
+
+        // Add the new marker
+//        mGoogleMap.addMarker(newMarkerOptions)
+        mClusterManager!!.cluster()
+
+        val zoomLevel = 12.0f
+        mGoogleMap.uiSettings.isZoomControlsEnabled = true
+        mGoogleMap.uiSettings.isZoomGesturesEnabled = true
+//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(curLocation.latitude, curLocation.longitude), zoomLevel));
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == FINE_PERMISSION_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            onMapReady(mGoogleMap)
-        } else {
-            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
-        }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mGoogleMap = googleMap
+        addMapMarkers()
+    }
+
+    override fun onInfoWindowClick(p0: Marker) {
+        TODO("Not yet implemented")
     }
 
     private fun updatePhotoChallenge() {
