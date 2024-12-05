@@ -144,7 +144,7 @@ class MainActivity : AppCompatActivity() {
             bottomNavigationView.setOnItemSelectedListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.nav_home -> loadFragment(HomeFragment())
-                    R.id.nav_gallery -> loadFragment(GalleryFragment())
+                    R.id.nav_gallery -> loadFragment(GalleryFragment(userId))
                     R.id.nav_explore -> loadFragment(ExploreFragment())  // Merged identical cases
                     R.id.nav_inbox -> loadFragment(InboxFragment())
                     R.id.nav_stickers -> loadFragment(StickersFragment())

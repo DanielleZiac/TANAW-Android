@@ -1,6 +1,7 @@
 package com.example.testtanaw
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testtanaw.databinding.FragmentGalleryBinding
+import com.example.testtanaw.util.CRUD
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.Dispatcher
 
-class GalleryFragment : Fragment() {
+class GalleryFragment(val userId: String) : Fragment() {
 
     private lateinit var binding: FragmentGalleryBinding
     private lateinit var sdgAdapter2: SDGAdapter2
@@ -55,12 +61,23 @@ class GalleryFragment : Fragment() {
             (7..12).map { "sdglink_$it" }
         }
 
-        galleryAdapter = GalleryAdapter(images)
-        binding.galleryRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
-        binding.galleryRecyclerView.adapter = galleryAdapter
+        CoroutineScope(Dispatchers.Main).launch {
+            val crud = CRUD()
+            val photoDetails = crud.getPhotoByUserId(userId)
+            val photoList = mutableListOf<String>()
+            photoDetails?.forEach{res ->
+                Log.d("xxxxxx", res.url)
+                photoList.add("${res.url}")
+            }
 
-        // Update tab styles
-        binding.uploadsTab.alpha = if (isUploadsTab) 1.0f else 0.5f
-        binding.eventsTab.alpha = if (isUploadsTab) 0.5f else 1.0f
+            galleryAdapter = GalleryAdapter(photoList)
+            binding.galleryRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
+            binding.galleryRecyclerView.adapter = galleryAdapter
+
+            // Update tab styles
+            binding.uploadsTab.alpha = if (isUploadsTab) 1.0f else 0.5f
+            binding.eventsTab.alpha = if (isUploadsTab) 0.5f else 1.0f
+        }
+
     }
 }
