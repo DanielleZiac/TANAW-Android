@@ -71,12 +71,12 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
         // Retrieve the SDG title passed from the previous activity
         val sdgTitle = intent.getStringExtra("SDG_TITLE")
 
-        // Set the SDG title to a TextView
+//         Set the SDG title to a TextView
 //        val titleTextView = findViewById<TextView>(R.id.sdgTitleTextView)
 //        titleTextView.text = sdgTitle
 
         CoroutineScope(Dispatchers.Main).launch {
-            sdgPhotoList = crud.getSdgPhoto(sdgNumber, null, null)
+            sdgPhotoList = crud.getSdgPhoto(sdgNumber, "today", null)
         }
         // Initialize the map
         val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
@@ -122,8 +122,10 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
     }
 
 
-
     private fun addMapMarkers() {
+        Log.d("xxxxxxx", "PHOTO COUNT: ${sdgPhotoList.size}")
+        mGoogleMap.clear()
+
         if (mClusterManager == null) {
             mClusterManager = ClusterManager<ClusterMarker>(applicationContext, mGoogleMap)
         }
@@ -186,6 +188,7 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
         addMapMarkers()
     }
 
+
     override fun onInfoWindowClick(p0: Marker) {
         TODO("Not yet implemented")
     }
@@ -215,18 +218,34 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
         popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
                 R.id.filter_today -> {
-                    Toast.makeText(this, "Today selected", Toast.LENGTH_SHORT).show()
+                    CoroutineScope(Dispatchers.Main).launch {
+                        sdgPhotoList = crud.getSdgPhoto(sdgNumber, "today", null)
+                        addMapMarkers()
+                    }
+                    Toast.makeText(this@SdgMapActivity, "Today selected", Toast.LENGTH_SHORT).show()
                     true
                 }
                 R.id.filter_yesterday -> {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        sdgPhotoList = crud.getSdgPhoto(sdgNumber, "yesterday", null)
+                        addMapMarkers()
+                    }
                     Toast.makeText(this, "Yesterday selected", Toast.LENGTH_SHORT).show()
                     true
                 }
                 R.id.filter_last_week -> {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        sdgPhotoList = crud.getSdgPhoto(sdgNumber, "last week", null)
+                        addMapMarkers()
+                    }
                     Toast.makeText(this, "Last Week selected", Toast.LENGTH_SHORT).show()
                     true
                 }
                 R.id.filter_last_month -> {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        sdgPhotoList = crud.getSdgPhoto(sdgNumber, "last month", null)
+                        addMapMarkers()
+                    }
                     Toast.makeText(this, "Last Month selected", Toast.LENGTH_SHORT).show()
                     true
                 }
