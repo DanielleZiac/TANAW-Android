@@ -38,9 +38,18 @@ class SignUpActivity : AppCompatActivity() {
 
         // Handle spinner item selection
         institutionSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 val selectedInstitution = parent?.getItemAtPosition(position).toString()
-                Toast.makeText(this@SignUpActivity, "Selected: $selectedInstitution", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@SignUpActivity,
+                    "Selected: $selectedInstitution",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -71,7 +80,8 @@ class SignUpActivity : AppCompatActivity() {
 
         if (firstName.isNotEmpty() && lastName.isNotEmpty() && srCode.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
             // Simulate sign-up success or proceed with Firebase/Auth logic
-            Toast.makeText(this, "Sign-Up Successful! Welcome, $firstName!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Sign-Up Successful! Welcome, $firstName!", Toast.LENGTH_SHORT)
+                .show()
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()

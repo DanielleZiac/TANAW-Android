@@ -1,12 +1,16 @@
 package com.example.testtanaw
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -16,8 +20,16 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import com.example.testtanaw.models.UserParcelable
+import com.example.testtanaw.util.CRUD
 import com.example.testtanaw.util.DB
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.SupportMapFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,6 +37,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toolbar: Toolbar
     private lateinit var navigationView: NavigationView
+    private lateinit var userId: String
+
+    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    lateinit var curLocation: Location
+    private val FINE_PERMISSION_CODE: Int = 1
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +56,8 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+
+        // user data
         val userData: UserParcelable? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra("userData", UserParcelable::class.java)
         } else {
@@ -46,96 +66,154 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (userData != null) {
-            Log.d("xxxxxx", "email: ${userData.email}, avatarUrl: ${userData.avatarUrl}")
-        }
+            userId = userData.userId
 
+            // loc
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+            getLastLocation();
 
-        // Initialize views
-        drawerLayout = findViewById(R.id.drawer_layout)
-        toolbar = findViewById(R.id.toolbar)
-        navigationView = findViewById(R.id.navigationView)
+            // Initialize views
+            drawerLayout = findViewById(R.id.drawer_layout)
+            toolbar = findViewById(R.id.toolbar)
+            navigationView = findViewById(R.id.navigationView)
 
-        // Set the toolbar as the action bar
-        setSupportActionBar(toolbar)
+            // Set the toolbar as the action bar
+            setSupportActionBar(toolbar)
 
-        // Disable the toolbar title display
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+            // Disable the toolbar title display
+            supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        // Handle hamburger icon click
-        val hamburgerMenu: ImageButton = findViewById(R.id.hamburgerMenu)
-        hamburgerMenu.setOnClickListener {
-            drawerLayout.openDrawer(navigationView)  // Open the navigation drawer
-        }
-
-        // Handle item clicks in the navigation menu
-        navigationView.setNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_settings -> {
-                    val intent = Intent(this, ProfileActivity::class.java)
-                    startActivity(intent)
-                }
-                R.id.nav_about -> {
-                    // Handle Abous Us click
-                }
-                R.id.nav_contact -> {
-                    // Handle Contacts click
-                }
-                R.id.nav_feedback -> {
-                    // Handle Feedback click
-                }
-                R.id.nav_help -> {
-                    // Handle Help Center click
-                }
-                R.id.nav_terms -> {
-                    // Handle Terms and Conditions click
-                }
-                R.id.nav_logout -> {
-                    // Handle Logout click
-                }
-                else -> {
-                    return@setNavigationItemSelectedListener false
-                }
+            // Handle hamburger icon click
+            val hamburgerMenu: ImageButton = findViewById(R.id.hamburgerMenu)
+            hamburgerMenu.setOnClickListener {
+                drawerLayout.openDrawer(navigationView)  // Open the navigation drawer
             }
-            drawerLayout.closeDrawer(navigationView)  // Close the drawer after item selection
-            true
-        }
 
+            // Handle item clicks in the navigation menu
+            navigationView.setNavigationItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.nav_settings -> {
+                        val intent = Intent(this, ProfileActivity::class.java)
+                        intent.putExtra("userData", userData)
+                        startActivity(intent)
+                    }
 
-        // Bottom Navigation setup
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomAppBar)
+                    R.id.nav_about -> {
+                        // Handle Abous Us click
+                    }
 
-        // Set HomeFragment as the default fragment when the app starts
-        if (savedInstanceState == null) {
-            loadFragment(HomeFragment()) // Load HomeFragment on app start
-            bottomNavigationView.selectedItemId = R.id.nav_home // Set nav_home as selected
-        }
+                    R.id.nav_contact -> {
+                        // Handle Contacts click
+                    }
 
-        // Set up listener for bottom navigation item selection
-        bottomNavigationView.setOnItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_home -> loadFragment(HomeFragment())
-                R.id.nav_gallery -> loadFragment(GalleryFragment())
-                R.id.nav_explore -> loadFragment(ExploreFragment())  // Merged identical cases
-                R.id.nav_inbox -> loadFragment(InboxFragment())
-                R.id.nav_stickers -> loadFragment(StickersFragment())
-                else -> false
+                    R.id.nav_feedback -> {
+                        // Handle Feedback click
+                    }
+
+                    R.id.nav_help -> {
+                        // Handle Help Center click
+                    }
+
+                    R.id.nav_terms -> {
+                        // Handle Terms and Conditions click
+                    }
+
+                    R.id.nav_logout -> {
+                        // Handle Logout click
+                    }
+
+                    else -> {
+                        return@setNavigationItemSelectedListener false
+                    }
+                }
+                drawerLayout.closeDrawer(navigationView)  // Close the drawer after item selection
+                true
             }
-            true
 
-        }
 
-        val mapBtn = findViewById<View>(R.id.mapBtn)
-        mapBtn.setOnClickListener(
-            View.OnClickListener {
-                Log.d("tag", "heree map")
-                val i = Intent(
-                    this@MainActivity,
-                    Maps::class.java
-                )
-                startActivity(i)
+            // Bottom Navigation setup
+            val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomAppBar)
+
+            // Set HomeFragment as the default fragment when the app starts
+            if (savedInstanceState == null) {
+                loadFragment(HomeFragment()) // Load HomeFragment on app start
+                bottomNavigationView.selectedItemId = R.id.nav_home // Set nav_home as selected
             }
-        )
+
+            // Set up listener for bottom navigation item selection
+            bottomNavigationView.setOnItemSelectedListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.nav_home -> loadFragment(HomeFragment())
+                    R.id.nav_gallery -> loadFragment(GalleryFragment(userId))
+                    R.id.nav_explore -> loadFragment(ExploreFragment())  // Merged identical cases
+                    R.id.nav_inbox -> loadFragment(InboxFragment())
+                    R.id.nav_stickers -> loadFragment(StickersFragment())
+                    else -> false
+                }
+                true
+
+            }
+
+//            val mapBtn = findViewById<View>(R.id.mapBtn)
+//            mapBtn.setOnClickListener(
+//                View.OnClickListener {
+//                    Log.d("tag", "heree map")
+//                    val i = Intent(
+//                        this@MainActivity,
+//                        Maps::class.java
+//                    )
+//                    startActivity(i)
+//                }
+//            )
+        }
     }
+
+    private fun getLastLocation() {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            // Request permissions if they haven't been granted yet
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_PERMISSION_CODE)
+            return
+        }
+
+        // Now that permissions are granted, get the last known location
+        val task = fusedLocationProviderClient.lastLocation
+        task.addOnSuccessListener { location: Location? ->
+            if (location != null) {
+                curLocation = location
+                val crud = CRUD()
+                crud.saveUserLastLocation(userId, curLocation.latitude, curLocation.longitude);
+                Log.d(
+                    "tag",
+                    curLocation.longitude.toString() + " " + curLocation.latitude.toString()
+                )
+            } else {
+                Log.d("tag", "NO LOCATION")
+            }
+        }
+    }
+
+    // Handle permission result in the Activity
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == FINE_PERMISSION_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, get the last location
+                getLastLocation()
+            } else {
+                // Permission denied
+                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle the back button for the drawer if it's open

@@ -47,6 +47,7 @@ class SDGAdapter(
                 marginLeft = 0
                 marginRight = 0
             }
+
             2, 3 -> {
                 // Justify-end
                 marginTop = 100
@@ -54,6 +55,7 @@ class SDGAdapter(
                 marginLeft = 0
                 marginRight = 0
             }
+
             else -> {
                 // Justify-start
                 marginTop = 0
@@ -81,6 +83,7 @@ class SDGAdapter(
                     // Show title when pressed
                     holder.sdgNumber.visibility = View.VISIBLE
                 }
+
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     // Hide title when released
                     holder.sdgNumber.visibility = View.GONE

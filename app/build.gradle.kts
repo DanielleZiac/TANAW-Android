@@ -127,6 +127,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // camera
     val camerax_version = "1.4.0-alpha02"
     implementation("androidx.camera:camera-core:${camerax_version}")
     implementation("androidx.camera:camera-camera2:${camerax_version}")
@@ -143,7 +144,8 @@ dependencies {
     implementation("com.google.maps.android:android-maps-utils:3.8.2")
     implementation("com.google.maps.android:maps-utils-ktx:5.1.1")
 
-    implementation("com.github.bumptech.glide:glide:4.13.2")
-
     implementation(libs.circleimageview)
+    implementation("com.squareup.picasso:picasso:2.8")
+    implementation("com.makeramen:roundedimageview:2.3.0")
+    implementation("com.google.android.material:material:1.9.0")
 }

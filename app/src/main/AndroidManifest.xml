@@ -22,6 +22,9 @@
         android:theme="@style/Theme.TestTANAW"
         tools:targetApi="31">
         <activity
+            android:name=".AvatarActivity"
+            android:exported="false" />
+        <activity
             android:name=".SdgMapActivity"
             android:exported="false" />
         <activity
@@ -36,9 +39,7 @@
             android:value="@integer/google_play_services_version" /> <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
-
-        <!-- Login Activity (Now the landing page) -->
+            android:exported="true" /> <!-- Login Activity (Now the landing page) -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">

@@ -50,8 +50,8 @@
     <string name="sdg16">SDG16</string>
     <string name="sdg17">SDG17</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="MAPS_API_KEY">YOUR_GOOGLE_MAPS_API_KEY</string>
 
 
 </resources>
