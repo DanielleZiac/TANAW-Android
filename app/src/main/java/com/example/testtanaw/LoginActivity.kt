@@ -33,13 +33,19 @@ class LoginActivity : AppCompatActivity() {
 
             institutions = DB.getInstitutions(this@LoginActivity)
 
-            // Create a list of institution names to display in the Spinner
-            val institutionNames = institutions.map { it.institution }.toMutableList()
-            institutionAdapter = InstitutionAdapter(this@LoginActivity, institutionNames)
-            institutionSpinner.adapter = institutionAdapter
+            // Check if institutions are available
+            if (institutions.isNotEmpty()) {
+                // Create a list of institution names to display in the Spinner
+                val institutionNames = institutions.map { it.institution }.toMutableList()
+                institutionAdapter = InstitutionAdapter(this@LoginActivity, institutionNames)
+                institutionSpinner.adapter = institutionAdapter
 
-            // Ensure the spinner has a valid selection by setting a default item
-            institutionSpinner.setSelection(0)
+                // Ensure the spinner has a valid selection by setting a default item
+                institutionSpinner.setSelection(0)
+            } else {
+                // Handle the case where institutions are unavailable
+                Toast.makeText(this@LoginActivity, "No institutions available.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -50,7 +56,14 @@ class LoginActivity : AppCompatActivity() {
         val selectedInstitution = institutions[institutionSpinner.selectedItemPosition].institution
         val emailExtension: String = institutions[institutionSpinner.selectedItemPosition].emailExtension
 
+        // Ensure the institution is valid and selected
+        if (institutionSpinner.selectedItemPosition == 0) {
+            Toast.makeText(this, "Please select a valid institution.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         Log.d("xxxxxx", "$selectedInstitution, $emailExtension")
+
         // Validate institution selection
         if (selectedInstitution == "Select Institution") {
             Toast.makeText(this, "Please select a valid institution.", Toast.LENGTH_SHORT).show()
