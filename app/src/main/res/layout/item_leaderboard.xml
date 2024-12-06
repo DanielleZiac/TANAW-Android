@@ -14,6 +14,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="16dp"
+        android:paddingStart="25dp"
+        android:paddingEnd="25dp"
         android:background="@android:color/white"
         android:gravity="center_vertical">
 
@@ -29,14 +31,13 @@
             android:gravity="center" />
 
         <!-- User name or post title -->
-        <TextView
-            android:id="@+id/userName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="User Name"
-            android:textSize="18sp"
-            android:textColor="@android:color/black"
+        <ImageView
+            android:id="@+id/collegeLogo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/bsulogo"
             android:gravity="start" />
 
         <!-- Number of posts or score -->
@@ -44,6 +45,7 @@
             android:id="@+id/score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingStart="105dp"
             android:text="100"
             android:textSize="18sp"
             android:textColor="@android:color/black"
