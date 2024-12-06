@@ -1,12 +1,15 @@
 package com.example.testtanaw.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.testtanaw.AvatarActivity
 import com.example.testtanaw.R
 import com.example.testtanaw.models.Sdg
 import com.example.testtanaw.util.StickerAdapter
@@ -42,6 +45,13 @@ class StickersFragment : Fragment() {
         // Adjust height of the second RecyclerView
         adjustRecyclerViewHeight(recyclerView2, placeholderList.size)
 
+        // Set up the OnClickListener for the "Edit Avatar" button
+        val editAvatarButton = view.findViewById<Button>(R.id.editAvatar)
+        editAvatarButton.setOnClickListener {
+            // Navigate to AvatarActivity
+            val intent = Intent(requireContext(), AvatarActivity::class.java)
+            startActivity(intent)
+        }
         return view
     }
 
