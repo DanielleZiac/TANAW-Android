@@ -9,7 +9,9 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:src="@drawable/avatar"
-        android:contentDescription="Profile Image" />
+        android:contentDescription="Profile Image"
+        android:background="@drawable/rounded_corner"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/username"

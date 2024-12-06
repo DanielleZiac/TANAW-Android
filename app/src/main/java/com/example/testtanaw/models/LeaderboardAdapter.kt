@@ -1,11 +1,11 @@
-package com.example.testtanaw
+package com.example.testtanaw.models
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.testtanaw.models.LeaderboardItem
+import com.example.testtanaw.R
 
 class LeaderboardAdapter(private val leaderboardList: List<LeaderboardItem>) :
     RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder>() {

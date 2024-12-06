@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.testtanaw.models.LeaderboardAdapter
 import com.example.testtanaw.models.LeaderboardItem
 
 class LeaderboardFragment : Fragment() {

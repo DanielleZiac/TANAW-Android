@@ -23,7 +23,7 @@ class SdgHomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_sdg_home, container, false)
 
         val sdgList = listOf(
-            SDGItem("Goal 1", R.drawable.sdg_1),
+            SDGItem("No Poverty", R.drawable.sdg_1),
             SDGItem("Goal 2", R.drawable.sdg_2),
             SDGItem("Goal 3", R.drawable.sdg_3),
             SDGItem("Goal 4", R.drawable.sdg_4),
