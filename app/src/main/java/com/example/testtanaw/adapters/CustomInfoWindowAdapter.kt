@@ -44,8 +44,6 @@ class CustomInfoWindowAdapter(private val context: Context): GoogleMap.InfoWindo
 
         // can add more
         Picasso.get().load(data.url).resize(1000, 1000).centerInside().placeholder(R.drawable.loading).into(sdgContentImageVIew)
-        sdgCaptionTextView.text = data.caption
-        sdgPhotoChallTextView.text = data.phototChall
 
         // Set the caption and photo challenge text
         sdgCaptionTextView.text = data.caption

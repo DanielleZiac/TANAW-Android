@@ -24,7 +24,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="UNITED NATIONS"
-                android:textSize="22sp"
+                android:textSize="25sp"
+                android:layout_gravity="center"
                 android:textColor="@color/navy_300"
                 android:fontFamily="sans-serif-medium" />
 
@@ -43,7 +44,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="THE 17 GOALS"
-                android:textSize="22sp"
+                android:textSize="25sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
                 android:textColor="@color/navy_300"
                 android:fontFamily="sans-serif-medium" />
 

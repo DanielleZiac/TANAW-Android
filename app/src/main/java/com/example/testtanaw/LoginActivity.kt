@@ -14,12 +14,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
-    private val DB = DB()
+    private val db = DB()
     private lateinit var srCodeInput: EditText
     private lateinit var passwordInput: EditText
     private lateinit var institutionSpinner: Spinner
     private lateinit var institutions: List<DB.Institution>
-    private lateinit var institutionAdapter: InstitutionAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,21 +31,8 @@ class LoginActivity : AppCompatActivity() {
             passwordInput = findViewById(R.id.password_input)
             institutionSpinner = findViewById(R.id.institution_spinner)
 
-            institutions = DB.getInstitutions(this@LoginActivity)
+            institutions = db.getInstitutions(this@LoginActivity, institutionSpinner)
 
-            // Check if institutions are available
-            if (institutions.isNotEmpty()) {
-                // Create a list of institution names to display in the Spinner
-                val institutionNames = institutions.map { it.institution }.toMutableList()
-                institutionAdapter = InstitutionAdapter(this@LoginActivity, institutionNames)
-                institutionSpinner.adapter = institutionAdapter
-
-                // Ensure the spinner has a valid selection by setting a default item
-                institutionSpinner.setSelection(0)
-            } else {
-                // Handle the case where institutions are unavailable
-                Toast.makeText(this@LoginActivity, "No institutions available.", Toast.LENGTH_SHORT).show()
-            }
         }
     }
 
@@ -66,24 +52,17 @@ class LoginActivity : AppCompatActivity() {
 
         Log.d("xxxxxx", "$selectedInstitution, $emailExtension")
 
-        // Validate institution selection
-        if (selectedInstitution == "Select Institution") {
-            Toast.makeText(this, "Please select a valid institution.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
         CoroutineScope(Dispatchers.Main).launch {
             if (srCode.isNotEmpty() && password.isNotEmpty()) {
                 try {
                     val email = srCode + emailExtension
                     Log.d("xxxxxx", "email: $email")
 
-                    val userId = DB.login(email, password, this@LoginActivity)
+                    val userId = db.login(email, password, this@LoginActivity)
                     if (userId != null) {
-                        // redirect ??
 
                         // check if may avatar -- if wala, redirect sa avatar creation dapat??
-                        val userDbData: DB.UserData? = DB.getUserDataByUserId(userId);
+                        val userDbData: DB.UserData? = db.getUserDataByUserId(userId);
                         Log.d("xxxxxx", "avatarrr: {${userDbData?.avatars?.get("avatar_url")}}")
 
                         if (userDbData != null) {
