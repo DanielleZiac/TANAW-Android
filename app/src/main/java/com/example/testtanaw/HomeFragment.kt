@@ -6,9 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import com.example.testtanaw.models.UserParcelable
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class HomeFragment : Fragment() {
+class HomeFragment(val userData: UserParcelable) : Fragment() {
 
     private lateinit var fabToggleMenu: FloatingActionButton
     private lateinit var floatingMenu: View
@@ -49,7 +50,7 @@ class HomeFragment : Fragment() {
 
         institutions.setOnClickListener {
             fabToggleMenu.setImageResource(R.drawable.baseline_home_work_24)
-            replaceFragment(InstitutionFragment())
+            replaceFragment(InstitutionFragment(userData))
             floatingMenu.visibility = View.GONE
         }
 

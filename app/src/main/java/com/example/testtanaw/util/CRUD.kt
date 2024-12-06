@@ -38,26 +38,6 @@ class CRUD: Supabase() {
         @SerialName("user_longitude") val userLongitude: Double
     )
 
-//    @Serializable
-//    data class Photo (
-//        @SerialName("photo_challenge") val photoChallenge: String,
-//        @SerialName("user_sdg_id") val userSdgId: String,
-//        @SerialName("url") val url: String,
-//        @SerialName("caption") val caption: String,
-//        @SerialName("lat") val lat: Double,
-//        @SerialName("long") val long: Double,
-//        @SerialName("created_date") val createdDate: String,
-//        @SerialName("sdg_number") val sdgNumber: String,
-//        @SerialName("user_id") val userId: String,
-//        @SerialName("institution_id") val institutionId: String,
-//        @SerialName("institution") val institution: String,
-//        @SerialName("campus") val campus: String,
-//        @SerialName("institution_logo") val institutionLogo: String,
-//        @SerialName("avatar_url") val avatarUrl: String,
-//        @SerialName("total_count") val totalCount: Int
-//    )
-
-
     suspend fun getSdgPhoto(sdg: Int?, date: String?, institution_id: String?): List<SdgPhoto> {
             val qryParams = mutableMapOf<String, Any>()
 
@@ -174,6 +154,24 @@ class CRUD: Supabase() {
         } catch (e: Exception) {
             Log.d("xxxxxx", "${e.message}")
             null
+        }
+    }
+
+
+    suspend fun getPhotoByInstitutionId(institutionId: String): List<SdgPhoto>? {
+        return try {
+            val photos = supabase.from("get_photo_and_avatar").select() {
+                filter {
+                    eq("institution_id", institutionId)
+                }
+            }.decodeList<SdgPhoto>()
+            Log.d("xxxxxx", "photoooo ${photos}")
+            photos
+            
+            emptyList()
+        } catch (e: Exception) {
+            Log.d("xxxxxx", "ERROR GET PHOTO BY INSTITUTION ID: ${e.message}")
+            emptyList()
         }
     }
 }

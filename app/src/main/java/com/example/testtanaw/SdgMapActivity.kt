@@ -32,10 +32,8 @@ import kotlinx.coroutines.launch
 
 class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
     val crud = CRUD()
-    private val FINE_PERMISSION_CODE: Int = 1
-    lateinit var curLocation: Location
+    lateinit var curLocation: Location // pass location from map
     var sdgPhotoList: List<CRUD.SdgPhoto> = emptyList()
-    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     private var mClusterManager: ClusterManager<ClusterMarker>? = null
     private var mClusterManagerRenderer: ClusterManagerRenderer? = null
@@ -65,15 +63,15 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
         // Set the SDG title dynamically
         supportActionBar?.setDisplayShowTitleEnabled(false) // Disable default title
         val toolbarTitle: TextView = findViewById(R.id.toolbar_title)
-//        val sdgNumber = intent.getIntExtra("SDG_NUMBER", 0)
-        toolbarTitle.text = "SDG Number: $sdgNumber" // Set SDG title in the toolbar
 
-        // Retrieve the SDG title passed from the previous activity
-        val sdgTitle = intent.getStringExtra("SDG_TITLE")
+        val sdgNumber = intent.getIntExtra("sdgNumber", 0)
+        toolbarTitle.text = "SDG sdgNumber: $sdgNumber" // Set SDG title in the toolbar
 
-//         Set the SDG title to a TextView
-//        val titleTextView = findViewById<TextView>(R.id.sdgTitleTextView)
-//        titleTextView.text = sdgTitle
+        val institutionId = intent.getStringExtra("institutionId")
+
+        Log.d("xxxxxx", "sdgNumber:  $sdgNumber")
+        Log.d("xxxxxx", "institutionID:  $institutionId")
+
 
         CoroutineScope(Dispatchers.Main).launch {
             sdgPhotoList = crud.getSdgPhoto(sdgNumber, "today", null)
@@ -86,8 +84,6 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
         val fabArrow: FloatingActionButton = findViewById(R.id.fab_arrow)
         val fabPlus: FloatingActionButton = findViewById(R.id.fab_plus)
 
-        // Retrieve the SDG number from the intent
-        sdgNumber = intent.getIntExtra("SDG_NUMBER", 1)
 
         // Display the first challenge for the SDG
         updatePhotoChallenge()

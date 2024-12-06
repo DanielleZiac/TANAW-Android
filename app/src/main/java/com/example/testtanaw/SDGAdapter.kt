@@ -106,7 +106,7 @@ class SDGAdapter(
 
             // Pass the SDG title (or other relevant information) to the new activity
             intent.putExtra("SDG_TITLE", sdg.title)
-            intent.putExtra("SDG_NUMBER", position + 1)
+            intent.putExtra("sdgNumber", position + 1)
 
             // Start the new activity
             holder.itemView.context.startActivity(intent)
