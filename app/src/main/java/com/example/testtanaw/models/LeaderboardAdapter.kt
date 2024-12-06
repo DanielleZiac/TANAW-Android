@@ -3,6 +3,7 @@ package com.example.testtanaw.models
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testtanaw.R
@@ -11,28 +12,24 @@ class LeaderboardAdapter(private val leaderboardList: List<LeaderboardItem>) :
     RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LeaderboardViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_leaderboard, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_leaderboard, parent, false)
         return LeaderboardViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: LeaderboardViewHolder, position: Int) {
-        val leaderboardItem = leaderboardList[position]
-        holder.bind(leaderboardItem, position + 1)
+        val item = leaderboardList[position]
+        holder.rank.text = (position + 1).toString() // Display rank starting from 1
+        holder.score.text = item.score.toString()
+        holder.collegeLogo.setImageResource(item.logo) // Bind the logo image
     }
 
-    override fun getItemCount(): Int {
-        return leaderboardList.size
-    }
+    override fun getItemCount(): Int = leaderboardList.size
 
     class LeaderboardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val rankTextView: TextView = itemView.findViewById(R.id.rank)
-        private val userNameTextView: TextView = itemView.findViewById(R.id.userName)
-        private val scoreTextView: TextView = itemView.findViewById(R.id.score)
-
-        fun bind(leaderboardItem: LeaderboardItem, rank: Int) {
-            rankTextView.text = rank.toString()
-            userNameTextView.text = leaderboardItem.userName
-            scoreTextView.text = leaderboardItem.score.toString()
-        }
+        val rank: TextView = itemView.findViewById(R.id.rank)
+        val collegeLogo: ImageView = itemView.findViewById(R.id.collegeLogo) // College logo
+        val score: TextView = itemView.findViewById(R.id.score)
     }
 }
+

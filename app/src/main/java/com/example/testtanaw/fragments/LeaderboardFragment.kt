@@ -27,13 +27,12 @@ class LeaderboardFragment : Fragment() {
         leaderboardRecyclerView.layoutManager = LinearLayoutManager(context)
         leaderboardRecyclerView.setHasFixedSize(true)
 
-        // Example data, in a real case this would come from a backend
+        // Example data with college logos
         val leaderboardList = listOf(
-            LeaderboardItem("User1", 50),
-            LeaderboardItem("User2", 45),
-            LeaderboardItem("User3", 40),
-
-            )
+            LeaderboardItem("User1", 50, R.drawable.bsulogo),
+            LeaderboardItem("User2", 45, R.drawable.admulogo),
+            LeaderboardItem("User3", 40, R.drawable.dlsulogo)
+        )
 
         // Set the Adapter
         leaderboardAdapter = LeaderboardAdapter(leaderboardList)
