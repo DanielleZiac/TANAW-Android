@@ -112,6 +112,7 @@ dependencies {
 
     implementation("androidx.gridlayout:gridlayout:1.0.0")
 
+
     implementation(platform("io.github.jan-tennert.supabase:bom:3.0.2"))
     implementation("io.github.jan-tennert.supabase:postgrest-kt")
     implementation("io.github.jan-tennert.supabase:auth-kt")

@@ -21,6 +21,7 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import com.example.testtanaw.fragments.ExploreFragment
+import com.example.testtanaw.fragments.FeedbackModalFragment
 import com.example.testtanaw.fragments.GalleryFragment
 import com.example.testtanaw.fragments.HomeFragment
 import com.example.testtanaw.fragments.InboxFragment
@@ -107,7 +108,9 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     R.id.nav_feedback -> {
-                        // Handle Feedback click
+                        // Show the feedback dialog
+                        val feedbackDialog = FeedbackModalFragment()
+                        feedbackDialog.show(supportFragmentManager, "FeedbackDialog")
                     }
 
                     R.id.nav_help -> {
