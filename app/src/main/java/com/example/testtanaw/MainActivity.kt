@@ -104,7 +104,8 @@ class MainActivity : AppCompatActivity() {
                 }
 
                     R.id.nav_contact -> {
-                        // Handle Contacts click
+                        val intent = Intent(this, ContactActivity::class.java)
+                        startActivity(intent)
                     }
 
                     R.id.nav_feedback -> {
