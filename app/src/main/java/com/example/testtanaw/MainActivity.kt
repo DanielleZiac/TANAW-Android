@@ -89,6 +89,14 @@ class MainActivity : AppCompatActivity() {
                 drawerLayout.openDrawer(navigationView)  // Open the navigation drawer
             }
 
+            // Handle profile icon click
+            val profileIcon: ImageButton = findViewById(R.id.profileIcon)
+            profileIcon.setOnClickListener {
+                val intent = Intent(this, ProfileActivity::class.java)
+                intent.putExtra("userData", userData)
+                startActivity(intent)
+            }
+
             // Handle item clicks in the navigation menu
             navigationView.setNavigationItemSelectedListener { item ->
                 when (item.itemId) {
@@ -104,7 +112,8 @@ class MainActivity : AppCompatActivity() {
                 }
 
                     R.id.nav_contact -> {
-                        // Handle Contacts click
+                        val intent = Intent(this, ContactActivity::class.java)
+                        startActivity(intent)
                     }
 
                     R.id.nav_feedback -> {
