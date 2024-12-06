@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.example.testtanaw.util.InstitutionAdapter
 
 class SignUpActivity : AppCompatActivity() {
 

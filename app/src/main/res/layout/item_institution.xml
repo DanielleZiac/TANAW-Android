@@ -1,0 +1,24 @@
+<!-- item_institution.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- ImageView for the institution logo -->
+    <ImageView
+        android:id="@+id/institutionLogo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/bsulogo"
+        android:contentDescription="Institution Logo"/>
+
+    <!-- TextView for the institution name -->
+    <TextView
+        android:id="@+id/institutionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Institution Name"
+        android:textSize="16sp"
+        android:paddingTop="8dp"/>
+</LinearLayout>

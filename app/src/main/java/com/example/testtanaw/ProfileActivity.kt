@@ -1,9 +1,11 @@
 package com.example.testtanaw
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -69,6 +71,13 @@ class ProfileActivity : AppCompatActivity() {
             currentEmailTextView.text = userData.email
         }
 
+        // Set up the OnClickListener for the "Edit Avatar" button
+        val editAvatarButton = findViewById<Button>(R.id.editAvatar)
+        editAvatarButton.setOnClickListener {
+            // Navigate to AvatarActivity
+            val intent = Intent(this, AvatarActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     // Handle back button click

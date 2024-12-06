@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/teal_100"
+    tools:context=".AvatarActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="20dp"
+        android:background="@drawable/profile_settings_card"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Create Your Avatar"
+            android:textAlignment="center"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textColor="@color/navy_300"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <!-- Avatar Display Area -->
+        <FrameLayout
+            android:id="@+id/avatarDisplayArea"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_square_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+            <ImageView
+                android:id="@+id/avatarBackground"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/bg_bsu"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/avatarGender"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/boy"
+                android:scaleType="centerInside" />
+
+            <ImageView
+                android:id="@+id/avatarEyes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/eyes_opened"
+                android:scaleType="centerInside" />
+
+            <ImageView
+                android:id="@+id/avatarMouth"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/mouth_closed"
+                android:scaleType="centerInside" />
+
+            <ImageView
+                android:id="@+id/avatarGlasses"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside" />
+
+            <ImageView
+                android:id="@+id/avatarShirt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/shirt"
+                android:scaleType="centerInside" />
+        </FrameLayout>
+
+        <!-- Toggle Buttons -->
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/avatarDisplayArea"
+            android:layout_margin="15dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/avatarDisplayArea">
+
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/teal_300" />
+
+            <Switch
+                android:id="@+id/glasses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:text="Glasses"
+                android:layout_margin="10dp"/>
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/teal_300" />
+
+            <Switch
+                android:id="@+id/shirt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:text="Polo Shirt"
+                android:layout_margin="10dp"/>
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/teal_300" />
+
+            <TextView
+                android:id="@+id/gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:text="Gender"
+                android:layout_margin="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/boy"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Boy"
+                    android:backgroundTint="@color/teal_700"
+                    android:layout_marginLeft="20dp"/>
+
+                <Button
+                    android:id="@+id/girl"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Girl"
+                    android:backgroundTint="@color/teal_700"
+                    android:layout_marginLeft="10dp" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/teal_300"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/college"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="College"
+                android:textSize="18dp"
+                android:layout_margin="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/coe"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="COE"
+                    android:backgroundTint="@color/teal_700"
+                    android:layout_marginLeft="20dp" />
+
+                <Button
+                    android:id="@+id/cics"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="CICS"
+                    android:backgroundTint="@color/teal_700"
+                    android:layout_marginLeft="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/cafad"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="CAFAD"
+                    android:backgroundTint="@color/teal_700"
+                    android:layout_marginLeft="20dp"  />
+
+                <Button
+                    android:id="@+id/cet"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="CET"
+                    android:backgroundTint="@color/teal_700"
+                    android:layout_marginLeft="10dp"  />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view5"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/teal_300"
+                android:layout_margin="10dp"/>
+
+            <Button
+                android:id="@+id/confirm_avatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Confirm Avatar"
+                android:textSize="16sp"
+                android:backgroundTint="@color/navy_300"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
