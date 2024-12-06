@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import com.example.testtanaw.LeaderboardFragment
 import com.example.testtanaw.InstitutionFragment
 import com.example.testtanaw.R
+import com.example.testtanaw.fragments.SdgHomeFragment
+import com.example.testtanaw.models.UserParcelable
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class HomeFragment : Fragment() {

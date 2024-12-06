@@ -1,4 +1,4 @@
-package com.example.testtanaw.fragments
+package com.example.testtanaw
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

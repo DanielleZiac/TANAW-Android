@@ -36,7 +36,7 @@ class InstitutionAdapter2(private val institutions: List<Institution>) :
 
         fun bind(institution: Institution) {
             institutionLogo.setImageResource(institution.logoResId)
-            institutionName.text = institution.name
+            institutionName.text = institution.institution
         }
     }
 }
