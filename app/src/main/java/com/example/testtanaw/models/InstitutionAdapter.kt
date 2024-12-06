@@ -1,4 +1,4 @@
-package com.example.testtanaw
+package com.example.testtanaw.models
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,11 +7,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testtanaw.R
-import com.example.testtanaw.models.Institution
 
 // Adapter for the institutions list
 class InstitutionAdapter2(private val institutions: List<Institution>) :
-    RecyclerView.Adapter<InstitutionAdapter2.InstitutionViewHolder>() {  // Explicitly define InstitutionViewHolder here
+    RecyclerView.Adapter<InstitutionAdapter2.InstitutionViewHolder>() {
 
     // Inflates the item layout and returns the ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InstitutionViewHolder {

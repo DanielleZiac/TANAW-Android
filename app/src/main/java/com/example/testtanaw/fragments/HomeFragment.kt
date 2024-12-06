@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import com.example.testtanaw.fragments.LeaderboardFragment
-import com.example.testtanaw.fragments.InstitutionFragment
+import com.example.testtanaw.LeaderboardFragment
+import com.example.testtanaw.InstitutionFragment
 import com.example.testtanaw.R
 import com.example.testtanaw.fragments.SdgHomeFragment
 import com.example.testtanaw.models.UserParcelable
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class HomeFragment(val userData: UserParcelable) : Fragment() {
+class HomeFragment : Fragment() {
 
     private lateinit var fabToggleMenu: FloatingActionButton
     private lateinit var floatingMenu: View

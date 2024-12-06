@@ -16,18 +16,33 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class GalleryFragment(val userId: String) : Fragment() {
+class GalleryFragment() : Fragment() {
 
     private lateinit var binding: FragmentGalleryBinding
     private lateinit var sdgAdapter2: SDGAdapter2
     private lateinit var galleryAdapter: GalleryAdapter
     private var isUploadsTab = true // Tracks the active tab (uploads or events)
+    private var userId: String? = null
+
+    // This is where the 'userId' is passed to the fragment.
+    companion object {
+        fun newInstance(userId: String): GalleryFragment {
+            val fragment = GalleryFragment()
+            val args = Bundle()
+            args.putString("userId", userId)
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentGalleryBinding.inflate(inflater, container, false)
+
+        // Retrieve the userId from arguments
+        userId = arguments?.getString("userId")
 
         // SDG Data
         val sdgImages = (1..17).map { "sdg_$it" } // Image names for SDGs
@@ -63,11 +78,11 @@ class GalleryFragment(val userId: String) : Fragment() {
 
         CoroutineScope(Dispatchers.Main).launch {
             val crud = CRUD()
-            val photoDetails = crud.getPhotoByUserId(userId)
+            val photoDetails = userId?.let { crud.getPhotoByUserId(it) } // Use userId here
             val photoList = mutableListOf<String>()
-            photoDetails?.forEach{res ->
+            photoDetails?.forEach { res ->
                 Log.d("xxxxxx", res.url)
-                photoList.add("${res.url}")
+                photoList.add(res.url) // Add the photo URL to the list
             }
 
             galleryAdapter = GalleryAdapter(photoList)
@@ -78,6 +93,5 @@ class GalleryFragment(val userId: String) : Fragment() {
             binding.uploadsTab.alpha = if (isUploadsTab) 1.0f else 0.5f
             binding.eventsTab.alpha = if (isUploadsTab) 0.5f else 1.0f
         }
-
     }
 }

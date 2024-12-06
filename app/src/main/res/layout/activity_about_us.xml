@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:background="@color/teal_100"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/teal_100"
     tools:context=".ProfileActivity">
 
+    <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/teal_700"
         android:elevation="4dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Custom TextView for Toolbar title -->
         <TextView
             android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
@@ -30,187 +30,217 @@
             android:textColor="@color/white" />
     </androidx.appcompat.widget.Toolbar>
 
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:gravity="center_horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
+    <!-- Content Container -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- About Us Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_corner_gradient"
-            android:padding="24dp"
-            android:elevation="4dp"
             android:orientation="vertical"
-            android:layout_marginBottom="16dp">
+            android:padding="16dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="About Us"
-                android:textSize="28sp"
-                android:textColor="@color/teal_700"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center" />
-
-            <TextView
+            <!-- About Us Section -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="In 2024, we embarked on a mission to innovate and inspire."
-                android:textSize="16sp"
-                android:textColor="@color/teal_700"
-                android:gravity="center"
-                android:layout_marginTop="8dp"
-                android:lineSpacingExtra="4dp" />
-        </LinearLayout>
-
-        <!-- Vision and Mission Section -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginBottom="16dp">
-
-            <!-- Vision -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_corner_gradient"
-                android:padding="16dp"
+                android:background="@drawable/profile_card"
+                android:padding="24dp"
                 android:orientation="vertical"
                 android:elevation="4dp"
-                android:layout_marginEnd="8dp">
+                android:layout_marginBottom="16dp">
+
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="In 2024, we embarked on a mission to innovate and inspire."
+                    android:textSize="16sp"
+                    android:textColor="@color/teal_700"
+                    android:gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="20dp"
+                    android:lineSpacingExtra="4dp" />
+
+
+            <!-- Vision Section -->
+
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Vision"
-                    android:textSize="18sp"
+                    android:textSize="25sp"
                     android:textColor="@color/teal_700"
                     android:fontFamily="sans-serif-medium"
-                    android:gravity="center" />
+                    android:layout_gravity="center" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Empower communities with innovation."
+                    android:text="To inspire global action by creating a platform that connects individuals and empowers them to promote the Sustainable Development Goals (SDGs). We envision a community-driven space where people share impactful stories, exchange ideas, and collaborate to create a sustainable and equitable future for all."
                     android:textSize="14sp"
                     android:textColor="@color/teal_700"
                     android:gravity="center"
-                    android:layout_marginTop="4dp" />
-            </LinearLayout>
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="20dp"/>
 
-            <!-- Mission -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_corner_gradient"
-                android:padding="16dp"
-                android:orientation="vertical"
-                android:elevation="4dp"
-                android:layout_marginStart="8dp">
+
+            <!-- Mission Section -->
+
+
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Mission"
-                    android:textSize="18sp"
+                    android:textSize="25sp"
+
                     android:textColor="@color/teal_700"
                     android:fontFamily="sans-serif-medium"
-                    android:gravity="center" />
+                    android:layout_gravity="center" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Create sustainable solutions for a better world."
+                    android:text="Our mission is to foster meaningful engagement with the SDGs by providing a platform for individuals to post, connect, and take action. We aim to empower communities to share their voices, raise awareness, and inspire collective efforts to tackle global challenges such as inequality, climate change, and education, building a better world together."
                     android:textSize="14sp"
                     android:textColor="@color/teal_700"
                     android:gravity="center"
-                    android:layout_marginTop="4dp" />
+                    android:layout_marginTop="4dp"
+                    />
+
             </LinearLayout>
-        </LinearLayout>
+            <!-- Who We Are Section -->
 
-        <!-- Who We Are Section -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_corner_gradient"
-            android:orientation="vertical"
-            android:elevation="4dp"
-            android:padding="10dp"
-            android:layout_marginBottom="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Who We Are"
-                android:textSize="22sp"
-                android:textColor="@color/teal_700"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
-                android:layout_marginBottom="8dp" />
+                android:background="@drawable/profile_card"
+                android:orientation="vertical"
+                android:elevation="4dp"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
 
-
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Who We Are"
+                    android:textSize="25sp"
+                    android:textColor="@color/teal_700"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="15dp" />
 
                 <!-- Team Members -->
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/danielle"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/circle_with_overlay"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:elevation="4dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
 
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/hersey"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/circle_with_overlay"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:elevation="4dp" />
+                    <!-- Individual Member -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
 
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/paul"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/circle_with_overlay"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:elevation="4dp" />
+                        <!-- Profile Image -->
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/danielle"
+                            android:scaleType="centerCrop"
+                            android:background="@drawable/circle_with_overlay"
+                            android:elevation="4dp"
+                            android:layout_marginEnd="16dp" />
+
+                        <!-- Name -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Danielle Ziac Abril"
+                            android:textSize="20sp"
+                            android:textColor="@color/teal_700"
+                            android:fontFamily="sans-serif"
+                            android:gravity="center_vertical" />
+                    </LinearLayout>
+
+                    <!-- Repeat for Hersey -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/hersey"
+                            android:scaleType="centerCrop"
+                            android:background="@drawable/circle_with_overlay"
+                            android:elevation="4dp"
+                            android:layout_marginEnd="16dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Hersey Odasco"
+                            android:textSize="20sp"
+                            android:textColor="@color/teal_700"
+                            android:fontFamily="sans-serif"
+                            android:gravity="center_vertical" />
+                    </LinearLayout>
+
+                    <!-- Repeat for Paul -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/paul"
+                            android:scaleType="centerCrop"
+                            android:background="@drawable/circle_with_overlay"
+                            android:elevation="4dp"
+                            android:layout_marginEnd="16dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Paul Oliver Cruz"
+                            android:textSize="20sp"
+                            android:textColor="@color/teal_700"
+                            android:fontFamily="sans-serif"
+                            android:gravity="center_vertical" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
 
 
-
-
-
-        <!-- Join Us Section -->
-
-
-
+            <!-- Join Us Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Join Us Now!"
                 android:textSize="22sp"
                 android:textColor="@color/teal_700"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
+                android:layout_gravity="center"
                 android:layout_marginBottom="8dp" />
 
             <TextView
@@ -231,5 +261,5 @@
                 android:elevation="8dp"
                 android:layout_marginTop="16dp" />
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

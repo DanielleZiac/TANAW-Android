@@ -14,8 +14,8 @@
         android:theme="@style/Theme.Material3.DayNight.NoActionBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:strokeWidth="0dp"
-        app:strokeColor="@null"
+        app:strokeWidth="3dp"
+        app:strokeColor="@color/teal_700"
         app:cardBackgroundColor="@color/white"
         android:background="@android:color/transparent"
         app:flow_horizontalBias="0.5">
@@ -28,15 +28,27 @@
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/sdgContentImageView"
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
+                android:layout_height="170dp"
                 android:layout_marginHorizontal="8dp"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 app:riv_corner_radius="16dp"
-                android:src="@drawable/tanaw_darkblue"
+                android:src="@drawable/avatar"
                 app:flow_horizontalBias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_editor_absoluteY="8dp" />
+
+            <ImageView
+                android:id="@+id/like_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_heart_outline"
+                android:contentDescription="Like Button"
+                android:layout_centerInParent="true"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintBottom_toBottomOf="@+id/sdgContentImageView"/>
 
             <TextView
                 android:id="@+id/sdgCaptionTextView"
@@ -45,27 +57,36 @@
                 android:layout_marginHorizontal="9dp"
                 android:text="CAPTION"
                 android:textColor="@color/black"
-                android:textSize="14dp"
+                android:textSize="15dp"
                 android:textStyle="bold"
+                android:textAlignment="center"
+                android:background="@drawable/rounded_corner"
                 app:flow_horizontalBias="0.5"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="5dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/sdgContentImageView" />
 
             <TextView
                 app:layout_constraintTop_toBottomOf="@id/sdgCaptionTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text = "Photo Challenge"
                 android:id="@+id/sdgPhotoChallTextView"
-                android:textSize="12dp"
+                android:textSize="11dp"
+                android:textAlignment="center"
                 app:flow_horizontalBias="0.5"
                 android:layout_marginTop="3dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:textColor="@color/black" />
+                android:textColor="@color/gray_500" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -86,6 +107,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView"
-        app:tint="@color/white" />
+        app:tint="@color/teal_700" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -110,6 +110,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    implementation("androidx.gridlayout:gridlayout:1.0.0")
 
 
     implementation(platform("io.github.jan-tennert.supabase:bom:3.0.2"))

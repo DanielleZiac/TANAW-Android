@@ -1,6 +1,7 @@
 // SDGDetailActivity.kt
 package com.example.testtanaw
 
+import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.view.MenuInflater
@@ -96,6 +97,10 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
         // Handle the Plus FAB click
         fabPlus.setOnClickListener {
             Toast.makeText(this, "Plus Button Clicked!", Toast.LENGTH_SHORT).show()
+
+            // Create an Intent to open CameraActivity
+            val intent = Intent(this, CameraActivity::class.java)
+            startActivity(intent)  // Start the activity
         }
 
         val fabFilter: FloatingActionButton = findViewById(R.id.fab_filter)

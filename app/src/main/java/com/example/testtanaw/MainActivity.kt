@@ -21,8 +21,9 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import com.example.testtanaw.fragments.ExploreFragment
-import com.example.testtanaw.fragments.HomeFragment
+import com.example.testtanaw.fragments.FeedbackModalFragment
 import com.example.testtanaw.fragments.GalleryFragment
+import com.example.testtanaw.fragments.HomeFragment
 import com.example.testtanaw.fragments.InboxFragment
 import com.example.testtanaw.fragments.StickersFragment
 import com.example.testtanaw.models.UserParcelable
@@ -107,7 +108,9 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     R.id.nav_feedback -> {
-                        // Handle Feedback click
+                        // Show the feedback dialog
+                        val feedbackDialog = FeedbackModalFragment()
+                        feedbackDialog.show(supportFragmentManager, "FeedbackDialog")
                     }
 
                     R.id.nav_help -> {
@@ -136,15 +139,15 @@ class MainActivity : AppCompatActivity() {
 
             // Set HomeFragment as the default fragment when the app starts
             if (savedInstanceState == null) {
-                loadFragment(HomeFragment(userData)) // Load HomeFragment on app start
+                loadFragment(HomeFragment()) // Load HomeFragment on app start
                 bottomNavigationView.selectedItemId = R.id.nav_home // Set nav_home as selected
             }
 
             // Set up listener for bottom navigation item selection
             bottomNavigationView.setOnItemSelectedListener { menuItem ->
                 when (menuItem.itemId) {
-                    R.id.nav_home -> loadFragment(HomeFragment(userData))
-                    R.id.nav_gallery -> loadFragment(GalleryFragment(userId))
+                    R.id.nav_home -> loadFragment(HomeFragment())
+                    R.id.nav_gallery -> loadFragment(GalleryFragment())
                     R.id.nav_explore -> loadFragment(ExploreFragment())  // Merged identical cases
                     R.id.nav_inbox -> loadFragment(InboxFragment())
                     R.id.nav_stickers -> loadFragment(StickersFragment())

@@ -1,4 +1,4 @@
-package com.example.testtanaw.fragments
+package com.example.testtanaw
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.testtanaw.LeaderboardAdapter
-import com.example.testtanaw.R
+import com.example.testtanaw.models.LeaderboardAdapter
 import com.example.testtanaw.models.LeaderboardItem
 
 class LeaderboardFragment : Fragment() {
@@ -28,13 +27,12 @@ class LeaderboardFragment : Fragment() {
         leaderboardRecyclerView.layoutManager = LinearLayoutManager(context)
         leaderboardRecyclerView.setHasFixedSize(true)
 
-        // Example data, in a real case this would come from a backend
+        // Example data with college logos
         val leaderboardList = listOf(
-            LeaderboardItem("User1", 50),
-            LeaderboardItem("User2", 45),
-            LeaderboardItem("User3", 40),
-
-            )
+            LeaderboardItem("User1", 50, R.drawable.bsulogo),
+            LeaderboardItem("User2", 45, R.drawable.admulogo),
+            LeaderboardItem("User3", 40, R.drawable.dlsulogo)
+        )
 
         // Set the Adapter
         leaderboardAdapter = LeaderboardAdapter(leaderboardList)
