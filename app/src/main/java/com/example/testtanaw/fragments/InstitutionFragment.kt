@@ -31,9 +31,9 @@ class InstitutionFragment : Fragment() {
 
         // Example data for Institutions
         val institutionList = listOf(
-            Institution("BSU", "Batangas State University", R.drawable.bsulogo),
-            Institution("ADMU", "Ateneo de Manila University", R.drawable.admulogo),
-            Institution("DLSU", "De La Salle University", R.drawable.dlsulogo)
+            Institution("Batangas State University", "Alangilan", R.drawable.bsulogo),
+            Institution("Ateneo de Manila University", "Manila", R.drawable.admulogo),
+            Institution("De La Salle University", "Dasmariñas", R.drawable.dlsulogo)
         )
 
         // Set the Adapter for Institutions
