@@ -1,4 +1,4 @@
-package com.example.testtanaw
+package com.example.testtanaw.fragments
 
 import com.example.testtanaw.models.SDGItem
 import android.os.Bundle
@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.testtanaw.R
+import com.example.testtanaw.util.SDGAdapter
 
 class SdgHomeFragment : Fragment() {
 

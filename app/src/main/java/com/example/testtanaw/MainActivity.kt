@@ -8,7 +8,6 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -21,15 +20,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
+import com.example.testtanaw.fragments.ExploreFragment
+import com.example.testtanaw.fragments.GalleryFragment
+import com.example.testtanaw.fragments.HomeFragment
+import com.example.testtanaw.fragments.InboxFragment
+import com.example.testtanaw.fragments.StickersFragment
 import com.example.testtanaw.models.UserParcelable
 import com.example.testtanaw.util.CRUD
-import com.example.testtanaw.util.DB
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.SupportMapFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {

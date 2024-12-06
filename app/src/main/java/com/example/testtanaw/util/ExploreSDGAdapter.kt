@@ -1,4 +1,4 @@
-package com.example.testtanaw
+package com.example.testtanaw.util
 
 import android.view.LayoutInflater
 import android.view.View

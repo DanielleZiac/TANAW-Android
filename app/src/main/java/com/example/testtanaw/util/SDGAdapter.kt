@@ -1,4 +1,4 @@
-package com.example.testtanaw
+package com.example.testtanaw.util
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.testtanaw.R
+import com.example.testtanaw.SdgMapActivity
 import com.example.testtanaw.models.SDGItem
 
 class SDGAdapter(

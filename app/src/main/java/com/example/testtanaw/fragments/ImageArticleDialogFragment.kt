@@ -1,4 +1,4 @@
-package com.example.testtanaw
+package com.example.testtanaw.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import com.example.testtanaw.R
 
 class ImageArticleDialogFragment : DialogFragment() {
 

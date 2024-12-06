@@ -1,4 +1,4 @@
-package com.example.testtanaw
+package com.example.testtanaw.models
 
 data class Message(
     val id: Int,

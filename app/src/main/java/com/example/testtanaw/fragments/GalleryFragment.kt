@@ -1,4 +1,4 @@
-package com.example.testtanaw
+package com.example.testtanaw.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.testtanaw.util.GalleryAdapter
+import com.example.testtanaw.util.SDGAdapter2
 import com.example.testtanaw.databinding.FragmentGalleryBinding
 import com.example.testtanaw.util.CRUD
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
 
 class GalleryFragment(val userId: String) : Fragment() {
 

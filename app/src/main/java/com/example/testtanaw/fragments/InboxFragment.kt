@@ -1,4 +1,4 @@
-package com.example.testtanaw
+package com.example.testtanaw.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.testtanaw.models.Message
+import com.example.testtanaw.util.MessageAdapter
 import com.example.testtanaw.R
 
 class InboxFragment : Fragment() {

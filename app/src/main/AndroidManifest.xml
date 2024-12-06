@@ -51,7 +51,7 @@
         </activity> <!-- SignUp Activity -->
         <activity android:name=".SignUpActivity" />
         <activity
-            android:name=".Maps"
+            android:name=".util.Maps"
             android:exported="false"
             android:label="@string/title_activity_maps"
             android:theme="@style/Theme.TestTANAW" />

@@ -1,4 +1,4 @@
-package com.example.testtanaw
+package com.example.testtanaw.util
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.testtanaw.R
 
 class InstitutionAdapter(context: Context, private val institutions: List<String>) :
     ArrayAdapter<String>(context, 0, institutions) {

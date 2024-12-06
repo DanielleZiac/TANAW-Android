@@ -8,6 +8,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.testtanaw.models.UserParcelable
 import com.example.testtanaw.util.DB
+import com.example.testtanaw.util.InstitutionAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

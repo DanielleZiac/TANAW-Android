@@ -1,10 +1,11 @@
-package com.example.testtanaw
+package com.example.testtanaw.util
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.testtanaw.models.Message
 import com.example.testtanaw.R
 
 class MessageAdapter(

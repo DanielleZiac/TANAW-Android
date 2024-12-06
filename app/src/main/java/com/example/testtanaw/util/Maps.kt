@@ -1,4 +1,4 @@
-package com.example.testtanaw
+package com.example.testtanaw.util
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -10,17 +10,13 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterManager
 import android.location.Location
 import android.util.Log
 import android.widget.Toast
+import com.example.testtanaw.R
 import com.example.testtanaw.models.ClusterMarker
-import com.example.testtanaw.util.ClusterManagerRenderer
 
 
 class Maps : AppCompatActivity() {
