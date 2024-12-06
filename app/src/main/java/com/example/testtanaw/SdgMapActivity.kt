@@ -1,6 +1,7 @@
 // SDGDetailActivity.kt
 package com.example.testtanaw
 
+import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.view.MenuInflater
@@ -66,7 +67,7 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
         supportActionBar?.setDisplayShowTitleEnabled(false) // Disable default title
         val toolbarTitle: TextView = findViewById(R.id.toolbar_title)
 //        val sdgNumber = intent.getIntExtra("SDG_NUMBER", 0)
-        toolbarTitle.text = "SDG Number: $sdgNumber" // Set SDG title in the toolbar
+        toolbarTitle.text = "SDG: $sdgNumber" // Set SDG title in the toolbar
 
         // Retrieve the SDG title passed from the previous activity
         val sdgTitle = intent.getStringExtra("SDG_TITLE")
@@ -100,6 +101,10 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
         // Handle the Plus FAB click
         fabPlus.setOnClickListener {
             Toast.makeText(this, "Plus Button Clicked!", Toast.LENGTH_SHORT).show()
+
+            // Create an Intent to open CameraActivity
+            val intent = Intent(this, CameraActivity::class.java)
+            startActivity(intent)  // Start the activity
         }
 
         val fabFilter: FloatingActionButton = findViewById(R.id.fab_filter)
