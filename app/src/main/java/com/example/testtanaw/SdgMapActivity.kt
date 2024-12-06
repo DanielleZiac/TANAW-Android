@@ -217,6 +217,14 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
 
         popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
+                R.id.filter_all -> {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        sdgPhotoList = crud.getSdgPhoto(sdgNumber, "all", null)
+                        addMapMarkers()
+                    }
+                    Toast.makeText(this@SdgMapActivity, "All selected", Toast.LENGTH_SHORT).show()
+                    true
+                }
                 R.id.filter_today -> {
                     CoroutineScope(Dispatchers.Main).launch {
                         sdgPhotoList = crud.getSdgPhoto(sdgNumber, "today", null)

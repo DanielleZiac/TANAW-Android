@@ -26,8 +26,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Profile Settings"
-            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-            android:textColor="@color/white" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:textColor="@color/white" />
     </androidx.appcompat.widget.Toolbar>
 
     <!-- Content for the settings page -->

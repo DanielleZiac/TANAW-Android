@@ -39,7 +39,12 @@
             android:value="@integer/google_play_services_version" /> <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
-            android:exported="true" /> <!-- Login Activity (Now the landing page) -->
+            android:exported="true" />
+
+        <activity android:name=".AboutUsActivity">
+            <!-- Optional intent filter can be added here -->
+        </activity>
+        <!-- Login Activity (Now the landing page) -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -55,6 +60,8 @@
             android:exported="false"
             android:label="@string/title_activity_maps"
             android:theme="@style/Theme.TestTANAW" />
+
+
     </application>
 
 </manifest>
