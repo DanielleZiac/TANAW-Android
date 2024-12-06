@@ -27,7 +27,14 @@ class CustomInfoWindowAdapter(private val context: Context): GoogleMap.InfoWindo
         val data = marker?.tag as CustomInfoWindowData
 
         // can add more
-        Picasso.get().load(data.url).resize(1000, 1000).centerInside().placeholder(R.drawable.baseline_cached_24).into(sdgContentImageVIew)
+        Picasso
+            .get()
+            .load(data.url)
+            .resize(1000, 1000)
+            .centerInside()
+            .placeholder(R.drawable.baseline_cached_24)
+            .error(R.drawable.baseline_error_outline_24)
+            .into(sdgContentImageVIew)
         sdgCaptionTextView.text = data.caption
         sdgPhotoChallTextView.text = data.phototChall
 
