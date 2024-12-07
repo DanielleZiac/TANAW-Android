@@ -10,15 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.testtanaw.R;
 import java.util.List;
 
-// Adapter for the institutions list
-public class InstitutionAdapter2 extends RecyclerView.Adapter<InstitutionAdapter2.InstitutionViewHolder> {
+public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.InstitutionViewHolder> {
     @NonNull private final List<Institution> institutions;
 
-    public InstitutionAdapter2(@NonNull List<Institution> institutions) {
+    public InstitutionAdapter(@NonNull List<Institution> institutions) {
         this.institutions = institutions;
     }
 
-    // Inflates the item layout and returns the ViewHolder
     @NonNull
     @Override
     public InstitutionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -27,25 +25,22 @@ public class InstitutionAdapter2 extends RecyclerView.Adapter<InstitutionAdapter
         return new InstitutionViewHolder(view);
     }
 
-    // Binds the data to the ViewHolder
     @Override
     public void onBindViewHolder(@NonNull InstitutionViewHolder holder, int position) {
         @NonNull Institution institution = institutions.get(position);
         holder.bind(institution);
     }
 
-    // Returns the size of the list
     @Override
     public int getItemCount() {
         return institutions.size();
     }
 
-    // ViewHolder to hold the item view
     public class InstitutionViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView institutionLogo;
-        private final TextView institutionName;
+        @NonNull private final ImageView institutionLogo;
+        @NonNull private final TextView institutionName;
 
-        public InstitutionViewHolder(View itemView) {
+        public InstitutionViewHolder(@NonNull View itemView) {
             super(itemView);
             institutionLogo = itemView.findViewById(R.id.institutionLogo);
             institutionName = itemView.findViewById(R.id.institutionName);
