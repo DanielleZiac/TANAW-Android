@@ -27,12 +27,10 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull LeaderboardViewHolder holder, int position) {
-        LeaderboardItem item = leaderboardList.get(position);
-        if (item != null) {
-            holder.rank.setText(String.valueOf(position + 1));
-            holder.score.setText(String.valueOf(item.getScore()));
-            holder.collegeLogo.setImageResource(item.getLogo());
-        }
+        @NonNull LeaderboardItem item = leaderboardList.get(position);
+        holder.rank.setText(String.valueOf(position + 1));
+        holder.score.setText(String.valueOf(item.getScore()));
+        holder.collegeLogo.setImageResource(item.getLogo());
     }
 
     @Override
