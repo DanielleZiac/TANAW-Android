@@ -40,7 +40,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
     public static class LeaderboardViewHolder extends RecyclerView.ViewHolder {
         @NonNull private final TextView rank;
-        @NonNull private final ImageView collegeLogo; 
+        @NonNull private final ImageView collegeLogo;
         @NonNull private final TextView score;
 
         public LeaderboardViewHolder(@NonNull View itemView) {
