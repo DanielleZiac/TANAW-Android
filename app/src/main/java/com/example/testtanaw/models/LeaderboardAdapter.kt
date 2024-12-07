@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.testtanaw.R;
 import java.util.List;
 
+/**
+ * Adapter for displaying leaderboard items in a RecyclerView
+ */
 public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder> {
     @NonNull private final List<LeaderboardItem> leaderboardList;
 
@@ -27,7 +30,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull LeaderboardViewHolder holder, int position) {
-        LeaderboardItem item = leaderboardList.get(position);
+        @NonNull LeaderboardItem item = leaderboardList.get(position);
         holder.rank.setText(String.valueOf(position + 1));
         holder.userName.setText(item.getUserName());
         holder.score.setText(String.valueOf(item.getScore()));
