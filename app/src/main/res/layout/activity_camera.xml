@@ -49,7 +49,7 @@
         android:id="@+id/photoChallengeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Photo Challenge"
+        android:text="Capture the nature"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:layout_marginTop="20dp"
