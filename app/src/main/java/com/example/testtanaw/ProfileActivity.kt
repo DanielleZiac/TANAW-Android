@@ -61,7 +61,7 @@ class ProfileActivity : AppCompatActivity() {
                 .load(userData.avatarUrl)
                 .fit()
                 .centerCrop()
-                .placeholder(R.drawable.baseline_cached_24)
+                .placeholder(R.drawable.loading)
                 .error(R.drawable.baseline_error_outline_24)
                 .into(avatarImageView)
             srCodeTextView.text = userData.srCode
@@ -76,6 +76,7 @@ class ProfileActivity : AppCompatActivity() {
         editAvatarButton.setOnClickListener {
             // Navigate to AvatarActivity
             val intent = Intent(this, AvatarActivity::class.java)
+            intent.putExtra("userData", userData)
             startActivity(intent)
         }
     }
