@@ -13,41 +13,41 @@ import com.example.testtanaw.R;
 
 public class ImageArticleDialogFragment extends DialogFragment {
 
-    companion object {
-        private const val IMAGE_KEY = "image_resource"
-        private const val ARTICLE_KEY = "article_text"
-    }
+    private static final String IMAGE_KEY = "image_resource";
+    private static final String ARTICLE_KEY = "article_text";
     
-    private var imageResource: Int = 0  // Default value
-    private var articleText: String = ""  // Default value
+    private int imageResource = 0;  // Default value
+    private String articleText = "";  // Default value
 
-    fun newInstance(imageResource: Int, articleText: String): ImageArticleDialogFragment {
-        val fragment = ImageArticleDialogFragment()
-        val bundle = Bundle()
+    public static ImageArticleDialogFragment newInstance(int imageResource, String articleText) {
+        ImageArticleDialogFragment fragment = new ImageArticleDialogFragment();
+        Bundle bundle = new Bundle();
         bundle.putInt(IMAGE_KEY, imageResource);
         bundle.putString(ARTICLE_KEY, articleText);
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-                            savedInstanceState: Bundle?) {
-        return inflater.inflate(R.layout.dialog_image_article, container, false)
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                           @Nullable ViewGroup container,
+                           @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.dialog_image_article, container, false);
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        val args = arguments
+        Bundle args = getArguments();
         if (args != null) {
-            imageResource = args.getInt(IMAGE_KEY, 0)
-            articleText = args.getString(ARTICLE_KEY, "")
+            imageResource = args.getInt(IMAGE_KEY, 0);
+            articleText = args.getString(ARTICLE_KEY, "");
         }
 
-        val imageView: ImageView = view.findViewById(R.id.dialog_image)
-        val textView: TextView = view.findViewById(R.id.dialog_article)
+        ImageView imageView = view.findViewById(R.id.dialog_image);
+        TextView textView = view.findViewById(R.id.dialog_article);
 
         imageView.setImageResource(imageResource);
         textView.setText(articleText);
