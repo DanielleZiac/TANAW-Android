@@ -12,15 +12,20 @@
 - [Acknowledgements](#acknowledgements)
 
 ## Project Overview
-A mobile app designed to promote community engagement with the UN's Sustainable Development Goals (SDGs) through a gamified experience in SDG-themed photo challenges. The platform allows users to share photos centered around occasional SDG themes, fostering awareness and collaboration. This app is developed using Android Studio with Kotlin and provides a user-friendly interface for students to explore, interact, and trace their progress while saving their memories in achieving sustainable development goals.
+A mobile app designed to promote community engagement with the UN's Sustainable Development Goals (SDGs) through a gamified experience in SDG-themed photo challenges. The platform allows users to share photos centered around occasional SDG themes, fostering awareness and collaboration while capturing memories. 
 
 
 ## Key Features
-1. **Photo Sharing and SDG Tagging**: Upload and categorize photos related to specific SDGs, fostering global awareness.
-2. **Customizable Avatars**: Personalize profiles with dynamic avatars using real-time facial detection.
-3. **Search and Filters**: Explore SDG-related institutions and events through advanced search tools.
-4. **Location**: Explore SDG-related content and events based on your current location.
-5. SDG-Themed Challenges: Participate in periodic challenges aligned with the SDGs to raise awareness and track progress.
+1. **Photo Sharing and SDG Tagging**:
+- Upload and categorize photos related to specific SDGs, fostering global awareness.
+2. **Customizable Avatars**:
+  Personalize profiles with dynamic avatars using real-time facial detection.
+3. **Search and Filters**:
+  Explore SDG-related institutions and events through advanced search tools.
+4. **Location**:
+  Explore SDG-related content and events based on your current location.
+5. **SDG-Themed Challenges**:
+  Participate in periodic challenges aligned with the SDGs to raise awareness and track progress.
 
 
 ### Security Mechanisms
@@ -41,11 +46,11 @@ A mobile app designed to promote community engagement with the UN's Sustainable 
 - **Supabase Keys**: Add your Supabase SUPABASE_ANON_KEY and SUPABASE_URL to your local.properties file for authentication and database access.
 
 ### Dependencies
-- Kotlin: The project uses Kotlin 2.0.0.
-- Compose: Jetpack Compose for UI components.
-- Supabase: For backend services, including authentication, storage, and real-time capabilities.
-- Google Maps SDK: For maps features.
-- CameraX: For camera functionalities.
+- Kotlin 2.0.0.
+- Jetpack Compose
+- Supabase
+- Google Maps SDK
+- CameraX
 
 ### Environment Variables
 The following environment variables are required for the app to work:
@@ -96,7 +101,6 @@ Once the app is installed and running, users can sign up and create an account. 
 
 ## Contributors
 
-
 - Project Manager/ Fullstack Developer: **Danielle Ziac Abril**
 - Frontend Developer: **Paul Oliver Cruz**
 - Backend Developer: **Hersey Anne Odasco**
@@ -111,8 +115,6 @@ We would like to express our heartfelt gratitude to everyone who contributed to 
 2. **Team Members** for their dedication and collaboration in bringing this project to life.
 3. **University and Department** for providing the resources and opportunities for this project.
 4. **External Tools and Resources** that helped in the development of the app.
-**Libraries used:**
-
 5. **United Nations SDG Framework and Related Resources** for inspiring the core concept of this project.
 
 
