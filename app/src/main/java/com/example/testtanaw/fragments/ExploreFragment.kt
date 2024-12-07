@@ -135,11 +135,25 @@ class ExploreFragment : Fragment() {
 
         sdgAdapter = ExploreSDGAdapter(sdgGoals)
         sdgRecyclerView.adapter = sdgAdapter
+
+        // Adjust the height of the SDG RecyclerView dynamically based on the number of items
+        adjustSdgRecyclerViewHeight(sdgRecyclerView)
     }
 
     // Function to show the dialog when an image is clicked
     fun showImageDialog(imageResource: Int, articleText: String) {
         val dialogFragment = ImageArticleDialogFragment.newInstance(imageResource, articleText)
         dialogFragment.show(childFragmentManager, "ImageArticleDialog")
+    }
+
+    private fun adjustSdgRecyclerViewHeight(recyclerView: RecyclerView) {
+        recyclerView.post {
+            val itemCount = recyclerView.adapter?.itemCount ?: 0 // Get the number of items in the RecyclerView
+            val itemHeight = resources.getDimensionPixelSize(R.dimen.item_height) // Define item height in dimens.xml
+            val totalHeight = itemHeight * itemCount
+            val layoutParams = recyclerView.layoutParams
+            layoutParams.height = totalHeight
+            recyclerView.layoutParams = layoutParams
+        }
     }
 }
