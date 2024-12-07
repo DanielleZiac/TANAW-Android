@@ -28,9 +28,11 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     @Override
     public void onBindViewHolder(@NonNull LeaderboardViewHolder holder, int position) {
         LeaderboardItem item = leaderboardList.get(position);
-        holder.rank.setText(String.valueOf(position + 1));
-        holder.score.setText(String.valueOf(item.getScore()));
-        holder.collegeLogo.setImageResource(item.getLogo());
+        if (item != null) {
+            holder.rank.setText(String.valueOf(position + 1));
+            holder.score.setText(String.valueOf(item.getScore()));
+            holder.collegeLogo.setImageResource(item.getLogo());
+        }
     }
 
     @Override
@@ -40,7 +42,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
     public static class LeaderboardViewHolder extends RecyclerView.ViewHolder {
         @NonNull private final TextView rank;
-        @NonNull private final ImageView collegeLogo;
+        @NonNull private final ImageView collegeLogo; 
         @NonNull private final TextView score;
 
         public LeaderboardViewHolder(@NonNull View itemView) {
