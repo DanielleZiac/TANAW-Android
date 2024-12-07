@@ -12,16 +12,15 @@ public class Supabase {
     protected final SupabaseClient supabase;
 
     public Supabase() {
-        this.supabase = createSupabaseClient(
+        SupabaseClientBuilder builder = new SupabaseClientBuilder(
             BuildConfig.SUPABASE_URL,
-            BuildConfig.SUPABASE_ANON_KEY,
-            config -> {
-                config.install(Auth.INSTANCE);
-                config.install(Postgrest.INSTANCE);
-                config.install(Realtime.INSTANCE);
-                config.install(Storage.INSTANCE);
-                return null;
-            }
+            BuildConfig.SUPABASE_ANON_KEY
         );
+        builder.install(Auth.INSTANCE);
+        builder.install(Postgrest.INSTANCE);
+        builder.install(Realtime.INSTANCE);
+        builder.install(Storage.INSTANCE);
+        
+        this.supabase = builder.build();
     }
 }
