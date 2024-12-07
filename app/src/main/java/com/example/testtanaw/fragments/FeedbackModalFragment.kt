@@ -19,9 +19,13 @@ public class FeedbackModalFragment extends DialogFragment {
     private int rating = 0;
     private String feedback = "";
 
+    @NonNull
     private EditText feedbackEditText;
+    @NonNull
     private TextView submitButton;
+    @NonNull
     private ImageView closeButton;
+    @NonNull
     private LinearLayout starLayout;
 
     @Nullable

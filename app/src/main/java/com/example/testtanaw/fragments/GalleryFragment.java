@@ -26,6 +26,12 @@ public class GalleryFragment extends Fragment {
     private boolean isUploadsTab = true; // Tracks the active tab (uploads or events)
     private String userId;
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null; // Clean up binding
+    }
+
     // This is where the 'userId' is passed to the fragment.
     public static GalleryFragment newInstance(String userId) {
         GalleryFragment fragment = new GalleryFragment();
@@ -96,15 +102,19 @@ public class GalleryFragment extends Fragment {
                     photoList.add(res.getUrl());
                 });
 
-                requireActivity().runOnUiThread(() -> {
-                    galleryAdapter = new GalleryAdapter(photoList);
-                    binding.galleryRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-                    binding.galleryRecyclerView.setAdapter(galleryAdapter);
+                if (getActivity() != null && binding != null) {
+                    requireActivity().runOnUiThread(() -> {
+                        if (binding != null) {  // Check again in case of race condition
+                            galleryAdapter = new GalleryAdapter(photoList);
+                            binding.galleryRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+                            binding.galleryRecyclerView.setAdapter(galleryAdapter);
 
-                    // Update tab styles
-                    binding.uploadsTab.setAlpha(isUploadsTab ? 1.0f : 0.5f);
-                    binding.eventsTab.setAlpha(isUploadsTab ? 0.5f : 1.0f);
-                });
+                            // Update tab styles
+                            binding.uploadsTab.setAlpha(isUploadsTab ? 1.0f : 0.5f);
+                            binding.eventsTab.setAlpha(isUploadsTab ? 0.5f : 1.0f);
+                        }
+                    });
+                }
             }
         });
     }
