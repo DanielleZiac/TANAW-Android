@@ -12,7 +12,7 @@ import java.util.List;
 
 // Adapter for the institutions list
 public class InstitutionAdapter2 extends RecyclerView.Adapter<InstitutionAdapter2.InstitutionViewHolder> {
-    private final List<Institution> institutions;
+    @NonNull private final List<Institution> institutions;
 
     public InstitutionAdapter2(@NonNull List<Institution> institutions) {
         this.institutions = institutions;
@@ -30,7 +30,7 @@ public class InstitutionAdapter2 extends RecyclerView.Adapter<InstitutionAdapter
     // Binds the data to the ViewHolder
     @Override
     public void onBindViewHolder(@NonNull InstitutionViewHolder holder, int position) {
-        Institution institution = institutions.get(position);
+        @NonNull Institution institution = institutions.get(position);
         holder.bind(institution);
     }
 

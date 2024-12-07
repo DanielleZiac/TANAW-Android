@@ -11,7 +11,7 @@ import com.example.testtanaw.R;
 import java.util.List;
 
 public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder> {
-    private final List<LeaderboardItem> leaderboardList;
+    @NonNull private final List<LeaderboardItem> leaderboardList;
 
     public LeaderboardAdapter(@NonNull List<LeaderboardItem> leaderboardList) {
         this.leaderboardList = leaderboardList;
@@ -27,7 +27,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull LeaderboardViewHolder holder, int position) {
-        LeaderboardItem item = leaderboardList.get(position);
+        @NonNull LeaderboardItem item = leaderboardList.get(position);
         holder.rank.setText(String.valueOf(position + 1)); // Display rank starting from 1
         holder.score.setText(String.valueOf(item.getScore()));
         holder.collegeLogo.setImageResource(item.getLogo()); // Bind the logo image
