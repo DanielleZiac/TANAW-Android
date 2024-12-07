@@ -13,7 +13,7 @@ import com.example.testtanaw.fragments.SdgHomeFragment
 import com.example.testtanaw.models.UserParcelable
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class HomeFragment : Fragment() {
+class HomeFragment(val userData: UserParcelable) : Fragment() {
 
     private lateinit var fabToggleMenu: FloatingActionButton
     private lateinit var floatingMenu: View
@@ -66,7 +66,7 @@ class HomeFragment : Fragment() {
 
         leaderboard.setOnClickListener {
             fabToggleMenu.setImageResource(R.drawable.baseline_leaderboard_24)
-            replaceFragment(LeaderboardFragment())
+            replaceFragment(LeaderboardFragment(userData))
             floatingMenu.visibility = View.GONE
         }
 

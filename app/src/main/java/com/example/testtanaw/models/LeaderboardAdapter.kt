@@ -7,8 +7,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testtanaw.R
+import com.example.testtanaw.util.CRUD
+import com.squareup.picasso.Picasso
 
-class LeaderboardAdapter(private val leaderboardList: List<LeaderboardItem>) :
+class LeaderboardAdapter(private val leaderboardList: List<CRUD.LeaderboardSchool>) :
     RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LeaderboardViewHolder {
@@ -20,8 +22,11 @@ class LeaderboardAdapter(private val leaderboardList: List<LeaderboardItem>) :
     override fun onBindViewHolder(holder: LeaderboardViewHolder, position: Int) {
         val item = leaderboardList[position]
         holder.rank.text = (position + 1).toString() // Display rank starting from 1
-        holder.score.text = item.score.toString()
-        holder.collegeLogo.setImageResource(item.logo) // Bind the logo image
+        holder.score.text = item.count.toString()
+
+        // di nagloload??? anong imageview to
+        Picasso.get().load(item.departmentLogo).resize(1000, 1000).centerInside().placeholder(R.drawable.loading).into(holder.collegeLogo)
+//        holder.collegeLogo.setImageResource(item.departmentLogo) // Bind the logo image
     }
 
     override fun getItemCount(): Int = leaderboardList.size

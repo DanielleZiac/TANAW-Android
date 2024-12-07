@@ -46,7 +46,7 @@ class InstitutionFragment : Fragment() {
             // Example userId; replace this with actual value
             val userId = "12345"
 
-            val galleryFragment = GalleryFragment.newInstance(userId)
+            val galleryFragment = GalleryFragment(userId)
 
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, galleryFragment)

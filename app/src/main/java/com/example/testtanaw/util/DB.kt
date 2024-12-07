@@ -90,7 +90,7 @@ class DB : Supabase() {
         }
     }
 
-    private suspend fun getUserId(): String? {
+    suspend fun getUserId(): String? {
         return try {
             val user = supabase.auth.currentUserOrNull()
 

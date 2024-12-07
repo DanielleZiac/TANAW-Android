@@ -45,7 +45,7 @@ class ClusterManagerRenderer(
         val defaultIcon: Bitmap = iconGenerator.makeIcon()
         markerOptions.title("Loading...").snippet("Please wait")
 
-        val oldMarker = map?.addMarker(markerOptions)
+//        val oldMarker = map?.addMarker(markerOptions)
 
         // Asynchronously fetch the bitmap
         CoroutineScope(Dispatchers.IO).launch {
@@ -54,9 +54,9 @@ class ClusterManagerRenderer(
                 withContext(Dispatchers.Main) {
                     // Create a new marker with the same properties as the old one but with the fetched bitmap
                     val newMarkerOptions = MarkerOptions()
-                        .position(oldMarker?.position ?: item.position)
-                        .title(oldMarker?.title ?: item.title)
-                        .snippet(oldMarker?.snippet ?: item.snippet)
+                        .position(item.position)
+                        .title(item.title)
+                        .snippet(item.snippet)
                         .icon(BitmapDescriptorFactory.fromBitmap(fetchedBitmap))
 
                     // Add the new marker
@@ -84,7 +84,7 @@ class ClusterManagerRenderer(
                     }
 
                     // Remove the old marker
-                    oldMarker?.remove()
+//                    oldMarker?.remove()
                     clusterManager?.removeItem(item)
                     clusterMarkers.remove(item)
 //

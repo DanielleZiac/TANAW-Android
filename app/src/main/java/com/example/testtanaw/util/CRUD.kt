@@ -86,12 +86,26 @@ class CRUD: Supabase() {
         @SerialName("campus") val campus: String,
         @SerialName("department_logo") val departmentLogo: String,
         @SerialName("department") val department: String,
-        @SerialName("count") val count: String
+        @SerialName("count") val count: Int
     )
+
+
+    @Serializable
+    data class UploadSdgPhoto(
+        @SerialName("user_id") val userId: String,
+        @SerialName("sdg_number") val sdgNumber: String,
+        @SerialName("type") val type: String,
+        @SerialName("caption") val caption: String,
+        @SerialName("url") val url: String,
+        @SerialName("filename") val filename: String,
+        @SerialName("photo_challenge") val photoChallenge: String,
+        @SerialName("lat") val lat: Double,
+        @SerialName("long") val long: Double,
+        )
+
 
     suspend fun getSdgPhoto(sdg: Int?, date: String?, institution_id: String?): List<SdgPhoto> {
             val qryParams = mutableMapOf<String, Any>()
-
 
             // filter by sdg number
             if (sdg != null) {
@@ -203,7 +217,7 @@ class CRUD: Supabase() {
             Log.d("xxxxxx", "photoooo ${photos}")
             photos
         } catch (e: Exception) {
-            Log.d("xxxxxx", "${e.message}")
+            Log.d("xxxxxx", "ERROR GET PHOTO BY USER ID ${e.message}")
             null
         }
     }
@@ -369,13 +383,18 @@ class CRUD: Supabase() {
         return null
     }
 
-    suspend fun getLeaderboardsSchools(institututionId: String): List<LeaderboardSchool> {
-        val data = supabase.from("leaderboards_schools").select() {
-            filter {
-                eq("inistitution_id", institututionId)
-            }
-        }.decodeList<LeaderboardSchool>()
+    suspend fun getLeaderboardsSchools(institution: String): List<LeaderboardSchool>? {
+        try {
+            val data = supabase.from("leaderboards_schools").select() {
+                filter {
+                    eq("institution", institution)
+                }
+            }.decodeList<LeaderboardSchool>()
 
-        return data
+            return data
+        } catch(e: Exception) {
+            Log.d("xxxxxx", "ERROR GET LEADERBOARD: ${e.message}")
+            return null
+        }
     }
 }

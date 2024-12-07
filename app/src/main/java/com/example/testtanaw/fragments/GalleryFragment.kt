@@ -16,24 +16,24 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class GalleryFragment() : Fragment() {
+class GalleryFragment(val userId: String) : Fragment() {
 
     private lateinit var binding: FragmentGalleryBinding
     private lateinit var sdgAdapter2: SDGAdapter2
     private lateinit var galleryAdapter: GalleryAdapter
     private var isUploadsTab = true // Tracks the active tab (uploads or events)
-    private var userId: String? = null
+//    private var userId: String? = null
 
     // This is where the 'userId' is passed to the fragment.
-    companion object {
-        fun newInstance(userId: String): GalleryFragment {
-            val fragment = GalleryFragment()
-            val args = Bundle()
-            args.putString("userId", userId)
-            fragment.arguments = args
-            return fragment
-        }
-    }
+//    companion object {
+//        fun newInstance(userId: String): GalleryFragment {
+//            val fragment = GalleryFragment()
+//            val args = Bundle()
+//            args.putString("userId", userId)
+//            fragment.arguments = args
+//            return fragment
+//        }
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +42,7 @@ class GalleryFragment() : Fragment() {
         binding = FragmentGalleryBinding.inflate(inflater, container, false)
 
         // Retrieve the userId from arguments
-        userId = arguments?.getString("userId")
+//        userId = arguments?.getString("userId")
 
         // SDG Data
         val sdgImages = (1..17).map { "sdg_$it" } // Image names for SDGs
@@ -78,12 +78,15 @@ class GalleryFragment() : Fragment() {
 
         CoroutineScope(Dispatchers.Main).launch {
             val crud = CRUD()
-            val photoDetails = userId?.let { crud.getPhotoByUserId(it) } // Use userId here
+            Log.d("xxxxxx", "$userId")
+            val photoDetails = crud.getPhotoByUserId(userId) // Use userId here
             val photoList = mutableListOf<String>()
             photoDetails?.forEach { res ->
                 Log.d("xxxxxx", res.url)
                 photoList.add(res.url) // Add the photo URL to the list
             }
+
+            Log.d("xxxxxx", "$photoDetails $photoList")
 
             galleryAdapter = GalleryAdapter(photoList)
             binding.galleryRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)

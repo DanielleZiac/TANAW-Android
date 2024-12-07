@@ -107,9 +107,9 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     R.id.nav_about -> {
-                    val intent = Intent(this, AboutUsActivity::class.java)
-                    startActivity(intent)
-                }
+                        val intent = Intent(this, AboutUsActivity::class.java)
+                        startActivity(intent)
+                    }
 
                     R.id.nav_contact -> {
                         val intent = Intent(this, ContactActivity::class.java)
@@ -148,15 +148,15 @@ class MainActivity : AppCompatActivity() {
 
             // Set HomeFragment as the default fragment when the app starts
             if (savedInstanceState == null) {
-                loadFragment(HomeFragment()) // Load HomeFragment on app start
+                loadFragment(HomeFragment(userData)) // Load HomeFragment on app start
                 bottomNavigationView.selectedItemId = R.id.nav_home // Set nav_home as selected
             }
 
             // Set up listener for bottom navigation item selection
             bottomNavigationView.setOnItemSelectedListener { menuItem ->
                 when (menuItem.itemId) {
-                    R.id.nav_home -> loadFragment(HomeFragment())
-                    R.id.nav_gallery -> loadFragment(GalleryFragment())
+                    R.id.nav_home -> loadFragment(HomeFragment(userData))
+                    R.id.nav_gallery -> loadFragment(GalleryFragment(userId))
                     R.id.nav_explore -> loadFragment(ExploreFragment())  // Merged identical cases
                     R.id.nav_inbox -> loadFragment(InboxFragment())
                     R.id.nav_stickers -> loadFragment(StickersFragment())

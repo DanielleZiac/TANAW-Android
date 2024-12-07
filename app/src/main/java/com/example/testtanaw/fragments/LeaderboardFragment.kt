@@ -1,6 +1,8 @@
 package com.example.testtanaw
 
 import android.os.Bundle
+import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +11,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testtanaw.models.LeaderboardAdapter
 import com.example.testtanaw.models.LeaderboardItem
+import com.example.testtanaw.models.UserParcelable
+import com.example.testtanaw.util.CRUD
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class LeaderboardFragment : Fragment() {
+class LeaderboardFragment(val userData: UserParcelable) : Fragment() {
 
     private lateinit var leaderboardRecyclerView: RecyclerView
     private lateinit var leaderboardAdapter: LeaderboardAdapter
+    private lateinit var data: List<CRUD.LeaderboardSchool>
+
+    private val crud = CRUD()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,17 +39,32 @@ class LeaderboardFragment : Fragment() {
         leaderboardRecyclerView.layoutManager = LinearLayoutManager(context)
         leaderboardRecyclerView.setHasFixedSize(true)
 
-        // Example data with college logos
-        val leaderboardList = listOf(
-            LeaderboardItem("User1", 50, R.drawable.bsulogo),
-            LeaderboardItem("User2", 45, R.drawable.admulogo),
-            LeaderboardItem("User3", 40, R.drawable.dlsulogo)
-        )
+        // Launch a coroutine on the main thread
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                // Fetch the data asynchronously
+                val data = withContext(Dispatchers.IO) {
+                    crud.getLeaderboardsSchools(userData.institution) // Perform background operation
+                }
 
-        // Set the Adapter
-        leaderboardAdapter = LeaderboardAdapter(leaderboardList)
-        leaderboardRecyclerView.adapter = leaderboardAdapter
+                // Check if data is null or empty
+                if (data != null && data.isNotEmpty()) {
+                    // Set the Adapter after data is fetched
+                    leaderboardAdapter = LeaderboardAdapter(data)
+                    leaderboardRecyclerView.adapter = leaderboardAdapter
+                } else {
+                    // Handle the case where data is null or empty
+                    Log.e("xxxxxx", "No data found or data is empty.")
+                }
 
+            } catch (e: Exception) {
+                // Handle any exceptions during the async task
+                Log.e("xxxxxx", "Error fetching leaderboards: ${e.message}")
+                e.printStackTrace()
+            }
+        }
+
+        // Return the root view after setting up the RecyclerView and starting the async task
         return rootView
     }
 }

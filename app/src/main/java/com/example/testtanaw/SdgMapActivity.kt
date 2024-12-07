@@ -17,6 +17,7 @@ import com.example.testtanaw.data.PhotoChallenges.PHOTO_CHALLENGES
 import com.example.testtanaw.models.ClusterMarker
 import com.example.testtanaw.util.CRUD
 import com.example.testtanaw.util.ClusterManagerRenderer
+import com.example.testtanaw.util.DB
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -33,6 +34,8 @@ import kotlinx.coroutines.launch
 
 class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
     val crud = CRUD()
+    val db = DB()
+    lateinit var userId: String
     lateinit var curLocation: Location // pass location from map
     var sdgPhotoList: List<CRUD.SdgPhoto> = emptyList()
 
@@ -45,9 +48,12 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
     private var currentChallengeIndex = 0
     private var sdgNumber: Int = 1 // Default SDG
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sdg_map)
+
+//        Co
 
         // Setup Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -100,6 +106,13 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
 
             // Create an Intent to open CameraActivity
             val intent = Intent(this, CameraActivity::class.java)
+
+//            sdgNumber = intent.getStringExtra("sdgNumber")
+//            photoChallenge = intent.getStringExtra("photoChallenge")
+//            lat = intent.getStringExtra("lat")?.toDouble()
+//            long = intent.getStringExtra("long")?.toDouble()
+
+
             startActivity(intent)  // Start the activity
         }
 
@@ -168,25 +181,26 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
         }
 
 //        // add cur loc
-//        val newMarkerOptions = MarkerOptions()
-//            .position(LatLng(curLocation.latitude, curLocation.longitude))
-//            .title("This is you")
-//            .snippet("????")
+        val newMarkerOptions = MarkerOptions()
+            .position(LatLng(13.7864324, 121.0738981))
+            .title("This is you")
+            .snippet("your current location")
 
         // Add the new marker
-//        mGoogleMap.addMarker(newMarkerOptions)
+        mGoogleMap.addMarker(newMarkerOptions)
         mClusterManager!!.cluster()
 
         val zoomLevel = 12.0f
         mGoogleMap.uiSettings.isZoomControlsEnabled = true
         mGoogleMap.uiSettings.isZoomGesturesEnabled = true
-//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(curLocation.latitude, curLocation.longitude), zoomLevel));
+//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(13.7864324, 121.0738981), zoomLevel));
     }
 
 
     override fun onMapReady(googleMap: GoogleMap) {
         mGoogleMap = googleMap
         addMapMarkers()
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(13.7864324, 121.0738981), 12.0f));
     }
 
 
