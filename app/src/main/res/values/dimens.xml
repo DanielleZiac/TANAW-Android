@@ -5,4 +5,7 @@
     <dimen name="custom_padding">2dp</dimen>
 
     <dimen name="item_height">60dp</dimen>
+
+    <dimen name="item_spacing">40dp</dimen>
+
 </resources>

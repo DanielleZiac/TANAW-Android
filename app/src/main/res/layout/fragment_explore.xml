@@ -2,7 +2,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     android:background="@color/teal_100">
 
     <LinearLayout
@@ -16,7 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:padding="16dp"
             android:orientation="vertical"
             android:layout_marginBottom="16dp">
 
@@ -25,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:text="UNITED NATIONS"
                 android:textSize="25sp"
-                android:layout_gravity="center"
+                android:layout_margin="10dp"
                 android:textColor="@color/navy_300"
                 android:fontFamily="sans-serif-medium" />
 
@@ -33,8 +31,6 @@
                 android:id="@+id/un_images_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/profile_card"
                 android:elevation="2dp"
                 android:padding="8dp"
                 android:clipToPadding="false" />
@@ -45,7 +41,6 @@
                 android:layout_height="wrap_content"
                 android:text="THE 17 GOALS"
                 android:textSize="25sp"
-                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/navy_300"
                 android:fontFamily="sans-serif-medium" />
@@ -53,12 +48,12 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/sdg_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/profile_card"
                 android:elevation="2dp"
                 android:padding="8dp"
-                android:clipToPadding="false" />
+                android:clipToPadding="false"
+                android:overScrollMode="never" />
         </LinearLayout>
 
         <!-- Section: Description -->
@@ -69,14 +64,15 @@
             android:padding="16dp"
             android:orientation="vertical"
             android:elevation="4dp"
-            android:layout_marginTop="16dp">
+            android:layout_margin="10dp">
 
             <TextView
                 android:id="@+id/description_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Here you can learn about the United Nations and the 17 Sustainable Development Goals."
-                android:textSize="16sp"
+                android:text="View United Nations official website learn more about the 17 Sustainable Development Goals."
+                android:textSize="13sp"
+                android:textAlignment="center"
                 android:textColor="@color/black"
                 android:fontFamily="sans-serif"
                 android:lineSpacingExtra="4dp" />

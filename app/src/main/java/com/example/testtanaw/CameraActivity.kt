@@ -7,11 +7,13 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Surface
+import android.view.MenuItem
 import android.view.View
 import android.view.WindowMetrics
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -46,6 +48,7 @@ import java.io.File
 import java.util.Date
 import java.util.UUID
 import kotlin.math.abs
+import androidx.appcompat.widget.Toolbar
 
 private val supabase = createSupabaseClient(
     supabaseUrl = BuildConfig.SUPABASE_URL,
@@ -57,6 +60,7 @@ private val supabase = createSupabaseClient(
     install(Storage)
     //install other modules
 }
+
 
 class CameraActivity : AppCompatActivity() {
 
@@ -73,8 +77,6 @@ class CameraActivity : AppCompatActivity() {
     var photoChallenge: String? = null
     var lat: Double? = 0.0
     var long: Double? = 0.0
-
-
 
     private lateinit var fabCamera: ImageButton
     private lateinit var fabFlipCamera: ImageButton
@@ -131,6 +133,15 @@ class CameraActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.d("xxxxxx", "HEEEEE ${e.message}")
         }
+
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        // Set the toolbar title to be centered
+        supportActionBar?.setDisplayShowTitleEnabled(false) // Disable default title
+
+        // Enable the back button in the toolbar
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
 
@@ -417,5 +428,14 @@ class CameraActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+
+    // Handle back button click
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

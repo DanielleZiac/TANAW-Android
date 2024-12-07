@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testtanaw.R
+import com.example.testtanaw.models.GridSpacingItemDecoration
 import com.example.testtanaw.util.SDGAdapter
 
 class SdgHomeFragment : Fragment() {
@@ -71,8 +72,13 @@ class SdgHomeFragment : Fragment() {
 //        }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.sdgRecyclerView)
+
         recyclerView.layoutManager = GridLayoutManager(context, 3) // 3 items per row
         recyclerView.adapter = adapter
+
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.item_spacing) // Define this dimension in `res/values/dimens.xml`
+//        val includeEdge = true // Include spacing at the edges of the grid
+        recyclerView.addItemDecoration(GridSpacingItemDecoration(3, spacingInPixels, true))
 
         return view
 

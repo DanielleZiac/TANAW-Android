@@ -72,7 +72,7 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
         val toolbarTitle: TextView = findViewById(R.id.toolbar_title)
 
         val sdgNumber = intent.getIntExtra("sdgNumber", 0)
-        toolbarTitle.text = "SDG sdgNumber: $sdgNumber" // Set SDG title in the toolbar
+        toolbarTitle.text = "SDG: $sdgNumber" // Set SDG title in the toolbar
 
         val institutionId = intent.getStringExtra("institutionId")
 
