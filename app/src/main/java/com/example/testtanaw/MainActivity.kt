@@ -127,7 +127,8 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     R.id.nav_terms -> {
-                        // Handle Terms and Conditions click
+                        val intent = Intent(this, TermsActivity::class.java)
+                        startActivity(intent)
                     }
 
                     R.id.nav_logout -> {
