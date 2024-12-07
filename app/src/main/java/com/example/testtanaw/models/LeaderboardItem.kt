@@ -1,7 +1,25 @@
-package com.example.testtanaw.models
+package com.example.testtanaw.models;
 
-data class LeaderboardItem(
-    val userName: String,
-    val score: Int,
-    val logo: Int,
-)
+public class LeaderboardItem {
+    private final String userName;
+    private final int score;
+    private final int logo;
+
+    public LeaderboardItem(String userName, int score, int logo) {
+        this.userName = userName;
+        this.score = score;
+        this.logo = logo;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getLogo() {
+        return logo;
+    }
+}

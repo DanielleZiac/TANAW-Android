@@ -1,6 +1,19 @@
-package com.example.testtanaw.models
+package com.example.testtanaw.models;
 
-data class TopPost(
-    val imageResId: Int, // Resource ID of the image
-    val caption: String  // Caption below the image
-)
+public class TopPost {
+    private final int imageResId;  // Resource ID of the image
+    private final String caption;  // Caption below the image
+
+    public TopPost(int imageResId, String caption) {
+        this.imageResId = imageResId;
+        this.caption = caption;
+    }
+
+    public int getImageResId() {
+        return imageResId;
+    }
+
+    public String getCaption() {
+        return caption;
+    }
+}
