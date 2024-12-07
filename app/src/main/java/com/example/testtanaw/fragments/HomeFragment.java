@@ -1,81 +1,83 @@
-package com.example.testtanaw.fragments
+package com.example.testtanaw.fragments;
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.fragment.app.Fragment
-import com.example.testtanaw.LeaderboardFragment
-import com.example.testtanaw.InstitutionFragment
-import com.example.testtanaw.R
-import com.example.testtanaw.fragments.SdgHomeFragment
-import com.example.testtanaw.models.UserParcelable
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import com.example.testtanaw.LeaderboardFragment;
+import com.example.testtanaw.InstitutionFragment;
+import com.example.testtanaw.R;
+import com.example.testtanaw.fragments.SdgHomeFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-class HomeFragment : Fragment() {
+public class HomeFragment extends Fragment {
 
-    private lateinit var fabToggleMenu: FloatingActionButton
-    private lateinit var floatingMenu: View
+    private FloatingActionButton fabToggleMenu;
+    private View floatingMenu;
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                            @Nullable ViewGroup container,
+                            @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        fabToggleMenu = view.findViewById(R.id.fabToggleMenu)
-        floatingMenu = view.findViewById(R.id.floatingMenu)
+        fabToggleMenu = view.findViewById(R.id.fabToggleMenu);
+        floatingMenu = view.findViewById(R.id.floatingMenu);
 
         // Set initial fragment
-        replaceFragment(SdgHomeFragment())
+        replaceFragment(new SdgHomeFragment());
 
-        val sdgHome: ImageView = view.findViewById(R.id.sdg_home)
-        val institutions: ImageView = view.findViewById(R.id.institutions)
-//        val hallOfFame: ImageView = view.findViewById(R.id.hallOfFame)
-        val leaderboard: ImageView = view.findViewById(R.id.leaderboard)
+        ImageView sdgHome = view.findViewById(R.id.sdg_home);
+        ImageView institutions = view.findViewById(R.id.institutions);
+        //ImageView hallOfFame = view.findViewById(R.id.hallOfFame);
+        ImageView leaderboard = view.findViewById(R.id.leaderboard);
 
         // Toggle dropdown menu visibility
-        fabToggleMenu.setOnClickListener {
-            floatingMenu.visibility = if (floatingMenu.visibility == View.VISIBLE) {
-                View.GONE
-            } else {
-                View.VISIBLE
-            }
-        }
+        fabToggleMenu.setOnClickListener(v -> {
+            floatingMenu.setVisibility(
+                floatingMenu.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE
+            );
+        });
 
         // Set click listeners for dropdown menu items
-        sdgHome.setOnClickListener {
-            fabToggleMenu.setImageResource(R.drawable.baseline_loyalty_24)
-            replaceFragment(SdgHomeFragment())
-            floatingMenu.visibility = View.GONE
-        }
+        sdgHome.setOnClickListener(v -> {
+            fabToggleMenu.setImageResource(R.drawable.baseline_loyalty_24);
+            replaceFragment(new SdgHomeFragment());
+            floatingMenu.setVisibility(View.GONE);
+        });
 
-        institutions.setOnClickListener {
-            fabToggleMenu.setImageResource(R.drawable.baseline_home_work_24)
-            replaceFragment(InstitutionFragment())
-            floatingMenu.visibility = View.GONE
-        }
+        institutions.setOnClickListener(v -> {
+            fabToggleMenu.setImageResource(R.drawable.baseline_home_work_24);
+            replaceFragment(new InstitutionFragment());
+            floatingMenu.setVisibility(View.GONE);
+        });
 
-//        hallOfFame.setOnClickListener {
-//            fabToggleMenu.setImageResource(R.drawable.baseline_local_fire_department_24)
-//            replaceFragment(HallOfFameFragment())
-//            floatingMenu.visibility = View.GONE
-//        }
+        /*
+        hallOfFame.setOnClickListener(v -> {
+            fabToggleMenu.setImageResource(R.drawable.baseline_local_fire_department_24);
+            replaceFragment(new HallOfFameFragment());
+            floatingMenu.setVisibility(View.GONE);
+        });
+        */
 
-        leaderboard.setOnClickListener {
-            fabToggleMenu.setImageResource(R.drawable.baseline_leaderboard_24)
-            replaceFragment(LeaderboardFragment())
-            floatingMenu.visibility = View.GONE
-        }
+        leaderboard.setOnClickListener(v -> {
+            fabToggleMenu.setImageResource(R.drawable.baseline_leaderboard_24);
+            replaceFragment(new LeaderboardFragment());
+            floatingMenu.setVisibility(View.GONE);
+        });
 
-        return view
+        return view;
     }
 
-    private fun replaceFragment(fragment: Fragment) {
-        childFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
-            .commit()
+    private void replaceFragment(Fragment fragment) {
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainer, fragment)
+                .commit();
     }
 }
