@@ -1,33 +1,40 @@
-package com.example.testtanaw
+package com.example.testtanaw;
 
-import android.os.Bundle
-import android.view.MenuItem
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
-class AboutUsActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_about_us)
+public class AboutUsActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_about_us);
 
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // Set the toolbar title to be centered
-        supportActionBar?.setDisplayShowTitleEnabled(false) // Disable default title
-        val titleTextView = toolbar.findViewById<TextView>(R.id.toolbar_title)
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false); // Disable default title
+        }
+        TextView titleTextView = toolbar.findViewById(R.id.toolbar_title);
 
         // Enable the back button in the toolbar
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         // Additional setup can go here if needed.
     }
+
     // Handle back button click
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            onBackPressed()
-            return true
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
-        return super.onOptionsItemSelected(item)
+        return super.onOptionsItemSelected(item);
     }
 }

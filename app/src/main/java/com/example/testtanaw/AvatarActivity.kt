@@ -1,177 +1,198 @@
-package com.example.testtanaw
+package com.example.testtanaw;
 
-import android.content.Intent
-import android.os.Build
-import android.os.Bundle
-import android.util.Log
-import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
-import com.example.testtanaw.models.UserParcelable
-import com.example.testtanaw.util.CRUD
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.*;
+import androidx.appcompat.app.AppCompatActivity;
+import com.example.testtanaw.models.UserParcelable;
+import com.example.testtanaw.util.CRUD;
+import java.util.concurrent.CompletableFuture;
 
-class AvatarActivity : AppCompatActivity() {
-    private val crud = CRUD()
-    private lateinit var avatarBackground: ImageView
-    private lateinit var avatarGender: ImageView
-    private lateinit var avatarEyes: ImageView
-    private lateinit var avatarMouth: ImageView
-    private lateinit var avatarGlasses: ImageView
-    private lateinit var avatarShirt: ImageView
+public class AvatarActivity extends AppCompatActivity {
+    private final CRUD crud = new CRUD();
+    private ImageView avatarBackground;
+    private ImageView avatarGender;
+    private ImageView avatarEyes;
+    private ImageView avatarMouth;
+    private ImageView avatarGlasses;
+    private ImageView avatarShirt;
 
-    private lateinit var bg: String
-    private lateinit var sex: String
-    private var eyewear: String?= null
-    private lateinit var shirtStyle: String
+    private String bg;
+    private String sex;
+    private String eyewear = null;
+    private String shirtStyle;
 
-    private var isUploaded = false
+    private boolean isUploaded = false;
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_avatar)
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_avatar);
 
-        val userData: UserParcelable? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("userData", UserParcelable::class.java)
+        UserParcelable userData;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            userData = getIntent().getParcelableExtra("userData", UserParcelable.class);
         } else {
-            @Suppress("DEPRECATION") // Suppress warning for deprecated method
-            intent.getParcelableExtra("userData")
+            userData = getIntent().getParcelableExtra("userData");
         }
 
-        Log.d("xxxxxx", "AVATAR USERDATA: $userData")
+        Log.d("xxxxxx", "AVATAR USERDATA: " + userData);
 
-        CoroutineScope(Dispatchers.Main).launch {
-            if (userData != null) {
-                val userAvatarData = crud.getUserAvatarData(userData.userId)
-
-                Log.d("xxxxxx", "$userAvatarData")
-
-                if (userAvatarData != null) {
-                    // Initialize avatar ImageView components
-                    avatarBackground = findViewById(R.id.avatarBackground)
-                    avatarGender = findViewById(R.id.avatarGender)
-                    avatarEyes = findViewById(R.id.avatarEyes)
-                    avatarMouth = findViewById(R.id.avatarMouth)
-                    avatarGlasses = findViewById(R.id.avatarGlasses)
-                    avatarShirt = findViewById(R.id.avatarShirt)
-
-                    // constant
-                    avatarEyes.setImageResource(R.drawable.eyes_opened)
-                    avatarMouth.setImageResource(R.drawable.mouth_closed)
-
-
-                    // Set current avatar components
-                    if (userAvatarData.eyewear != null) {
-                        avatarGlasses.setImageResource(R.drawable.glasses)
-                    }
-
-                    when(userAvatarData.shirtStyle) {
-                        "shirt" -> avatarShirt.setImageResource(R.drawable.shirt)
-                        "polo" -> avatarShirt.setImageResource(R.drawable.polo)
-                    }
-
-                    Log.d("xxxxxx", "${userAvatarData.sex}")
-                    when(userAvatarData.sex) {
-                        "boy" -> avatarGender.setImageResource(R.drawable.boy)
-                        "girl" -> avatarGender.setImageResource(R.drawable.girl)
-                    }
-
-                    when(userAvatarData.bg) {
-                        "cics" -> avatarBackground.setImageResource(R.drawable.bg_cics)
-                        "cet" -> avatarBackground.setImageResource(R.drawable.bg_cet)
-                        "coe" -> avatarBackground.setImageResource(R.drawable.bg_coe)
-                        "cafad" -> avatarBackground.setImageResource(R.drawable.bg_cafad)
-                    }
-
-
-                    // Toggle glasses visibility
-                    val glassesSwitch: Switch = findViewById(R.id.glasses)
-                    glassesSwitch.setOnCheckedChangeListener { _, isChecked ->
-                        if (isChecked) {
-                            eyewear = "glasses"
-                            avatarGlasses.setImageResource(R.drawable.glasses)
-                        } else {
-                            eyewear = null
-                            avatarGlasses.setImageDrawable(null)
-                        }
-                    }
-
-
-                    // Toggle shirt visibility
-                    val shirtSwitch: Switch = findViewById(R.id.shirt)
-                    shirtSwitch.setOnCheckedChangeListener { _, isChecked ->
-                        if (isChecked) {
-                            shirtStyle = "polo"
-                            avatarShirt.setImageResource(R.drawable.polo)
-                        } else {
-                            shirtStyle = "shirt"
-                            avatarShirt.setImageResource(R.drawable.shirt)
-                        }
-                    }
-
-
-                    // Gender buttons
-                    val boyButton: Button = findViewById(R.id.boy)
-                    val girlButton: Button = findViewById(R.id.girl)
-                    boyButton.setOnClickListener {
-                        sex = "boy"
-                        avatarGender.setImageResource(R.drawable.boy)
-                    }
-                    girlButton.setOnClickListener {
-                        sex = "girl"
-                        avatarGender.setImageResource(R.drawable.girl)
-                    }
-
-
-                    // College buttons
-                    val coeButton: Button = findViewById(R.id.coe)
-                    val cicsButton: Button = findViewById(R.id.cics)
-                    val cafadButton: Button = findViewById(R.id.cafad)
-                    val cetButton: Button = findViewById(R.id.cet)
-
-                    coeButton.setOnClickListener {
-                        bg = "coe"
-                        avatarBackground.setImageResource(R.drawable.bg_coe)
-                    }
-                    cicsButton.setOnClickListener {
-                        bg = "cics"
-                        avatarBackground.setImageResource(R.drawable.bg_cics)
-                    }
-                    cafadButton.setOnClickListener {
-                        bg = "cafad"
-                        avatarBackground.setImageResource(R.drawable.bg_cafad)
-                    }
-                    cetButton.setOnClickListener {
-                        bg = "cet"
-                        avatarBackground.setImageResource(R.drawable.bg_cet)
-                    }
-
-                    // Confirm avatar button
-                    val confirmButton: Button = findViewById(R.id.confirm_avatar)
-                    confirmButton.setOnClickListener {
-                        Log.d("xxxxxx", "$eyewear, $shirtStyle, $sex, $bg")
-
-                        CoroutineScope(Dispatchers.Main).launch {
-                            val newUrl= crud.saveAvatar(resources, userData.userId, eyewear, shirtStyle, sex, bg)
-
-                            Log.d("xxxxxx", "$newUrl")
-
-                            val intent = Intent(
-                                this@AvatarActivity,
-                                ProfileActivity::class.java
-                            )
-//                            intent.putExtra("userData", newUserData)
-                            startActivity(intent)
-                            finish()
-
-                        }
-
-                    }
-                } else {
-                    Toast.makeText(this@AvatarActivity, "NO CUR AVATAR", Toast.LENGTH_SHORT).show()
+        if (userData != null) {
+            String userId = userData.getUserId();
+            CompletableFuture.supplyAsync(() -> {
+                try {
+                    return crud.getUserAvatarData(userId).get();
+                } catch (Exception e) {
+                    Log.e("AvatarActivity", "Error getting user avatar data", e);
+                    return null;
                 }
-            }
+            }).thenAccept(userAvatarData -> runOnUiThread(() -> {
+                if (userAvatarData != null) {
+                    initializeViews();
+                    setupConstantComponents();
+                    setupCurrentAvatarComponents(userAvatarData);
+                    setupSwitches();
+                    setupButtons(userData);
+                } else {
+                    Toast.makeText(AvatarActivity.this, "NO CUR AVATAR", Toast.LENGTH_SHORT).show();
+                }
+            }));
         }
+    }
+
+    private void initializeViews() {
+        avatarBackground = findViewById(R.id.avatarBackground);
+        avatarGender = findViewById(R.id.avatarGender);
+        avatarEyes = findViewById(R.id.avatarEyes);
+        avatarMouth = findViewById(R.id.avatarMouth);
+        avatarGlasses = findViewById(R.id.avatarGlasses);
+        avatarShirt = findViewById(R.id.avatarShirt);
+    }
+
+    private void setupConstantComponents() {
+        avatarEyes.setImageResource(R.drawable.eyes_opened);
+        avatarMouth.setImageResource(R.drawable.mouth_closed);
+    }
+
+    private void setupCurrentAvatarComponents(CRUD.UserAvatarData userAvatarData) {
+        if (userAvatarData.getEyewear() != null) {
+            avatarGlasses.setImageResource(R.drawable.glasses);
+        }
+
+        switch (userAvatarData.getShirtStyle()) {
+            case "shirt":
+                avatarShirt.setImageResource(R.drawable.shirt);
+                break;
+            case "polo":
+                avatarShirt.setImageResource(R.drawable.polo);
+                break;
+        }
+
+        Log.d("xxxxxx", userAvatarData.getSex());
+        switch (userAvatarData.getSex()) {
+            case "boy":
+                avatarGender.setImageResource(R.drawable.boy);
+                break;
+            case "girl":
+                avatarGender.setImageResource(R.drawable.girl);
+                break;
+        }
+
+        switch (userAvatarData.getBg()) {
+            case "cics":
+                avatarBackground.setImageResource(R.drawable.bg_cics);
+                break;
+            case "cet":
+                avatarBackground.setImageResource(R.drawable.bg_cet);
+                break;
+            case "coe":
+                avatarBackground.setImageResource(R.drawable.bg_coe);
+                break;
+            case "cafad":
+                avatarBackground.setImageResource(R.drawable.bg_cafad);
+                break;
+        }
+    }
+
+    private void setupSwitches() {
+        Switch glassesSwitch = findViewById(R.id.glasses);
+        glassesSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                eyewear = "glasses";
+                avatarGlasses.setImageResource(R.drawable.glasses);
+            } else {
+                eyewear = null;
+                avatarGlasses.setImageDrawable(null);
+            }
+        });
+
+        Switch shirtSwitch = findViewById(R.id.shirt);
+        shirtSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                shirtStyle = "polo";
+                avatarShirt.setImageResource(R.drawable.polo);
+            } else {
+                shirtStyle = "shirt";
+                avatarShirt.setImageResource(R.drawable.shirt);
+            }
+        });
+    }
+
+    private void setupButtons(UserParcelable userData) {
+        Button boyButton = findViewById(R.id.boy);
+        Button girlButton = findViewById(R.id.girl);
+        boyButton.setOnClickListener(v -> {
+            sex = "boy";
+            avatarGender.setImageResource(R.drawable.boy);
+        });
+        girlButton.setOnClickListener(v -> {
+            sex = "girl";
+            avatarGender.setImageResource(R.drawable.girl);
+        });
+
+        Button coeButton = findViewById(R.id.coe);
+        Button cicsButton = findViewById(R.id.cics);
+        Button cafadButton = findViewById(R.id.cafad);
+        Button cetButton = findViewById(R.id.cet);
+
+        coeButton.setOnClickListener(v -> {
+            bg = "coe";
+            avatarBackground.setImageResource(R.drawable.bg_coe);
+        });
+        cicsButton.setOnClickListener(v -> {
+            bg = "cics";
+            avatarBackground.setImageResource(R.drawable.bg_cics);
+        });
+        cafadButton.setOnClickListener(v -> {
+            bg = "cafad";
+            avatarBackground.setImageResource(R.drawable.bg_cafad);
+        });
+        cetButton.setOnClickListener(v -> {
+            bg = "cet";
+            avatarBackground.setImageResource(R.drawable.bg_cet);
+        });
+
+        Button confirmButton = findViewById(R.id.confirm_avatar);
+        confirmButton.setOnClickListener(v -> {
+            Log.d("xxxxxx", eyewear + ", " + shirtStyle + ", " + sex + ", " + bg);
+
+            CompletableFuture.supplyAsync(() -> {
+                try {
+                    return crud.saveAvatar(getResources(), userData.getUserId(), 
+                        eyewear, shirtStyle, sex, bg).get();
+                } catch (Exception e) {
+                    Log.e("AvatarActivity", "Error saving avatar", e);
+                    return null;
+                }
+            }).thenAccept(newUrl -> runOnUiThread(() -> {
+                Log.d("xxxxxx", String.valueOf(newUrl));
+                Intent intent = new Intent(AvatarActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                finish();
+            }));
+        });
     }
 }
