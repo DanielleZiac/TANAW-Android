@@ -1,6 +1,7 @@
 package com.example.testtanaw.models;
 
 import android.view.LayoutInflater;
+import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,15 +17,16 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         this.leaderboardList = leaderboardList;
     }
 
+    @NonNull
     @Override
-    public LeaderboardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public LeaderboardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_leaderboard, parent, false);
         return new LeaderboardViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(LeaderboardViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull LeaderboardViewHolder holder, int position) {
         LeaderboardItem item = leaderboardList.get(position);
         holder.rank.setText(String.valueOf(position + 1)); // Display rank starting from 1
         holder.score.setText(String.valueOf(item.getScore()));

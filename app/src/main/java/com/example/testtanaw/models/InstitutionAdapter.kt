@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.testtanaw.R;
 import java.util.List;
@@ -18,8 +19,9 @@ public class InstitutionAdapter2 extends RecyclerView.Adapter<InstitutionAdapter
     }
 
     // Inflates the item layout and returns the ViewHolder
+    @NonNull
     @Override
-    public InstitutionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public InstitutionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_institution, parent, false);
         return new InstitutionViewHolder(view);
@@ -27,7 +29,7 @@ public class InstitutionAdapter2 extends RecyclerView.Adapter<InstitutionAdapter
 
     // Binds the data to the ViewHolder
     @Override
-    public void onBindViewHolder(InstitutionViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull InstitutionViewHolder holder, int position) {
         Institution institution = institutions.get(position);
         holder.bind(institution);
     }
