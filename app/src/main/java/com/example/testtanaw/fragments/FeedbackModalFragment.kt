@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import com.example.testtanaw.R;
 
-public class FeedbackModalFragment extends DialogFragment {
+class FeedbackModalFragment : DialogFragment() {
 
     private var rating = 0
     private var feedback = ""
@@ -29,7 +29,7 @@ public class FeedbackModalFragment extends DialogFragment {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        View view = inflater.inflate(R.layout.fragment_feedback_modal, container, false);
+        val view = inflater.inflate(R.layout.fragment_feedback_modal, container, false)
 
         // Initialize views
         feedbackEditText = view.findViewById(R.id.feedbackEditText);
@@ -59,9 +59,9 @@ public class FeedbackModalFragment extends DialogFragment {
                 Toast.makeText(requireContext(), "Please provide both a rating and feedback.", 
                     Toast.LENGTH_SHORT).show()
             }
-        });
+        }
 
-        return view;
+        return view
     }
 
     private fun updateStarRating() {
@@ -79,7 +79,9 @@ public class FeedbackModalFragment extends DialogFragment {
         dismiss()
     }
 
-    public static FeedbackModalFragment newInstance() {
-        return new FeedbackModalFragment();
+    companion object {
+        fun newInstance(): FeedbackModalFragment {
+            return FeedbackModalFragment()
+        }
     }
 }
