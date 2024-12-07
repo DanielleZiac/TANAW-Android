@@ -4,19 +4,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
 public class ClusterMarker implements ClusterItem {
-    private final String title = null;
-    private final String snippet = null;
-    private final String userSdgId = null;
+    private final String title;
+    private final String snippet; 
+    private final String userSdgId;
     private final String userId;
-    private final String sdgNumber = null;
-    private final String url = null;
-    private final String caption = null;
-    private final String createdDate = null;
-    private final String institutionId = null;
-    private final String phototChall = null;
-    private final String institution = null;
-    private final String campus = null;
-    private final String institutionLogo = null;
+    private final String sdgNumber;
+    private final String url;
+    private final String caption;
+    private final String createdDate;
+    private final String institutionId;
+    private final String phototChall;
+    private final String institution;
+    private final String campus;
+    private final String institutionLogo;
     private final LatLng position;
     private final String avatarUrl;
 
