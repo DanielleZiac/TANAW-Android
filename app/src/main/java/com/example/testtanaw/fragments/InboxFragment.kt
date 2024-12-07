@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.testtanaw.models.Message;
 import com.example.testtanaw.util.MessageAdapter;
 import com.example.testtanaw.R;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class InboxFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Mock data
-        List<Message> messages = Arrays.asList(
+        List<Message> messages = new ArrayList<>(Arrays.asList(
             new Message(
                 1,
                 "Image Uploaded Successfully",
@@ -53,7 +54,7 @@ public class InboxFragment extends Fragment {
                 "2024-11-22 09:15 AM",
                 true
             )
-        );
+        ));
 
         // Set adapter
         messageAdapter = new MessageAdapter(messages);
