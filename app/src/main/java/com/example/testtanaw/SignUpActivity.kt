@@ -1,115 +1,130 @@
-package com.example.testtanaw
+package com.example.testtanaw;
 
-import android.content.Intent
-import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
-import com.example.testtanaw.util.DB
-import com.example.testtanaw.util.InstitutionAdapter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.*;
+import androidx.appcompat.app.AppCompatActivity;
+import com.example.testtanaw.util.DB;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
-class SignUpActivity : AppCompatActivity() {
+public class SignUpActivity extends AppCompatActivity {
+    private EditText firstNameInput;
+    private EditText lastNameInput;
+    private EditText srCodeInput;
+    private EditText passwordInput;
+    private EditText confirmPasswordInput;
+    private Spinner institutionSpinner;
+    private List<DB.Institution> institutions;
+    private final DB db = new DB();
 
-    private lateinit var firstNameInput: EditText
-    private lateinit var lastNameInput: EditText
-    private lateinit var srCodeInput: EditText
-    private lateinit var passwordInput: EditText
-    private lateinit var confirmPasswordInput: EditText
-    private lateinit var institutionSpinner: Spinner
-    private lateinit var institutions: List<DB.Institution>
-    private val db = DB()
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_signup);
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_signup)
-
-        CoroutineScope(Dispatchers.Main).launch {
-            srCodeInput = findViewById(R.id.sr_code_input)
-            firstNameInput = findViewById(R.id.first_name_input)
-            lastNameInput = findViewById(R.id.last_name_input)
-            institutionSpinner = findViewById(R.id.institution_spinner)
-            passwordInput = findViewById(R.id.password_input)
-            confirmPasswordInput = findViewById(R.id.confirm_password_input)
-
-            institutions = db.getInstitutions(this@SignUpActivity, institutionSpinner)
-
-            // Handle spinner item selection
-            institutionSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    val selectedInstitution = parent?.getItemAtPosition(position).toString()
-                    Toast.makeText(
-                        this@SignUpActivity,
-                        "Selected: $selectedInstitution",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    // Handle no selection case if needed
-                }
-            }
-        }
-
-
+        initializeViews();
+        setupInstitutionsSpinner();
     }
 
-    // Sign-Up button click handler
-    fun onSignUpClicked(view: View) {
-        val firstName = firstNameInput.text.toString()
-        val lastName = lastNameInput.text.toString()
-        val srCode = srCodeInput.text.toString()
-        val password = passwordInput.text.toString()
-        val confirmPassword = confirmPasswordInput.text.toString()
-        val selectedInstitution = institutions[institutionSpinner.selectedItemPosition].institution
-        val emailExtension: String = institutions[institutionSpinner.selectedItemPosition].emailExtension
-        val institutionId: String = institutions[institutionSpinner.selectedItemPosition].institutionId
+    private void initializeViews() {
+        srCodeInput = findViewById(R.id.sr_code_input);
+        firstNameInput = findViewById(R.id.first_name_input);
+        lastNameInput = findViewById(R.id.last_name_input);
+        institutionSpinner = findViewById(R.id.institution_spinner);
+        passwordInput = findViewById(R.id.password_input);
+        confirmPasswordInput = findViewById(R.id.confirm_password_input);
+    }
 
-        // Validate inputs
-        if (password != confirmPassword) {
-            Toast.makeText(this, "Passwords do not match.", Toast.LENGTH_SHORT).show()
-            return
+    private void setupInstitutionsSpinner() {
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                return db.getInstitutions(this, institutionSpinner).get();
+            } catch (Exception e) {
+                Log.e("SignUpActivity", "Error getting institutions", e);
+                return null;
+            }
+        }).thenAccept(result -> {
+            if (result != null) {
+                institutions = result;
+                institutionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        String selectedInstitution = parent.getItemAtPosition(position).toString();
+                        Toast.makeText(SignUpActivity.this, 
+                            "Selected: " + selectedInstitution, 
+                            Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        // Handle no selection case if needed
+                    }
+                });
+            }
+        });
+    }
+
+    public void onSignUpClicked(View view) {
+        String firstName = firstNameInput.getText().toString();
+        String lastName = lastNameInput.getText().toString();
+        String srCode = srCodeInput.getText().toString();
+        String password = passwordInput.getText().toString();
+        String confirmPassword = confirmPasswordInput.getText().toString();
+        
+        if (institutions == null || institutionSpinner.getSelectedItemPosition() < 0) {
+            Toast.makeText(this, "Please select an institution.", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        Log.d("xxxxxx", "$selectedInstitution, $emailExtension")
+        String selectedInstitution = institutions.get(institutionSpinner.getSelectedItemPosition()).getInstitution();
+        String emailExtension = institutions.get(institutionSpinner.getSelectedItemPosition()).getEmailExtension();
+        String institutionId = institutions.get(institutionSpinner.getSelectedItemPosition()).getInstitutionId();
 
-        CoroutineScope(Dispatchers.Main).launch {
-            if (firstName.isNotEmpty() && lastName.isNotEmpty() && srCode.isNotEmpty() && password.isNotEmpty() && emailExtension.isNotEmpty()) {
-                val user = db.signup(firstName, lastName, srCode, password, emailExtension, institutionId)
+        if (!password.equals(confirmPassword)) {
+            Toast.makeText(this, "Passwords do not match.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        Log.d("xxxxxx", selectedInstitution + ", " + emailExtension);
+
+        if (!firstName.isEmpty() && !lastName.isEmpty() && !srCode.isEmpty() 
+            && !password.isEmpty() && !emailExtension.isEmpty()) {
+            
+            CompletableFuture.supplyAsync(() -> {
+                try {
+                    return db.signup(firstName, lastName, srCode, password, emailExtension, institutionId).get();
+                } catch (Exception e) {
+                    Log.e("SignUpActivity", "Error during signup", e);
+                    return null;
+                }
+            }).thenAccept(user -> runOnUiThread(() -> {
                 if (user != null) {
-                    Log.d("xxxxxx", user.toString())
-
-                    Toast.makeText(this@SignUpActivity, "check your email", Toast.LENGTH_SHORT).show()
-                    firstNameInput.text.clear()
-                    lastNameInput.text.clear()
-                    srCodeInput.text.clear()
-                    passwordInput.text.clear()
-                    confirmPasswordInput.text.clear()
-                    institutionSpinner.setSelection(0)
-
+                    Log.d("xxxxxx", user.toString());
+                    Toast.makeText(SignUpActivity.this, "check your email", Toast.LENGTH_SHORT).show();
+                    clearInputs();
                 } else {
-                    Log.d("xxxxxx", "Failed to sign up user. Response is null.")
+                    Log.d("xxxxxx", "Failed to sign up user. Response is null.");
                 }
-
-            } else {
-                Toast.makeText(this@SignUpActivity, "Please fill in all fields.", Toast.LENGTH_SHORT).show()
-            }
+            }));
+        } else {
+            Toast.makeText(this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
         }
-
     }
 
-    // Open Login Activity when the "Sign In" text is clicked
-    fun openLogin(view: View) {
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
+    private void clearInputs() {
+        firstNameInput.setText("");
+        lastNameInput.setText("");
+        srCodeInput.setText("");
+        passwordInput.setText("");
+        confirmPasswordInput.setText("");
+        institutionSpinner.setSelection(0);
+    }
+
+    public void openLogin(View view) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 }
