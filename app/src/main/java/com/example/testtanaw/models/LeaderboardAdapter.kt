@@ -1,11 +1,11 @@
 package com.example.testtanaw.models;
 
 import android.view.LayoutInflater;
-import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.testtanaw.R;
 import java.util.List;
@@ -28,9 +28,9 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     @Override
     public void onBindViewHolder(@NonNull LeaderboardViewHolder holder, int position) {
         @NonNull LeaderboardItem item = leaderboardList.get(position);
-        holder.rank.setText(String.valueOf(position + 1)); // Display rank starting from 1
+        holder.rank.setText(String.valueOf(position + 1));
         holder.score.setText(String.valueOf(item.getScore()));
-        holder.collegeLogo.setImageResource(item.getLogo()); // Bind the logo image
+        holder.collegeLogo.setImageResource(item.getLogo());
     }
 
     @Override
@@ -39,14 +39,14 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     }
 
     public static class LeaderboardViewHolder extends RecyclerView.ViewHolder {
-        public final TextView rank;
-        public final ImageView collegeLogo;
-        public final TextView score;
+        @NonNull private final TextView rank;
+        @NonNull private final ImageView collegeLogo;
+        @NonNull private final TextView score;
 
-        public LeaderboardViewHolder(View itemView) {
+        public LeaderboardViewHolder(@NonNull View itemView) {
             super(itemView);
             rank = itemView.findViewById(R.id.rank);
-            collegeLogo = itemView.findViewById(R.id.collegeLogo); // College logo
+            collegeLogo = itemView.findViewById(R.id.collegeLogo);
             score = itemView.findViewById(R.id.score);
         }
     }
