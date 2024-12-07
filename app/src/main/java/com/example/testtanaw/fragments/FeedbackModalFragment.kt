@@ -16,22 +16,19 @@ import com.example.testtanaw.R;
 
 public class FeedbackModalFragment extends DialogFragment {
 
-    private int rating = 0;
-    private String feedback = "";
+    private var rating = 0
+    private var feedback = ""
 
-    @NonNull
-    private EditText feedbackEditText;
-    @NonNull
-    private TextView submitButton;
-    @NonNull
-    private ImageView closeButton;
-    @NonNull
-    private LinearLayout starLayout;
+    private lateinit var feedbackEditText: EditText
+    private lateinit var submitButton: TextView  
+    private lateinit var closeButton: ImageView
+    private lateinit var starLayout: LinearLayout
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                            @Nullable Bundle savedInstanceState) {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         View view = inflater.inflate(R.layout.fragment_feedback_modal, container, false);
 
         // Initialize views
@@ -41,45 +38,45 @@ public class FeedbackModalFragment extends DialogFragment {
         starLayout = view.findViewById(R.id.starLayout);
 
         // Set star click listeners for rating
-        for (int i = 0; i < starLayout.getChildCount(); i++) {
-            final int starPosition = i;
-            ImageView star = (ImageView) starLayout.getChildAt(i);
-            star.setOnClickListener(v -> {
-                rating = starPosition + 1;
-                updateStarRating();
-            });
+        for (i in 0 until starLayout.childCount) {
+            val starPosition = i
+            val star = starLayout.getChildAt(i) as ImageView
+            star.setOnClickListener {
+                rating = starPosition + 1
+                updateStarRating()
+            }
         }
 
         // Close the modal
-        closeButton.setOnClickListener(v -> dismiss());
+        closeButton.setOnClickListener { dismiss() }
 
         // Submit feedback
-        submitButton.setOnClickListener(v -> {
-            feedback = feedbackEditText.getText().toString();
-            if (rating > 0 && !feedback.isEmpty()) {
-                submitFeedback(rating, feedback);
+        submitButton.setOnClickListener {
+            feedback = feedbackEditText.text.toString()
+            if (rating > 0 && feedback.isNotEmpty()) {
+                submitFeedback(rating, feedback)
             } else {
                 Toast.makeText(requireContext(), "Please provide both a rating and feedback.", 
-                    Toast.LENGTH_SHORT).show();
+                    Toast.LENGTH_SHORT).show()
             }
         });
 
         return view;
     }
 
-    private void updateStarRating() {
-        for (int i = 0; i < starLayout.getChildCount(); i++) {
-            ImageView star = (ImageView) starLayout.getChildAt(i);
-            star.setImageResource(i < rating ? R.drawable.star_filled : R.drawable.star_empty);
+    private fun updateStarRating() {
+        for (i in 0 until starLayout.childCount) {
+            val star = starLayout.getChildAt(i) as ImageView
+            star.setImageResource(if (i < rating) R.drawable.star_filled else R.drawable.star_empty)
         }
     }
 
-    private void submitFeedback(int rating, String feedback) {
+    private fun submitFeedback(rating: Int, feedback: String) {
         // Handle feedback submission logic
         Toast.makeText(requireContext(), 
-            "Feedback submitted: Rating - " + rating + ", Feedback - " + feedback, 
-            Toast.LENGTH_SHORT).show();
-        dismiss();
+            "Feedback submitted: Rating - $rating, Feedback - $feedback", 
+            Toast.LENGTH_SHORT).show()
+        dismiss()
     }
 
     public static FeedbackModalFragment newInstance() {
