@@ -1,97 +1,104 @@
-package com.example.testtanaw.fragments
+package com.example.testtanaw.fragments;
 
-import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.testtanaw.util.GalleryAdapter
-import com.example.testtanaw.util.SDGAdapter2
-import com.example.testtanaw.databinding.FragmentGalleryBinding
-import com.example.testtanaw.util.CRUD
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import com.example.testtanaw.util.GalleryAdapter;
+import com.example.testtanaw.util.SDGAdapter2;
+import com.example.testtanaw.databinding.FragmentGalleryBinding;
+import com.example.testtanaw.util.CRUD;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-class GalleryFragment() : Fragment() {
+public class GalleryFragment extends Fragment {
 
-    private lateinit var binding: FragmentGalleryBinding
-    private lateinit var sdgAdapter2: SDGAdapter2
-    private lateinit var galleryAdapter: GalleryAdapter
-    private var isUploadsTab = true // Tracks the active tab (uploads or events)
-    private var userId: String? = null
+    private FragmentGalleryBinding binding;
+    private SDGAdapter2 sdgAdapter2;
+    private GalleryAdapter galleryAdapter;
+    private boolean isUploadsTab = true; // Tracks the active tab (uploads or events)
+    private String userId;
 
     // This is where the 'userId' is passed to the fragment.
-    companion object {
-        fun newInstance(userId: String): GalleryFragment {
-            val fragment = GalleryFragment()
-            val args = Bundle()
-            args.putString("userId", userId)
-            fragment.arguments = args
-            return fragment
-        }
+    public static GalleryFragment newInstance(String userId) {
+        GalleryFragment fragment = new GalleryFragment();
+        Bundle args = new Bundle();
+        args.putString("userId", userId);
+        fragment.setArguments(args);
+        return fragment;
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentGalleryBinding.inflate(inflater, container, false)
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                            @Nullable Bundle savedInstanceState) {
+        binding = FragmentGalleryBinding.inflate(inflater, container, false);
 
         // Retrieve the userId from arguments
-        userId = arguments?.getString("userId")
+        if (getArguments() != null) {
+            userId = getArguments().getString("userId");
+        }
 
         // SDG Data
-        val sdgImages = (1..17).map { "sdg_$it" } // Image names for SDGs
+        List<String> sdgImages = IntStream.rangeClosed(1, 17)
+                .mapToObj(i -> "sdg_" + i)
+                .collect(Collectors.toList());
 
         // Horizontal RecyclerView for SDGs
-        sdgAdapter2 = SDGAdapter2(sdgImages)
-        binding.sdgRecyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.sdgRecyclerView.adapter = sdgAdapter2
+        sdgAdapter2 = new SDGAdapter2(sdgImages);
+        binding.sdgRecyclerView.setLayoutManager(
+                new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.sdgRecyclerView.setAdapter(sdgAdapter2);
 
         // Grid RecyclerView for Gallery
-        setupGalleryRecyclerView()
+        setupGalleryRecyclerView();
 
         // Tab Switching
-        binding.uploadsTab.setOnClickListener {
-            isUploadsTab = true
-            setupGalleryRecyclerView()
-        }
-        binding.eventsTab.setOnClickListener {
-            isUploadsTab = false
-            setupGalleryRecyclerView()
-        }
+        binding.uploadsTab.setOnClickListener(v -> {
+            isUploadsTab = true;
+            setupGalleryRecyclerView();
+        });
+        
+        binding.eventsTab.setOnClickListener(v -> {
+            isUploadsTab = false;
+            setupGalleryRecyclerView();
+        });
 
-        return binding.root
+        return binding.getRoot();
     }
 
-    private fun setupGalleryRecyclerView() {
-        val images = if (isUploadsTab) {
-            (1..6).map { "sdglink_$it" }
-        } else {
-            (7..12).map { "sdglink_$it" }
-        }
+    private void setupGalleryRecyclerView() {
+        List<String> images = IntStream.rangeClosed(isUploadsTab ? 1 : 7, isUploadsTab ? 6 : 12)
+                .mapToObj(i -> "sdglink_" + i)
+                .collect(Collectors.toList());
 
-        CoroutineScope(Dispatchers.Main).launch {
-            val crud = CRUD()
-            val photoDetails = userId?.let { crud.getPhotoByUserId(it) } // Use userId here
-            val photoList = mutableListOf<String>()
-            photoDetails?.forEach { res ->
-                Log.d("xxxxxx", res.url)
-                photoList.add(res.url) // Add the photo URL to the list
+        CRUD crud = new CRUD();
+        crud.getPhotoByUserId(userId).thenAccept(photoDetails -> {
+            if (photoDetails != null) {
+                List<String> photoList = new ArrayList<>();
+                photoDetails.forEach(res -> {
+                    Log.d("xxxxxx", res.getUrl());
+                    photoList.add(res.getUrl());
+                });
+
+                requireActivity().runOnUiThread(() -> {
+                    galleryAdapter = new GalleryAdapter(photoList);
+                    binding.galleryRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+                    binding.galleryRecyclerView.setAdapter(galleryAdapter);
+
+                    // Update tab styles
+                    binding.uploadsTab.setAlpha(isUploadsTab ? 1.0f : 0.5f);
+                    binding.eventsTab.setAlpha(isUploadsTab ? 0.5f : 1.0f);
+                });
             }
-
-            galleryAdapter = GalleryAdapter(photoList)
-            binding.galleryRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
-            binding.galleryRecyclerView.adapter = galleryAdapter
-
-            // Update tab styles
-            binding.uploadsTab.alpha = if (isUploadsTab) 1.0f else 0.5f
-            binding.eventsTab.alpha = if (isUploadsTab) 0.5f else 1.0f
-        }
+        });
     }
 }
