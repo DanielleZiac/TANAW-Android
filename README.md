@@ -17,15 +17,15 @@ A mobile app designed to promote community engagement with the UN's Sustainable 
 
 ## Key Features
 1. **Photo Sharing and SDG Tagging**:
-  - Upload and categorize photos related to specific SDGs, fostering global awareness.
+   - Upload and categorize photos related to specific SDGs, fostering global awareness.
 2. **Customizable Avatars**:
-  - Personalize profiles with dynamic avatars using real-time facial detection.
+   - Personalize profiles with dynamic avatars using real-time facial detection.
 3. **Search and Filters**:
-  - Explore SDG-related institutions and events through advanced search tools.
+   - Explore SDG-related institutions and events through advanced search tools.
 4. **Location**:
-  - Explore SDG-related content and events based on your current location.
+   - Explore SDG-related content and events based on your current location.
 5. **SDG-Themed Challenges**:
-  - Participate in periodic challenges aligned with the SDGs to raise awareness and track progress.
+   - Participate in periodic challenges aligned with the SDGs to raise awareness and track progress.
 
 
 ### Security Mechanisms
