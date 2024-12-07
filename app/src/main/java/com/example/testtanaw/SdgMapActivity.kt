@@ -48,6 +48,8 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
     private var currentChallengeIndex = 0
     private var sdgNumber: Int = 1 // Default SDG
 
+    private var sdgNumberx: Int = 1
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,8 +73,9 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
         supportActionBar?.setDisplayShowTitleEnabled(false) // Disable default title
         val toolbarTitle: TextView = findViewById(R.id.toolbar_title)
 
-        val sdgNumber = intent.getIntExtra("sdgNumber", 0)
-        toolbarTitle.text = "SDG: $sdgNumber" // Set SDG title in the toolbar
+
+        sdgNumberx = intent.getIntExtra("sdgNumber", 0)
+        toolbarTitle.text = "SDG: $sdgNumberx" // Set SDG title in the toolbar
 
         val institutionId = intent.getStringExtra("institutionId")
 
@@ -105,6 +108,8 @@ class SdgMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfo
             Toast.makeText(this, "Plus Button Clicked!", Toast.LENGTH_SHORT).show()
 
             // Create an Intent to open CameraActivity
+            intent.putExtra("photoChallenge", photoChallengeText.text)
+            intent.putExtra("sdgNumber", sdgNumberx)
             val intent = Intent(this, CameraActivity::class.java)
 
 //            sdgNumber = intent.getStringExtra("sdgNumber")

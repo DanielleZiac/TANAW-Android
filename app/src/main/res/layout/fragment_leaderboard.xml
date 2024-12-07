@@ -28,10 +28,11 @@
             android:id="@+id/bar2"
             android:layout_width="85dp"
             android:layout_height="140dp"
-            android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/footerBlue"
             android:layout_gravity="bottom"
-            android:layout_marginStart="20dp"/>
+            android:layout_marginStart="20dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/footerBlue" />
+
         <View
             android:id="@+id/bar1"
             android:layout_width="85dp"
@@ -39,39 +40,41 @@
             android:background="@drawable/rounded_corner"
             android:backgroundTint="@color/footerBlue"
             android:layout_gravity="center"/>
+
         <View
             android:id="@+id/bar3"
             android:layout_width="85dp"
             android:layout_height="100dp"
-            android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/footerBlue"
             android:layout_gravity="bottom"
-            android:layout_marginStart="225dp"/>
+            android:layout_marginStart="270dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/footerBlue" />
 
         <ImageView
             android:id="@+id/top2"
             android:layout_width="90dp"
             android:layout_height="90dp"
-            app:srcCompat="@drawable/admulogo"
+            app:srcCompat="@drawable/coe"
             android:layout_gravity="start"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="45dp"/>
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="25dp"/>
 
         <ImageView
             android:id="@+id/top1"
             android:layout_width="110dp"
             android:layout_height="110dp"
-            app:srcCompat="@drawable/bsulogo"
+            app:srcCompat="@drawable/cics"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="0dp"/>
+            android:layout_marginTop="-10dp"/>
+
         <ImageView
             android:id="@+id/top3"
             android:layout_width="90dp"
             android:layout_height="90dp"
-            app:srcCompat="@drawable/admulogo"
             android:layout_gravity="start"
-            android:layout_marginStart="210dp"
-            android:layout_marginTop="50dp"/>
+            android:layout_marginStart="265dp"
+            android:layout_marginTop="50dp"
+            app:srcCompat="@drawable/cafad" />
 
     </FrameLayout>
 

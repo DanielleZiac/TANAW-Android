@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.testtanaw.AvatarActivity
 import com.example.testtanaw.R
 import com.example.testtanaw.models.Sdg
+import com.example.testtanaw.models.UserParcelable
 import com.example.testtanaw.util.StickerAdapter
 
-class StickersFragment : Fragment() {
+class StickersFragment(userData: UserParcelable) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -72,8 +72,8 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var curImageData: ByteArray
     val db = DB()
 //    val crud = CRUD()
-    var userId: String? = null
-    var sdgNumber: String? = null
+    var userId: String = "532a99dc-a731-4a61-80ca-f23f2ff1d586"
+    var sdgNumber: String? = "sdg1"
     var photoChallenge: String? = null
     var lat: Double? = 0.0
     var long: Double? = 0.0
@@ -89,15 +89,19 @@ class CameraActivity : AppCompatActivity() {
         setContentView(R.layout.activity_camera)
 
         Log.d("xxxxxx", "HEREEEEEE")
-        CoroutineScope(Dispatchers.Main).launch {
-            userId = db.getUserId()
-        }
+//        CoroutineScope(Dispatchers.Main).launch {
+//            userId = db.getUserId()
+//        }
 
         try {
             sdgNumber = intent.getStringExtra("sdgNumber")
             photoChallenge = intent.getStringExtra("photoChallenge")
             lat = intent.getStringExtra("lat")?.toDouble()
             long = intent.getStringExtra("long")?.toDouble()
+
+
+            Log.d("xxxxxx", "xx $sdgNumber")
+            Log.d("xxxxxx", "xx $photoChallenge")
 
 
             fabCamera = findViewById(R.id.fab_camera)
@@ -198,23 +202,22 @@ class CameraActivity : AppCompatActivity() {
 
                     Log.d("xxxxxx", "$sdgNumber, $photoChallenge, $userId")
 
-                    if (sdgNumber != null && photoChallenge != null && userId != null) {
                         supabase.from("user_sdgs").insert(
                             CRUD.UploadSdgPhoto(
                                 userId=userId!!,
-                                sdgNumber = "sdg${sdgNumber!!}",
+                                sdgNumber = "sdg1",
                                 type = "photo",
                                 caption = captionText,
                                 url = url,
                                 filename = filename,
-                                photoChallenge = photoChallenge!!,
-                                lat = lat!!,
-                                long = long!!,
+                                photoChallenge = "Capture a community event supporting poverty alleviation",
+                                lat = 13.7864324,
+                                long = 121.0738981,
                             )
                         )
-                    } else {
-                        Log.d("xxxxxx", "$sdgNumber, $photoChallenge, $userId")
-                    }
+//                    } else {
+//                        Log.d("xxxxxx", "$sdgNumber, $photoChallenge, $userId")
+//                    }
                 } catch(e: Exception) {
                     Log.d("xxxxxx", "error upload ${e.message}")
                 }
@@ -248,9 +251,6 @@ class CameraActivity : AppCompatActivity() {
         }
         bindCameraUserCases()
     }
-
-
-
 
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
@@ -411,7 +411,7 @@ class CameraActivity : AppCompatActivity() {
                         val capturedImageView: ImageView = findViewById(R.id.imgView)
 
                         // Set the Bitmap to the ImageView to display the captured image
-                        capturedImageView.setImageBitmap(bitmap)
+//                        capturedImageView.setImageBitmap(bitmap)
 
 
                         // wait for retake initialize variable muna

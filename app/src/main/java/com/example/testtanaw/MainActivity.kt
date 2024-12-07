@@ -159,7 +159,7 @@ class MainActivity : AppCompatActivity() {
                     R.id.nav_gallery -> loadFragment(GalleryFragment(userId))
                     R.id.nav_explore -> loadFragment(ExploreFragment())  // Merged identical cases
                     R.id.nav_inbox -> loadFragment(InboxFragment())
-                    R.id.nav_stickers -> loadFragment(StickersFragment())
+                    R.id.nav_stickers -> loadFragment(StickersFragment(userData))
                     else -> false
                 }
                 true
