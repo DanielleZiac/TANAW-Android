@@ -16,6 +16,7 @@ import com.example.testtanaw.databinding.FragmentGalleryBinding;
 import com.example.testtanaw.util.CRUD;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class GalleryFragment extends Fragment {
@@ -25,12 +26,6 @@ public class GalleryFragment extends Fragment {
     private GalleryAdapter galleryAdapter;
     private boolean isUploadsTab = true; // Tracks the active tab (uploads or events)
     private String userId;
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null; // Clean up binding
-    }
 
     // This is where the 'userId' is passed to the fragment.
     public static GalleryFragment newInstance(String userId) {
@@ -53,15 +48,14 @@ public class GalleryFragment extends Fragment {
         }
 
         // SDG Data
-        List<String> sdgImages = new ArrayList<>();
-        for (int i = 1; i <= 17; i++) {
-            sdgImages.add("sdg_" + i);
-        }
+        List<String> sdgImages = IntStream.rangeClosed(1, 17)
+                .mapToObj(i -> "sdg_" + i)
+                .collect(Collectors.toList());
 
         // Horizontal RecyclerView for SDGs
         sdgAdapter2 = new SDGAdapter2(sdgImages);
         binding.sdgRecyclerView.setLayoutManager(
-            new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+                new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.sdgRecyclerView.setAdapter(sdgAdapter2);
 
         // Grid RecyclerView for Gallery
@@ -82,16 +76,9 @@ public class GalleryFragment extends Fragment {
     }
 
     private void setupGalleryRecyclerView() {
-        List<String> images = new ArrayList<>();
-        if (isUploadsTab) {
-            for (int i = 1; i <= 6; i++) {
-                images.add("sdglink_" + i);
-            }
-        } else {
-            for (int i = 7; i <= 12; i++) {
-                images.add("sdglink_" + i);
-            }
-        }
+        List<String> images = IntStream.rangeClosed(isUploadsTab ? 1 : 7, isUploadsTab ? 6 : 12)
+                .mapToObj(i -> "sdglink_" + i)
+                .collect(Collectors.toList());
 
         CRUD crud = new CRUD();
         crud.getPhotoByUserId(userId).thenAccept(photoDetails -> {
@@ -102,19 +89,15 @@ public class GalleryFragment extends Fragment {
                     photoList.add(res.getUrl());
                 });
 
-                if (getActivity() != null && binding != null) {
-                    requireActivity().runOnUiThread(() -> {
-                        if (binding != null) {  // Check again in case of race condition
-                            galleryAdapter = new GalleryAdapter(photoList);
-                            binding.galleryRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-                            binding.galleryRecyclerView.setAdapter(galleryAdapter);
+                requireActivity().runOnUiThread(() -> {
+                    galleryAdapter = new GalleryAdapter(photoList);
+                    binding.galleryRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+                    binding.galleryRecyclerView.setAdapter(galleryAdapter);
 
-                            // Update tab styles
-                            binding.uploadsTab.setAlpha(isUploadsTab ? 1.0f : 0.5f);
-                            binding.eventsTab.setAlpha(isUploadsTab ? 0.5f : 1.0f);
-                        }
-                    });
-                }
+                    // Update tab styles
+                    binding.uploadsTab.setAlpha(isUploadsTab ? 1.0f : 0.5f);
+                    binding.eventsTab.setAlpha(isUploadsTab ? 0.5f : 1.0f);
+                });
             }
         });
     }

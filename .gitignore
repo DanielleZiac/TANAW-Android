@@ -19,3 +19,5 @@ gradle/
 /gradle/wrapper/gradle-wrapper.properties
 gradle/wrapper/gradle-wrapper.jar
 secrets.properties
+.aider*
+.env
