@@ -1,4 +1,4 @@
-package com.example.testtanaw;
+package com.example.testtanaw.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
