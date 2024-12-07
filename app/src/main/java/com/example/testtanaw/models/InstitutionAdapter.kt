@@ -14,7 +14,7 @@ import java.util.List;
 public class InstitutionAdapter2 extends RecyclerView.Adapter<InstitutionAdapter2.InstitutionViewHolder> {
     private final List<Institution> institutions;
 
-    public InstitutionAdapter2(List<Institution> institutions) {
+    public InstitutionAdapter2(@NonNull List<Institution> institutions) {
         this.institutions = institutions;
     }
 
@@ -51,7 +51,7 @@ public class InstitutionAdapter2 extends RecyclerView.Adapter<InstitutionAdapter
             institutionName = itemView.findViewById(R.id.institutionName);
         }
 
-        public void bind(Institution institution) {
+        public void bind(@NonNull Institution institution) {
             institutionLogo.setImageResource(institution.getLogoResId());
             institutionName.setText(institution.getInstitution());
         }

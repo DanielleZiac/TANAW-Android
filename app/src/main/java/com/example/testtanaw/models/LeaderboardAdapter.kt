@@ -13,7 +13,7 @@ import java.util.List;
 public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder> {
     private final List<LeaderboardItem> leaderboardList;
 
-    public LeaderboardAdapter(List<LeaderboardItem> leaderboardList) {
+    public LeaderboardAdapter(@NonNull List<LeaderboardItem> leaderboardList) {
         this.leaderboardList = leaderboardList;
     }
 
