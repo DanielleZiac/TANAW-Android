@@ -1,10 +1,13 @@
 package com.example.testtanaw
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 
 class CameraActivity : AppCompatActivity() {
 
@@ -46,6 +49,15 @@ class CameraActivity : AppCompatActivity() {
         fabFlipCamera.setOnClickListener {
             flipCamera()
         }
+
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        // Set the toolbar title to be centered
+        supportActionBar?.setDisplayShowTitleEnabled(false) // Disable default title
+
+        // Enable the back button in the toolbar
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun setInitialState() {
@@ -88,5 +100,14 @@ class CameraActivity : AppCompatActivity() {
     private fun flipCamera() {
         // Logic to flip the camera
         Toast.makeText(this, "Camera Flipped!", Toast.LENGTH_SHORT).show()
+    }
+
+    // Handle back button click
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
