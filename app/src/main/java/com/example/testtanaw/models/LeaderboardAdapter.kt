@@ -1,35 +1,52 @@
-package com.example.testtanaw.models
+package com.example.testtanaw.models;
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
-import com.example.testtanaw.R
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import androidx.recyclerview.widget.RecyclerView;
+import com.example.testtanaw.R;
+import java.util.List;
 
-class LeaderboardAdapter(private val leaderboardList: List<LeaderboardItem>) :
-    RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder>() {
+public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder> {
+    private final List<LeaderboardItem> leaderboardList;
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LeaderboardViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_leaderboard, parent, false)
-        return LeaderboardViewHolder(view)
+    public LeaderboardAdapter(List<LeaderboardItem> leaderboardList) {
+        this.leaderboardList = leaderboardList;
     }
 
-    override fun onBindViewHolder(holder: LeaderboardViewHolder, position: Int) {
-        val item = leaderboardList[position]
-        holder.rank.text = (position + 1).toString() // Display rank starting from 1
-        holder.score.text = item.score.toString()
-        holder.collegeLogo.setImageResource(item.logo) // Bind the logo image
+    @Override
+    public LeaderboardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_leaderboard, parent, false);
+        return new LeaderboardViewHolder(view);
     }
 
-    override fun getItemCount(): Int = leaderboardList.size
+    @Override
+    public void onBindViewHolder(LeaderboardViewHolder holder, int position) {
+        LeaderboardItem item = leaderboardList.get(position);
+        holder.rank.setText(String.valueOf(position + 1)); // Display rank starting from 1
+        holder.score.setText(String.valueOf(item.getScore()));
+        holder.collegeLogo.setImageResource(item.getLogo()); // Bind the logo image
+    }
 
-    class LeaderboardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val rank: TextView = itemView.findViewById(R.id.rank)
-        val collegeLogo: ImageView = itemView.findViewById(R.id.collegeLogo) // College logo
-        val score: TextView = itemView.findViewById(R.id.score)
+    @Override
+    public int getItemCount() {
+        return leaderboardList.size();
+    }
+
+    public static class LeaderboardViewHolder extends RecyclerView.ViewHolder {
+        public final TextView rank;
+        public final ImageView collegeLogo;
+        public final TextView score;
+
+        public LeaderboardViewHolder(View itemView) {
+            super(itemView);
+            rank = itemView.findViewById(R.id.rank);
+            collegeLogo = itemView.findViewById(R.id.collegeLogo); // College logo
+            score = itemView.findViewById(R.id.score);
+        }
     }
 }
 
