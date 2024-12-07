@@ -31,16 +31,16 @@ public class UserParcelable implements Parcelable {
     }
 
     protected UserParcelable(Parcel in) {
-        userId = in.readString();
-        email = in.readString();
-        srCode = in.readString();
-        firstName = in.readString();
-        lastName = in.readString();
-        institution = in.readString();
-        institutionLogo = in.readString();
-        campus = in.readString();
-        department = in.readString();
-        avatarUrl = in.readString();
+        userId = in.readString() != null ? in.readString() : "";
+        email = in.readString() != null ? in.readString() : "";
+        srCode = in.readString() != null ? in.readString() : "";
+        firstName = in.readString() != null ? in.readString() : "";
+        lastName = in.readString() != null ? in.readString() : "";
+        institution = in.readString() != null ? in.readString() : "";
+        institutionLogo = in.readString() != null ? in.readString() : "";
+        campus = in.readString() != null ? in.readString() : "";
+        department = in.readString();  // Can be null
+        avatarUrl = in.readString();   // Can be null
     }
 
     @Override
