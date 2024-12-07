@@ -13,7 +13,7 @@ public class ClusterMarker implements ClusterItem {
     private final String caption;
     private final String createdDate;
     private final String institutionId;
-    private final String phototChall;
+    private final String photoChall;
     private final String institution;
     private final String campus;
     private final String institutionLogo;
@@ -34,7 +34,7 @@ public class ClusterMarker implements ClusterItem {
         this.caption = caption;
         this.createdDate = createdDate;
         this.institutionId = institutionId;
-        this.phototChall = phototChall;
+        this.photoChall = phototChall;
         this.institution = institution;
         this.campus = campus;
         this.institutionLogo = institutionLogo;
@@ -54,7 +54,7 @@ public class ClusterMarker implements ClusterItem {
 
     @Override
     public String getSnippet() {
-        return phototChall;
+        return photoChall;
     }
 
     @Override
@@ -90,8 +90,8 @@ public class ClusterMarker implements ClusterItem {
         return institutionId;
     }
 
-    public String getPhototChall() {
-        return phototChall;
+    public String getPhotoChall() {
+        return photoChall;
     }
 
     public String getInstitution() {
