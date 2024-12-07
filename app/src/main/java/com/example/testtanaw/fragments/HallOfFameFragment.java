@@ -1,17 +1,21 @@
-package com.example.testtanaw
+package com.example.testtanaw.fragments;
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.example.testtanaw.R
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import com.example.testtanaw.R;
 
-class HallOfFameFragment : Fragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_hall_of_fame, container, false)
+public class HallOfFameFragment extends Fragment {
+    
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                            @Nullable ViewGroup container,
+                            @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_hall_of_fame, container, false);
     }
 }
