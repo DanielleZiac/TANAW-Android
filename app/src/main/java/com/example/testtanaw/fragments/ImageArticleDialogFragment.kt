@@ -33,17 +33,17 @@ public class ImageArticleDialogFragment extends DialogFragment {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-                            @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialog_image_article, container, false);
+                            savedInstanceState: Bundle?) {
+        return inflater.inflate(R.layout.dialog_image_article, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState);
 
-        Bundle args = getArguments();
+        val args = arguments
         if (args != null) {
-            imageResource = args.getInt(IMAGE_KEY, 0);
-            articleText = args.getString(ARTICLE_KEY, "");
+            imageResource = args.getInt(IMAGE_KEY, 0)
+            articleText = args.getString(ARTICLE_KEY, "")
         }
 
         val imageView: ImageView = view.findViewById(R.id.dialog_image)
