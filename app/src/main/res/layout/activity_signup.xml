@@ -156,7 +156,6 @@
                 android:id="@+id/termsAndConditions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick=""
                 android:text="Terms and Conditions"
                 android:textColor="@color/navy_300"
                 android:textSize="14sp" />

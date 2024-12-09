@@ -240,6 +240,7 @@
 
             <Button
                 android:id="@+id/confirm_avatar"
+                android:onClick="saveAvatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

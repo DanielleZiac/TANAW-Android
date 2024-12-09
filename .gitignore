@@ -19,3 +19,9 @@ gradle/
 /gradle/wrapper/gradle-wrapper.properties
 gradle/wrapper/gradle-wrapper.jar
 secrets.properties
+app/google-services.json
+/.aider/*
+.aider/*
+.aider.*
+.aider.*/*
+/.aider

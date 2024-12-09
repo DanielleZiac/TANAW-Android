@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="90dp"
@@ -48,8 +48,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:padding="5dp"
                     android:background="@drawable/rounded_corner"
+                    android:padding="5dp"
                     android:text="Caption 2"
                     android:textAlignment="center"
                     android:textColor="@color/black"

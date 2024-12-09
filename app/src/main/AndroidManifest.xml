@@ -2,15 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
-
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -19,38 +12,18 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TestTANAW"
+        android:theme="@style/Theme.TanawAndroidJava"
         tools:targetApi="31">
         <activity
-            android:name=".TermsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".CameraActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AvatarActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SdgMapActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ProfileActivity"
-            android:exported="false" />
-        <activity android:name=".ContactActivity" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}" />
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" /> <!-- Main Activity -->
-        <activity
             android:name=".MainActivity"
-            android:exported="true" />
-        <activity android:name=".AboutUsActivity">
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <!-- Optional intent filter can be added here -->
-        </activity> <!-- Login Activity (Now the landing page) -->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SignUpActivity" />
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -60,12 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- SignUp Activity -->
-        <activity android:name=".SignUpActivity" />
-        <activity
-            android:name=".util.Maps"
-            android:exported="false"
-            android:label="@string/title_activity_maps"
-            android:theme="@style/Theme.TestTANAW" />
+        <activity android:name=".AvatarActivity" android:exported="false" />
     </application>
 
 </manifest>
