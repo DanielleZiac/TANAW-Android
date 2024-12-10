@@ -1,5 +1,6 @@
 package com.example.testtanaw;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -177,9 +178,11 @@ public class AvatarActivity extends AppCompatActivity {
                 .set(avatar)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(AvatarActivity.this, "User data saved successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AvatarActivity.this, "Avatar saved successfully", Toast.LENGTH_SHORT).show();
 
-                        // TODO: To ProfileActivity
+                        // redirect to MainActivity
+                        Intent intent = new Intent(AvatarActivity.this, MainActivity.class);
+                        startActivity(intent);
                     } else {
                         Toast.makeText(AvatarActivity.this, "Failed to save avatar data: " + task.getException().getMessage(),
                                 Toast.LENGTH_SHORT).show();

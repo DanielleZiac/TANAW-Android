@@ -2,8 +2,7 @@ package com.example.testtanaw.models;
 
 public class Constants {
     public static final String BUCKET = "gs://tanaw-android.firebasestorage.app";
-    public static final String BUCKET_USER_AVATARS_PATH = "users/avatars";
-    public static final String BUCKET_USERS_AVATAR_PATH_FORMAT = "\"users/%s/avatar.png\"";
+    public static final String BUCKET_USERS_AVATAR_PATH_FORMAT = "users/%s/avatar.png";
 
     public static final String DB_USERS = "users";
     public static final String DB_AVATARS = "avatars";

@@ -42,7 +42,7 @@ public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     private FirebaseFirestore db;
-//    private Query mQuery;
+    //    private Query mQuery;
     private static final int LIMIT = 50;
 
     private EditText firstNameInput;
@@ -102,35 +102,22 @@ public class SignUpActivity extends AppCompatActivity {
         checkBoxTerms = findViewById(R.id.checkBoxTerms);
 
         // Handle spinner item selection
-            institutionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    Institution selectedInstitution = (Institution) parent.getItemAtPosition(position);
-                    Toast.makeText(
-                            SignUpActivity.this,
-                            "Selected: " + selectedInstitution.getInstitution(),
-                            Toast.LENGTH_SHORT
-                    ).show();
-                }
+        institutionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Institution selectedInstitution = (Institution) parent.getItemAtPosition(position);
+                Toast.makeText(
+                        SignUpActivity.this,
+                        "Selected: " + selectedInstitution.getInstitution(),
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                    // Handle no selection case if needed
-                }
-            });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        // TODO: handle with or without user logged in
-        FirebaseUser authUser = mAuth.getCurrentUser();
-        if (authUser != null) {
-            Log.d(TAG, "onStart" + authUser.getDisplayName());
-        } else {
-            Log.d(TAG, "onStart -- no user");
-        }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle no selection case if needed
+            }
+        });
     }
 
     // Sign-Up button click handler
@@ -151,9 +138,6 @@ public class SignUpActivity extends AppCompatActivity {
         }
         String institutionId = selectedInstitution.getId();
         String emailExtension = selectedInstitution.getEmailExtension();
-
-        Log.d("onSignUpClicked", emailExtension);
-        Log.d("onSignUpClicked", institutionId);
 
         // Validate inputs
         if (!password.equals(confirmPassword)) {
@@ -214,8 +198,9 @@ public class SignUpActivity extends AppCompatActivity {
                         }
 
                         // redirect to LoginActivity
-                        Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                        Intent intent = new Intent(SignUpActivity.this, AvatarActivity.class);
                         startActivity(intent);
+
                     } else {
                         // If sign-up fails, display a message to the user
                         Toast.makeText(SignUpActivity.this, "Sign-up failed: " + task.getException().getMessage(),
