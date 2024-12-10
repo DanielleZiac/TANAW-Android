@@ -55,5 +55,9 @@ public class Avatar {
     public String getBg() {
         return bg;
     }
+
+    public static String getUserAvatarPath(String userId) {
+        return String.format(Constants.BUCKET_USERS_AVATAR_PATH_FORMAT, userId);
+    }
 }
 

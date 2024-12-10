@@ -16,7 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.testtanaw.models.Avatar;
+import com.example.testtanaw.models.Constants;
 import com.example.testtanaw.models.Institution;
+import com.example.testtanaw.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -122,9 +124,10 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            Log.d(TAG, "onStart" + user.getDisplayName());
+        // TODO: handle with or without user logged in
+        FirebaseUser authUser = mAuth.getCurrentUser();
+        if (authUser != null) {
+            Log.d(TAG, "onStart" + authUser.getDisplayName());
         } else {
             Log.d(TAG, "onStart -- no user");
         }
@@ -198,9 +201,16 @@ public class SignUpActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         // Sign-up successful, get the signed-in user's UID
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null) {
-                            saveUserDataToFirestore(user.getUid(), firstName, lastName, srCode, institutionId);
+                        FirebaseUser authUser = mAuth.getCurrentUser();
+                        if (authUser != null) {
+                            User newUser = new User();
+                            newUser.setId(authUser.getUid());
+                            newUser.setFirstName(firstName);
+                            newUser.setEmail(email);
+                            newUser.setLastName(lastName);
+                            newUser.setSrCode(srCode);
+                            newUser.setInstitutionId(institutionId);
+                            saveUserDataToFirestore(newUser);
                         }
 
                         // redirect to LoginActivity
@@ -214,19 +224,11 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
-    private void saveUserDataToFirestore(String userId, String firstName, String lastName, String srCode, String institutionId) {
-        // Create a map to hold user data
-        Map<String, Object> userData = new HashMap<>();
-        userData.put("user_id", userId);
-        userData.put("first_name", firstName);
-        userData.put("last_name", lastName);
-        userData.put("sr_code", srCode);
-        userData.put("institution_id", institutionId);
-
+    private void saveUserDataToFirestore(User user) {
         // Save data to Firestore under the "users" collection
-        db.collection("users")
-                .document(userId)
-                .set(userData)
+        db.collection(Constants.DB_USERS)
+                .document(user.getId())
+                .set(user)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(SignUpActivity.this, "User data saved successfully", Toast.LENGTH_SHORT).show();

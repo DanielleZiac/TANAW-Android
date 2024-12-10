@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.testtanaw.models.Avatar;
+import com.example.testtanaw.models.Constants;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,7 +40,7 @@ public class AvatarActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseStorage storage;
-    private FirebaseUser currentUser;
+    private FirebaseUser authUser;
     private Avatar currentAvatar;
 
     private ImageView avatarBackground;
@@ -50,9 +51,9 @@ public class AvatarActivity extends AppCompatActivity {
     private ImageView avatarShirt;
 
     private String bg;
-    private String gender = "boy";
+    private String gender = Constants.GENDER_BOY;
     private String eyewear = null;
-    private String shirtStyle = "polo";
+    private String shirtStyle = Constants.SHIRT_STYLE_POLO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +63,12 @@ public class AvatarActivity extends AppCompatActivity {
         // Initialize Firebase instances
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        storage = FirebaseStorage.getInstance("gs://tanaw-android.firebasestorage.app");
+        storage = FirebaseStorage.getInstance(Constants.BUCKET);
 
-        currentUser = mAuth.getCurrentUser();
+        authUser = mAuth.getCurrentUser();
 
-        if (currentUser != null) {
-            fetchSingleAvatarData(currentUser.getUid(), new FirestoreCallback() {
+        if (authUser != null) {
+            fetchSingleAvatarData(authUser.getUid(), new FirestoreCallback() {
                 @Override
                 public void onCallback(Avatar userAvatar) {
                     currentAvatar = userAvatar;
@@ -85,7 +86,7 @@ public class AvatarActivity extends AppCompatActivity {
     }
 
     private void fetchSingleAvatarData(String userId, FirestoreCallback callback) {
-        db.collection("avatars").whereEqualTo("user_id", userId).limit(1) // Limit the query to 1 document
+        db.collection(Constants.DB_AVATARS).whereEqualTo("userId", userId).limit(1) // Limit the query to 1 document
                 .get().addOnCompleteListener(task -> {
                     if (task.isSuccessful() && !task.getResult().isEmpty()) {
                         // Get the first (and only) matching document
@@ -122,14 +123,14 @@ public class AvatarActivity extends AppCompatActivity {
     }
 
     public void saveAvatar(View view) {
-        if (currentUser != null) {
-            Log.d(TAG, "user: " + currentUser.getEmail());
+        if (authUser != null) {
+            Log.d(TAG, "user: " + authUser.getEmail());
             Log.d(TAG, eyewear + ", " + shirtStyle + ", " + gender + ", " + bg);
 
             if (bg != null) {
                 // save
-                String path = "users/avatars/" + currentUser.getUid() + "/" + UUID.randomUUID() + ".png";
-                Avatar newAvatar = new Avatar(currentUser.getUid(), path, bg, null, null, gender, shirtStyle, null, eyewear);
+                String path = Avatar.getUserAvatarPath(authUser.getUid());
+                Avatar newAvatar = new Avatar(authUser.getUid(), path, bg, null, null, gender, shirtStyle, null, eyewear);
                 uploadAvatarImage(newAvatar, path);
                 saveAvatarDataToFirestore(newAvatar);
             } else {
@@ -141,7 +142,7 @@ public class AvatarActivity extends AppCompatActivity {
     }
 
     public void uploadAvatarImage(Avatar avatar, String path) {
-        if (currentUser == null) {
+        if (authUser == null) {
             Log.e(TAG, "uploadAvatarImage: User is not authenticated");
             return;
         }
@@ -171,7 +172,7 @@ public class AvatarActivity extends AppCompatActivity {
 
     private void saveAvatarDataToFirestore(Avatar avatar) {
         // Save data to Firestore under the "avatars" collection
-        db.collection("avatars")
+        db.collection(Constants.DB_AVATARS)
                 .document(avatar.getUserId())
                 .set(avatar)
                 .addOnCompleteListener(task -> {
@@ -190,11 +191,11 @@ public class AvatarActivity extends AppCompatActivity {
         Switch glassesSwitch = findViewById(R.id.glasses);
 
         if (currentAvatar != null) {
-            glassesSwitch.setChecked(currentAvatar.getEyewear() == "glassses");
+            glassesSwitch.setChecked(currentAvatar.getEyewear() == Constants.EYEWEAR_GLASSES);
         }
 
         glassesSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            eyewear = isChecked ? "glasses" : null;
+            eyewear = isChecked ? Constants.EYEWEAR_GLASSES : null;
             avatarGlasses.setImageResource(isChecked ? R.drawable.glasses : 0);
         });
     }
@@ -203,18 +204,18 @@ public class AvatarActivity extends AppCompatActivity {
         Switch shirtSwitch = findViewById(R.id.shirt);
 
         if (currentAvatar != null) {
-            shirtSwitch.setChecked(currentAvatar.getShirtStyle() == "polo");
+            shirtSwitch.setChecked(currentAvatar.getShirtStyle() == Constants.SHIRT_STYLE_POLO);
         }
 
         shirtSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            shirtStyle = isChecked ? "polo" : "shirt";
+            shirtStyle = isChecked ? Constants.SHIRT_STYLE_POLO : Constants.SHIRT_STYLE_SHIRT;
             avatarShirt.setImageResource(isChecked ? R.drawable.polo : R.drawable.shirt);
         });
     }
 
     private void setupGenderButtons() {
         if (currentAvatar != null) {
-            if (currentAvatar.getGender() == "boy") {
+            if (currentAvatar.getGender() == Constants.GENDER_BOY) {
                 avatarGender.setImageResource(R.drawable.boy);
             } else {
                 avatarGender.setImageResource(R.drawable.girl);
@@ -225,25 +226,25 @@ public class AvatarActivity extends AppCompatActivity {
         Button girlButton = findViewById(R.id.girl);
 
         boyButton.setOnClickListener(v -> {
-            gender = "boy";
+            gender = Constants.GENDER_BOY;
             avatarGender.setImageResource(R.drawable.boy);
         });
 
         girlButton.setOnClickListener(v -> {
-            gender = "girl";
+            gender = Constants.GENDER_GIRL;
             avatarGender.setImageResource(R.drawable.girl);
         });
     }
 
     private void setupCollegeButtons() {
         if (currentAvatar != null) {
-            if (currentAvatar.getBg() == "coe") {
+            if (currentAvatar.getBg() == Constants.DEPT_COE) {
                 avatarBackground.setImageResource(R.drawable.bg_coe);
-            } else if (currentAvatar.getBg() == "cics") {
+            } else if (currentAvatar.getBg() == Constants.DEPT_CICS) {
                 avatarBackground.setImageResource(R.drawable.bg_cics);
-            } else if (currentAvatar.getBg() == "cafad") {
+            } else if (currentAvatar.getBg() == Constants.DEPT_CAFAD) {
                 avatarBackground.setImageResource(R.drawable.bg_cafad);
-            } else if (currentAvatar.getBg() == "cet") {
+            } else if (currentAvatar.getBg() == Constants.DEPT_CET) {
                 avatarBackground.setImageResource(R.drawable.bg_cet);
             }
         }
@@ -254,22 +255,22 @@ public class AvatarActivity extends AppCompatActivity {
         Button cetButton = findViewById(R.id.cet);
 
         coeButton.setOnClickListener(v -> {
-            bg = "coe";
+            bg = Constants.DEPT_COE;
             avatarBackground.setImageResource(R.drawable.bg_coe);
         });
 
         cicsButton.setOnClickListener(v -> {
-            bg = "cics";
+            bg = Constants.DEPT_CICS;
             avatarBackground.setImageResource(R.drawable.bg_cics);
         });
 
         cafadButton.setOnClickListener(v -> {
-            bg = "cafad";
+            bg = Constants.DEPT_CAFAD;
             avatarBackground.setImageResource(R.drawable.bg_cafad);
         });
 
         cetButton.setOnClickListener(v -> {
-            bg = "cet";
+            bg = Constants.DEPT_CET;
             avatarBackground.setImageResource(R.drawable.bg_cet);
         });
     }
@@ -284,39 +285,39 @@ public class AvatarActivity extends AppCompatActivity {
         Bitmap eyeBitmap = BitmapFactory.decodeResource(resources, R.drawable.eyes_opened);
         Bitmap smileBitmap = BitmapFactory.decodeResource(resources, R.drawable.mouth_closed);
 
-        if (Objects.equals(avatar.getEyewear(), "glasses")) {
+        if (Objects.equals(avatar.getEyewear(), Constants.EYEWEAR_GLASSES)) {
             eyewearBitmap = BitmapFactory.decodeResource(resources, R.drawable.glasses);
         }
 
         switch (avatar.getShirtStyle()) {
-            case "shirt":
+            case Constants.SHIRT_STYLE_SHIRT:
                 shirtStyleBitmap = BitmapFactory.decodeResource(resources, R.drawable.shirt);
                 break;
-            case "polo":
+            case Constants.SHIRT_STYLE_POLO:
                 shirtStyleBitmap = BitmapFactory.decodeResource(resources, R.drawable.polo);
                 break;
         }
 
         switch (avatar.getGender()) {
-            case "boy":
+            case Constants.GENDER_BOY:
                 sexBitmap = BitmapFactory.decodeResource(resources, R.drawable.boy);
                 break;
-            case "girl":
+            case Constants.GENDER_GIRL:
                 sexBitmap = BitmapFactory.decodeResource(resources, R.drawable.girl);
                 break;
         }
 
         switch (avatar.getBg()) {
-            case "cics":
+            case Constants.DEPT_CICS:
                 bgBitmap = BitmapFactory.decodeResource(resources, R.drawable.bg_cics);
                 break;
-            case "coe":
+            case Constants.DEPT_COE:
                 bgBitmap = BitmapFactory.decodeResource(resources, R.drawable.bg_coe);
                 break;
-            case "cet":
+            case Constants.DEPT_CET:
                 bgBitmap = BitmapFactory.decodeResource(resources, R.drawable.bg_cet);
                 break;
-            case "cafad":
+            case Constants.DEPT_CAFAD:
                 bgBitmap = BitmapFactory.decodeResource(resources, R.drawable.bg_cafad);
                 break;
         }
@@ -352,27 +353,6 @@ public class AvatarActivity extends AppCompatActivity {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         overlayedBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
-    }
-
-    private void setupConfirmButton(String userId) {
-        if (userId != null) {
-            // update
-        } else {
-            // save new avatar
-        }
-
-        Button confirmButton = findViewById(R.id.confirm_avatar);
-        confirmButton.setOnClickListener(v -> {
-            Log.d("xxxxxx", eyewear + ", " + shirtStyle + ", " + gender + ", " + bg);
-
-//            crud.saveAvatar(getResources(), userId, eyewear, shirtStyle, sex, bg)
-//                    .thenAccept(newUrl -> {
-//                        Log.d("xxxxxx", String.valueOf(newUrl));
-//                        Intent intent = new Intent(AvatarActivity.this, ProfileActivity.class);
-//                        startActivity(intent);
-//                        finish();
-//                    });
-        });
     }
 }
 

@@ -33,10 +33,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Firebase Auth instance
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser authUser = mAuth.getCurrentUser();
 
-        if (currentUser != null) {
-            Log.d(TAG, "with user logged in -- email: " + currentUser.getEmail() + " | id: " + currentUser.getUid());
+        // TODO: to remove
+        if (authUser != null) {
+            Log.d(TAG, "with user logged in -- email: " + authUser.getEmail() + " | id: " + authUser.getUid());
         } else {
             Log.d(TAG, "no user logged in");
         }
@@ -45,8 +46,10 @@ public class MainActivity extends AppCompatActivity {
         // Set up profile icon
         ImageButton profileIcon = findViewById(R.id.profileIcon);
         profileIcon.setOnClickListener(v -> {
-            if (currentUser != null) {
-                Intent intent = new Intent(MainActivity.this, AvatarActivity.class);
+            // TODO: to change
+            if (authUser != null) {
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                intent.putExtra("USER_UID", authUser.getUid());
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(MainActivity.this, SignUpActivity.class);

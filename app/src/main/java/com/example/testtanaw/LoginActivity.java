@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.testtanaw.adapters.InstitutionSpinnerAdapter;
+import com.example.testtanaw.models.Constants;
 import com.example.testtanaw.models.Institution;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -52,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         institutionSpinner = findViewById(R.id.institution_spinner);
 
         // Get institutions from Firestore
-        db.collection("institutions")
+        db.collection(Constants.DB_INSTITUTIONS)
                 .orderBy("institution", Query.Direction.ASCENDING)
                 .limit(LIMIT)
                 .get()
@@ -101,9 +102,9 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         // Sign in success, get user data and redirect
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null) {
-                            fetchUserDataAndRedirect(user.getUid());
+                        FirebaseUser authUser = mAuth.getCurrentUser();
+                        if (authUser != null) {
+                            fetchUserDataAndRedirect(authUser.getUid());
                         }
                     } else {
                         // If sign in fails, display a message to the user
@@ -121,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void fetchUserDataAndRedirect(String userId) {
-        db.collection("users").document(userId)
+        db.collection(Constants.DB_USERS).document(userId)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
