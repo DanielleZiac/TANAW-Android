@@ -89,7 +89,11 @@ public class MainActivity extends AppCompatActivity {
             }
             return false; // Return false if the item is not handled
         });
+
+        // Firebase Auth and Storage instance
+        mAuth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance(Constants.BUCKET);
+        FirebaseUser authUser = mAuth.getCurrentUser();
 
         ImageButton profileIcon = findViewById(R.id.profileIcon);
         ShapeableImageView roundedImageView = findViewById(R.id.roundedImageView);
