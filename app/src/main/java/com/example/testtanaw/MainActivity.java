@@ -17,6 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.testtanaw.fragments.FeedbackModalFragment;
 import com.example.testtanaw.fragments.ExploreFragment;
 import com.example.testtanaw.fragments.HomeFragment;
+import com.example.testtanaw.fragments.InboxFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.example.testtanaw.models.Avatar;
@@ -74,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Set ExploreFragment as the default fragment
         if (savedInstanceState == null) {
-            loadFragment(new ExploreFragment());  // Load ExploreFragment initially
-            bottomNavigationView.setSelectedItemId(R.id.nav_explore); // Set nav_explore as selected
+            loadFragment(new HomeFragment());  // Load ExploreFragment initially
+            bottomNavigationView.setSelectedItemId(R.id.nav_home); // Set nav_explore as selected
         }
 
         // Set up listener for bottom navigation item selection
@@ -85,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;  // Return true to indicate selection is handled
             } else if (menuItem.getItemId() == R.id.nav_home) {  // Add Home navigation
                 loadFragment(new HomeFragment());
+                return true;
+            }   else if (menuItem.getItemId() == R.id.nav_inbox) {  // Add Home navigation
+                loadFragment(new InboxFragment());
                 return true;
             }
             return false; // Return false if the item is not handled
