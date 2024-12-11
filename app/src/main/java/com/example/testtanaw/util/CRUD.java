@@ -1,9 +1,19 @@
 package com.example.testtanaw.util;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.util.Log;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.SetOptions;
 import com.example.testtanaw.R;
+
+import java.io.ByteArrayOutputStream;
 
 public class CRUD {
     private static final String defaultAvatarUrl = "https://srxhcymqociarjinmkpp.supabase.co/storage/v1/object/public/avatars/default/d8598e52-34b0-4f96-b7a7-e0ff3df7b2cb";
+    private static final FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     public static class SdgPhoto {
         private String userSdgId;
@@ -23,9 +33,9 @@ public class CRUD {
 
         // Constructor
         public SdgPhoto(String userSdgId, String userId, String sdgNumber, String url,
-                       String caption, String createdDate, String institutionId,
-                       String phototChall, String institution, String campus,
-                       String institutionLogo, double lat, double lng, String avatarUrl) {
+                        String caption, String createdDate, String institutionId,
+                        String phototChall, String institution, String campus,
+                        String institutionLogo, double lat, double lng, String avatarUrl) {
             this.userSdgId = userSdgId;
             this.userId = userId;
             this.sdgNumber = sdgNumber;
@@ -57,6 +67,14 @@ public class CRUD {
         public double getLat() { return lat; }
         public double getLng() { return lng; }
         public String getAvatarUrl() { return avatarUrl; }
+
+        // Firebase save method
+        public void saveToFirebase() {
+            DocumentReference docRef = firestore.collection("SdgPhotos").document(userSdgId);
+            docRef.set(this, SetOptions.merge())
+                    .addOnSuccessListener(aVoid -> Log.d("CRUD", "SdgPhoto successfully written!"))
+                    .addOnFailureListener(e -> Log.w("CRUD", "Error writing SdgPhoto", e));
+        }
     }
 
     public static class UserAvatarData {
@@ -72,8 +90,8 @@ public class CRUD {
 
         // Constructor
         public UserAvatarData(String avatarId, String userId, String avatarUrl,
-                            String bg, String eye, String sex, String shirtStyle,
-                            String smile, String eyewear) {
+                              String bg, String eye, String sex, String shirtStyle,
+                              String smile, String eyewear) {
             this.avatarId = avatarId;
             this.userId = userId;
             this.avatarUrl = avatarUrl;
@@ -95,6 +113,14 @@ public class CRUD {
         public String getShirtStyle() { return shirtStyle; }
         public String getSmile() { return smile; }
         public String getEyewear() { return eyewear; }
+
+        // Firebase save method
+        public void saveToFirebase() {
+            DocumentReference docRef = firestore.collection("UserAvatars").document(avatarId);
+            docRef.set(this, SetOptions.merge())
+                    .addOnSuccessListener(aVoid -> Log.d("CRUD", "UserAvatarData successfully written!"))
+                    .addOnFailureListener(e -> Log.w("CRUD", "Error writing UserAvatarData", e));
+        }
     }
 
     public static class LeaderboardSchool {
@@ -107,8 +133,8 @@ public class CRUD {
 
         // Constructor
         public LeaderboardSchool(String institutionId, String institution,
-                               String campus, String departmentLogo,
-                               String department, int count) {
+                                 String campus, String departmentLogo,
+                                 String department, int count) {
             this.institutionId = institutionId;
             this.institution = institution;
             this.campus = campus;
@@ -124,9 +150,35 @@ public class CRUD {
         public String getDepartmentLogo() { return departmentLogo; }
         public String getDepartment() { return department; }
         public int getCount() { return count; }
+
+        // Firebase save method
+        public void saveToFirebase() {
+            DocumentReference docRef = firestore.collection("LeaderboardSchools").document(institutionId);
+            docRef.set(this, SetOptions.merge())
+                    .addOnSuccessListener(aVoid -> Log.d("CRUD", "LeaderboardSchool successfully written!"))
+                    .addOnFailureListener(e -> Log.w("CRUD", "Error writing LeaderboardSchool", e));
+        }
     }
 
-    // Additional methods would go here, converted from Kotlin
-    // These would need to be adapted to use Java's async patterns
-    // rather than Kotlin coroutines
+    // Additional methods for image combination
+    public static byte[] combineAvatars(Bitmap bgBitmap, Bitmap sexBitmap, Bitmap shirtStyleBitmap, Bitmap eyeBitmap, Bitmap smileBitmap, Bitmap eyewearBitmap) {
+        if (bgBitmap == null || sexBitmap == null || shirtStyleBitmap == null || eyeBitmap == null || smileBitmap == null) {
+            throw new IllegalArgumentException("Invalid background or image");
+        }
+
+        Bitmap combinedBitmap = Bitmap.createBitmap(bgBitmap.getWidth(), bgBitmap.getHeight(), bgBitmap.getConfig());
+        Canvas canvas = new Canvas(combinedBitmap);
+        canvas.drawBitmap(bgBitmap, 0, 0, null);
+        canvas.drawBitmap(sexBitmap, 100, 80, null);
+        canvas.drawBitmap(shirtStyleBitmap, 100, 80, null);
+        canvas.drawBitmap(eyeBitmap, 120, 100, null);
+        if (eyewearBitmap != null) {
+            canvas.drawBitmap(eyewearBitmap, 130, 90, null);
+        }
+        canvas.drawBitmap(smileBitmap, 140, 120, null);
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        combinedBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
 }

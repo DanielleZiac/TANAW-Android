@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import com.example.testtanaw.LeaderboardFragment;
-import com.example.testtanaw.InstitutionFragment;
+import com.example.testtanaw.fragments.LeaderboardFragment;
+import com.example.testtanaw.fragments.InstitutionFragment;
 import com.example.testtanaw.R;
 import com.example.testtanaw.fragments.SdgHomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -70,6 +70,7 @@ public class HomeFragment extends Fragment {
     private void replaceFragment(Fragment fragment) {
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.fragmentContainer, fragment)
+                .addToBackStack(null)
                 .commit();
     }
 }
