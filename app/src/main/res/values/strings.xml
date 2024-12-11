@@ -83,4 +83,6 @@ The App may contain links to third-party websites or services that are not opera
     7. Contact Information
     If you have any questions or concerns about these Terms and Conditions, please contact us at tanaw@gmail.com
 </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
