@@ -29,10 +29,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 public class AvatarActivity extends AppCompatActivity {
 
@@ -44,12 +41,6 @@ public class AvatarActivity extends AppCompatActivity {
     private FirebaseUser authUser;
     private Avatar currentAvatar;
 
-    private ImageView avatarBackground;
-    private ImageView avatarGender;
-    private ImageView avatarEyes;
-    private ImageView avatarMouth;
-    private ImageView avatarGlasses;
-    private ImageView avatarShirt;
 
     private String bg;
     private String gender = Constants.GENDER_BOY;
@@ -73,12 +64,18 @@ public class AvatarActivity extends AppCompatActivity {
                 @Override
                 public void onCallback(Avatar userAvatar) {
                     currentAvatar = userAvatar;
-                    initializeViews();
 
-                    setupGlassesSwitch();
-                    setupShirtSwitch();
-                    setupGenderButtons();
-                    setupCollegeButtons();
+                    // Set default values
+                    ImageView avatarEyes = findViewById(R.id.avatarEyes);
+                    avatarEyes.setImageResource(R.drawable.eyes_opened);
+
+                    ImageView avatarMouth = findViewById(R.id.avatarMouth);
+                    avatarMouth.setImageResource(R.drawable.mouth_closed);
+
+                    setupEyewear();
+                    setupShirtStyle();
+                    setupGender();
+                    setupCollege();
                 }
             });
         } else {
@@ -95,11 +92,6 @@ public class AvatarActivity extends AppCompatActivity {
                         Avatar userAvatar = document.toObject(Avatar.class);
                         callback.onCallback(userAvatar); // Pass the document data to the callback
                     } else {
-                        if (task.getResult().isEmpty()) {
-                            Log.d(TAG, "No document found for user_id: " + userId);
-                        } else {
-                            Log.e(TAG, "Failed to fetch user data: " + task.getException().getMessage());
-                        }
                         callback.onCallback(null); // Return null if no document is found or on failure
                     }
                 });
@@ -110,26 +102,9 @@ public class AvatarActivity extends AppCompatActivity {
         void onCallback(Avatar userAvatar);
     }
 
-    private void initializeViews() {
-        avatarBackground = findViewById(R.id.avatarBackground);
-        avatarGender = findViewById(R.id.avatarGender);
-        avatarEyes = findViewById(R.id.avatarEyes);
-        avatarMouth = findViewById(R.id.avatarMouth);
-        avatarGlasses = findViewById(R.id.avatarGlasses);
-        avatarShirt = findViewById(R.id.avatarShirt);
-
-        // Set constant components
-        avatarEyes.setImageResource(R.drawable.eyes_opened);
-        avatarMouth.setImageResource(R.drawable.mouth_closed);
-    }
-
     public void saveAvatar(View view) {
         if (authUser != null) {
-            Log.d(TAG, "user: " + authUser.getEmail());
-            Log.d(TAG, eyewear + ", " + shirtStyle + ", " + gender + ", " + bg);
-
             if (bg != null) {
-                // save
                 String path = Avatar.getUserAvatarPath(authUser.getUid());
                 Avatar newAvatar = new Avatar(authUser.getUid(), path, bg, null, null, gender, shirtStyle, null, eyewear);
                 uploadAvatarImage(newAvatar, path);
@@ -144,7 +119,6 @@ public class AvatarActivity extends AppCompatActivity {
 
     public void uploadAvatarImage(Avatar avatar, String path) {
         if (authUser == null) {
-            Log.e(TAG, "uploadAvatarImage: User is not authenticated");
             return;
         }
 
@@ -158,15 +132,12 @@ public class AvatarActivity extends AppCompatActivity {
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Use the correct context for Toast
-                Toast.makeText(getApplicationContext(), "Failed to upload avatar.", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Upload failed", exception);
+                Log.e(TAG, "Avatar image upload failed.", exception);
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                String uploadedPath = taskSnapshot.getStorage().getPath();
-                Log.d(TAG, "Uploaded to: " + uploadedPath);
+                Log.d(TAG, "Avatar image uploaded.");
             }
         });
     }
@@ -178,7 +149,7 @@ public class AvatarActivity extends AppCompatActivity {
                 .set(avatar)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(AvatarActivity.this, "Avatar saved successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AvatarActivity.this, "Avatar data saved.", Toast.LENGTH_SHORT).show();
 
                         // redirect to MainActivity
                         Intent intent = new Intent(AvatarActivity.this, MainActivity.class);
@@ -190,40 +161,63 @@ public class AvatarActivity extends AppCompatActivity {
                 });
     }
 
-    private void setupGlassesSwitch() {
+    private void setupEyewear() {
+        if (currentAvatar == null) {
+            return;
+        }
+
+        eyewear = currentAvatar.getEyewear() != null ? currentAvatar.getEyewear().trim() : null;
+
         Switch glassesSwitch = findViewById(R.id.glasses);
+        ImageView avatarGlasses = findViewById(R.id.avatarGlasses);
 
-        if (currentAvatar != null) {
-            glassesSwitch.setChecked(currentAvatar.getEyewear() == Constants.EYEWEAR_GLASSES);
-        }
+        boolean isChecked = Constants.EYEWEAR_GLASSES.equals(eyewear);
+        glassesSwitch.setChecked(isChecked);
+        avatarGlasses.setImageResource(isChecked ? R.drawable.glasses : 0);
 
-        glassesSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            eyewear = isChecked ? Constants.EYEWEAR_GLASSES : null;
-            avatarGlasses.setImageResource(isChecked ? R.drawable.glasses : 0);
+        glassesSwitch.setOnCheckedChangeListener((buttonView, isChecked1) -> {
+            eyewear = isChecked1 ? Constants.EYEWEAR_GLASSES : null;
+            avatarGlasses.setImageResource(isChecked1 ? R.drawable.glasses : 0);
         });
     }
 
-    private void setupShirtSwitch() {
+    private void setupShirtStyle() {
+        if (currentAvatar == null) {
+            return;
+        }
+
+        shirtStyle = currentAvatar.getShirtStyle().trim();
+
         Switch shirtSwitch = findViewById(R.id.shirt);
+        ImageView avatarShirt = findViewById(R.id.avatarShirt);
 
-        if (currentAvatar != null) {
-            shirtSwitch.setChecked(currentAvatar.getShirtStyle() == Constants.SHIRT_STYLE_POLO);
-        }
+        boolean isChecked = Constants.SHIRT_STYLE_POLO.equals(shirtStyle);
 
-        shirtSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            shirtStyle = isChecked ? Constants.SHIRT_STYLE_POLO : Constants.SHIRT_STYLE_SHIRT;
-            avatarShirt.setImageResource(isChecked ? R.drawable.polo : R.drawable.shirt);
+        shirtSwitch.setChecked(isChecked);
+        avatarShirt.setImageResource(isChecked ? R.drawable.polo : R.drawable.shirt);
+
+        shirtSwitch.setOnCheckedChangeListener((buttonView, isChecked1) -> {
+            shirtStyle = isChecked1 ? Constants.SHIRT_STYLE_POLO : Constants.SHIRT_STYLE_SHIRT;
+            avatarShirt.setImageResource(isChecked1 ? R.drawable.polo : R.drawable.shirt);
         });
     }
 
-    private void setupGenderButtons() {
-        if (currentAvatar != null) {
-            if (currentAvatar.getGender() == Constants.GENDER_BOY) {
-                avatarGender.setImageResource(R.drawable.boy);
-            } else {
-                avatarGender.setImageResource(R.drawable.girl);
-            }
+
+    private void setupGender() {
+        if (currentAvatar == null) {
+            return;
         }
+
+        gender = currentAvatar.getGender().trim();
+
+        ImageView avatarGender = findViewById(R.id.avatarGender);
+        boolean isBoy = Constants.GENDER_BOY.equals(gender);
+        if (isBoy) {
+            avatarGender.setImageResource(R.drawable.boy);
+        } else {
+            avatarGender.setImageResource(R.drawable.girl);
+        }
+
 
         Button boyButton = findViewById(R.id.boy);
         Button girlButton = findViewById(R.id.girl);
@@ -239,17 +233,22 @@ public class AvatarActivity extends AppCompatActivity {
         });
     }
 
-    private void setupCollegeButtons() {
-        if (currentAvatar != null) {
-            if (currentAvatar.getBg() == Constants.DEPT_COE) {
-                avatarBackground.setImageResource(R.drawable.bg_coe);
-            } else if (currentAvatar.getBg() == Constants.DEPT_CICS) {
-                avatarBackground.setImageResource(R.drawable.bg_cics);
-            } else if (currentAvatar.getBg() == Constants.DEPT_CAFAD) {
-                avatarBackground.setImageResource(R.drawable.bg_cafad);
-            } else if (currentAvatar.getBg() == Constants.DEPT_CET) {
-                avatarBackground.setImageResource(R.drawable.bg_cet);
-            }
+    private void setupCollege() {
+        if (currentAvatar == null) {
+            return;
+        }
+
+        bg = currentAvatar.getBg().trim();
+
+        ImageView avatarBackground = findViewById(R.id.avatarBackground);
+        if (Constants.DEPT_COE.equals(bg)) {
+            avatarBackground.setImageResource(R.drawable.bg_coe);
+        } else if (Constants.DEPT_CICS.equals(bg)) {
+            avatarBackground.setImageResource(R.drawable.bg_cics);
+        } else if (Constants.DEPT_CAFAD.equals(bg)) {
+            avatarBackground.setImageResource(R.drawable.bg_cafad);
+        } else if (Constants.DEPT_CET.equals(bg)) {
+            avatarBackground.setImageResource(R.drawable.bg_cet);
         }
 
         Button coeButton = findViewById(R.id.coe);

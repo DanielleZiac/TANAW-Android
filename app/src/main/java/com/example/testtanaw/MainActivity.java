@@ -2,7 +2,10 @@ package com.example.testtanaw;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,11 +19,24 @@ import com.example.testtanaw.fragments.ExploreFragment;
 import com.example.testtanaw.fragments.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.example.testtanaw.models.Avatar;
+import com.example.testtanaw.models.Constants;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+
+    private FirebaseAuth mAuth;
+    private FirebaseStorage storage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +66,6 @@ public class MainActivity extends AppCompatActivity {
         ImageButton hamburgerMenu = findViewById(R.id.hamburgerMenu);
         hamburgerMenu.setOnClickListener(v -> drawerLayout.openDrawer(navigationView));
 
-        // Set up profile icon click
-        ImageButton profileIcon = findViewById(R.id.profileIcon);
-        profileIcon.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-            startActivity(intent);
-        });
-
         // Set up navigation menu item clicks
         setupNavigationMenu();
 
@@ -80,6 +89,56 @@ public class MainActivity extends AppCompatActivity {
             }
             return false; // Return false if the item is not handled
         });
+        storage = FirebaseStorage.getInstance(Constants.BUCKET);
+
+        ImageButton profileIcon = findViewById(R.id.profileIcon);
+        ShapeableImageView roundedImageView = findViewById(R.id.roundedImageView);
+
+        if (authUser != null) {
+            // Show the rounded image
+            roundedImageView.setVisibility(View.VISIBLE);
+
+            // Hide the default icon
+            profileIcon.setVisibility(View.GONE);
+
+            StorageReference storageRef = storage.getReference();
+            String path = Avatar.getUserAvatarPath(authUser.getUid());
+            StorageReference avatarImageRef = storageRef.child(path);
+
+            // Get the avatar image URL
+            avatarImageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                // Load image using Picasso
+                Picasso.get()
+                        .load(uri.toString())
+                        .fit()
+                        .centerCrop()
+                        .placeholder(R.drawable.app_logo)
+                        .error(R.drawable.baseline_error_outline_24)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                        .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                        .into(roundedImageView);
+
+                roundedImageView.setOnClickListener(v -> {
+                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                    intent.putExtra("USER_UID", authUser.getUid());
+                    startActivity(intent);
+                });
+            }).addOnFailureListener(exception -> {
+                // Handle any errors
+                Toast.makeText(MainActivity.this, "Failed to load avatar: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+            });
+        } else {
+            // Show the default icon
+            profileIcon.setVisibility(View.VISIBLE);
+
+            // Hide the rounded image
+            roundedImageView.setVisibility(View.GONE);
+
+            profileIcon.setOnClickListener(v -> {
+                Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+                startActivity(intent);
+            });
+        }
     }
 
     private void setupNavigationMenu() {
