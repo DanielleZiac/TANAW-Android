@@ -26,8 +26,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Profile Settings"
-        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-        android:textColor="@color/white" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:textColor="@color/white" />
     </androidx.appcompat.widget.Toolbar>
 
     <!-- Content for the settings page -->
@@ -75,10 +75,14 @@
                 <TextView
                     android:id="@+id/srCode"
                     android:layout_width="170dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:text="22-07924"
                     android:textSize="26sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:autoSizeTextType="uniform"
+                    android:autoSizeMinTextSize="12sp"
+                    android:autoSizeMaxTextSize="26sp"
+                    android:autoSizeStepGranularity="1sp" />
 
                 <TextView
                     android:id="@+id/name"
@@ -88,6 +92,14 @@
                     android:text="Danielle Ziac Abril"
                     android:textSize="20sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/email"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="22-07924@g.batstate-u.edu.ph"
+                    android:textSize="11sp" />
 
                 <TextView
                     android:id="@+id/institution"
@@ -123,15 +135,25 @@
             android:layout_marginBottom="10dp"
             android:background="@color/teal_300" />
 
-        <TextView
-            android:id="@+id/currentEmail"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="313dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="22-07924@g.batstate-u.edu.ph"
-            android:textColor="@color/gray_500"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editTextFirstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/input_email"
+                android:ems="10"
+                android:hint="First name"
+                android:inputType="textPersonName"
+                android:padding="13dp"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="313dp"
@@ -139,26 +161,27 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editTextTextEmailAddress"
-                android:layout_width="0dp"
+                android:id="@+id/editTextLastName"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/input_email"
                 android:ems="10"
-                android:hint="Enter your new email"
-                android:inputType="textEmailAddress"
+                android:hint="Last name"
+                android:inputType="textPersonName"
                 android:padding="13dp"
                 android:textSize="14sp" />
 
         </LinearLayout>
 
         <Button
-            android:id="@+id/button"
-            android:layout_width="140dp"
+            android:id="@+id/updateFirstAndLastNameButton"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:backgroundTint="@color/teal_700"
-            android:text="Update Email"
+            android:text="Update"
             android:textSize="15sp" />
 
         <!-- Forgot Password -->
@@ -179,6 +202,7 @@
 
         <Button
             android:id="@+id/resetPassword"
+            android:onClick="onResetPassword"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -194,25 +218,13 @@
             android:background="@color/teal_300" />
 
         <Button
-            android:id="@+id/deleteAccount"
+            android:id="@+id/signOut"
+            android:onClick="onSignOut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/red_300"
-            android:text="Delete Account"
+            android:text="Sign out"
             android:textSize="16sp" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/saveProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="@color/white"
-        android:text="Save Changes"
-        android:textColor="@color/teal_700"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
