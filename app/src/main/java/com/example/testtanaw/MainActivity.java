@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Set ExploreFragment as the default fragment
         if (savedInstanceState == null) {
-            loadFragment(new ExploreFragment());  // Load ExploreFragment initially
-            bottomNavigationView.setSelectedItemId(R.id.nav_explore); // Set nav_explore as selected
+            loadFragment(new HomeFragment());  // Load ExploreFragment initially
+            bottomNavigationView.setSelectedItemId(R.id.nav_home); // Set nav_explore as selected
         }
 
         // Set up listener for bottom navigation item selection
