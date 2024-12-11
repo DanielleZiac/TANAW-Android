@@ -27,10 +27,16 @@ public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallb
 //            return insets;
 //        });
 
+        // Retrieve data passed from the adapter
+        String sdgTitle = getIntent().getStringExtra("SDG_TITLE");
+        int sdgNumber = getIntent().getIntExtra("sdgNumber", -1);
+
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragemnt);
         mapFragment.getMapAsync(this);
     }
 
+        // Add your logic here to handle the SDG details
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mGoogle = googleMap;

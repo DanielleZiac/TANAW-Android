@@ -41,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="THE 17 GOALS"
                 android:textSize="25sp"
+                android:layout_marginLeft="10sp"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/navy_300"
                 android:fontFamily="sans-serif-medium" />
