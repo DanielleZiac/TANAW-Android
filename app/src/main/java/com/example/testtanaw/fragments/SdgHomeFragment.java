@@ -57,11 +57,13 @@ public class SdgHomeFragment extends Fragment {
             }
         });
 
+        // Set up the RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.sdgRecyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3)); // 3 items per row
         recyclerView.setAdapter(adapter);
 
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.item_spacing);
+        // Add item decoration for spacing
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.item_spacing); // Define this dimension in res/values/dimens.xml
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, spacingInPixels, true));
 
         return view;
