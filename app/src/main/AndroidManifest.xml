@@ -35,6 +35,9 @@
         </activity> <!-- SignUp Activity -->
         <activity android:name=".AvatarActivity" android:exported="false" />
         <activity android:name=".ProfileActivity" />
+        <activity android:name=".AboutUsActivity" />
+        <activity android:name=".ContactActivity" />
+        <activity android:name=".TermsActivity" />
     </application>
 
 </manifest>
