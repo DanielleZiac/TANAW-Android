@@ -38,6 +38,8 @@
         <activity android:name=".AboutUsActivity" />
         <activity android:name=".ContactActivity" />
         <activity android:name=".TermsActivity" />
+        <activity android:name=".SdgMapActivity" />
+
     </application>
 
 </manifest>

@@ -13,6 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.testtanaw.fragments.FeedbackModalFragment;
 import com.example.testtanaw.fragments.ExploreFragment;
+import com.example.testtanaw.fragments.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -71,8 +72,11 @@ public class MainActivity extends AppCompatActivity {
         // Set up listener for bottom navigation item selection
         bottomNavigationView.setOnItemSelectedListener(menuItem -> {
             if (menuItem.getItemId() == R.id.nav_explore) {
-                loadFragment(new ExploreFragment()); // Only load ExploreFragment
+                loadFragment(new ExploreFragment());
                 return true;  // Return true to indicate selection is handled
+            } else if (menuItem.getItemId() == R.id.nav_home) {  // Add Home navigation
+                loadFragment(new HomeFragment());
+                return true;
             }
             return false; // Return false if the item is not handled
         });
