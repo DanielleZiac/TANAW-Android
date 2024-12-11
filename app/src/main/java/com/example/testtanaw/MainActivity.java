@@ -1,9 +1,7 @@
 package com.example.testtanaw;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,14 +12,12 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.testtanaw.fragments.FeedbackModalFragment;
+import com.example.testtanaw.fragments.ExploreFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
 
-    private FirebaseAuth mAuth;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
@@ -36,16 +32,6 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        // Firebase Auth instance
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser authUser = mAuth.getCurrentUser();
-
-        if (authUser != null) {
-            Log.d(TAG, "User logged in -- email: " + authUser.getEmail() + " | id: " + authUser.getUid());
-        } else {
-            Log.d(TAG, "No user logged in");
-        }
 
         // Initialize toolbar and navigation drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -63,33 +49,41 @@ public class MainActivity extends AppCompatActivity {
         ImageButton hamburgerMenu = findViewById(R.id.hamburgerMenu);
         hamburgerMenu.setOnClickListener(v -> drawerLayout.openDrawer(navigationView));
 
-        // Set up navigation menu item clicks
-        setupNavigationMenu(authUser);
-
         // Set up profile icon click
         ImageButton profileIcon = findViewById(R.id.profileIcon);
         profileIcon.setOnClickListener(v -> {
-            if (authUser != null) {
-                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                intent.putExtra("USER_UID", authUser.getUid());
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
-                startActivity(intent);
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        });
+
+        // Set up navigation menu item clicks
+        setupNavigationMenu();
+
+        // Initialize BottomNavigationView
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomAppBar);
+
+        // Set ExploreFragment as the default fragment
+        if (savedInstanceState == null) {
+            loadFragment(new ExploreFragment());  // Load ExploreFragment initially
+            bottomNavigationView.setSelectedItemId(R.id.nav_explore); // Set nav_explore as selected
+        }
+
+        // Set up listener for bottom navigation item selection
+        bottomNavigationView.setOnItemSelectedListener(menuItem -> {
+            if (menuItem.getItemId() == R.id.nav_explore) {
+                loadFragment(new ExploreFragment()); // Only load ExploreFragment
+                return true;  // Return true to indicate selection is handled
             }
+            return false; // Return false if the item is not handled
         });
     }
 
-    @SuppressLint("NonConstantResourceId")
-    private void setupNavigationMenu(FirebaseUser authUser) {
+    private void setupNavigationMenu() {
         navigationView.setNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
 
             if (itemId == R.id.nav_settings) {
                 Intent settingsIntent = new Intent(MainActivity.this, ProfileActivity.class);
-                if (authUser != null) {
-                    settingsIntent.putExtra("USER_UID", authUser.getUid());
-                }
                 startActivity(settingsIntent);
             } else if (itemId == R.id.nav_about) {
                 Intent aboutIntent = new Intent(MainActivity.this, AboutUsActivity.class);
@@ -101,12 +95,12 @@ public class MainActivity extends AppCompatActivity {
                 FeedbackModalFragment feedbackDialog = new FeedbackModalFragment();
                 feedbackDialog.show(getSupportFragmentManager(), "FeedbackDialog");
             } else if (itemId == R.id.nav_help) {
-                Log.d(TAG, "Help menu clicked");
+                // Handle Help menu
             } else if (itemId == R.id.nav_terms) {
                 Intent termsIntent = new Intent(MainActivity.this, TermsActivity.class);
                 startActivity(termsIntent);
             } else if (itemId == R.id.nav_logout) {
-                Log.d(TAG, "Logout menu clicked");
+                // Handle Logout
             } else {
                 return false;
             }
@@ -116,4 +110,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Method to load fragment
+    private void loadFragment(androidx.fragment.app.Fragment fragment) {
+        androidx.fragment.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);  // Optional: allows back navigation
+        transaction.commit();
+    }
 }
