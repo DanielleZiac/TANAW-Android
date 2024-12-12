@@ -197,8 +197,14 @@ public class SignUpActivity extends AppCompatActivity {
                             saveUserDataToFirestore(newUser);
                         }
 
+                        // TODO add default user avatar
+
+
+
+
+
                         // redirect to LoginActivity
-                        Intent intent = new Intent(SignUpActivity.this, AvatarActivity.class);
+                        Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                         startActivity(intent);
 
                     } else {
