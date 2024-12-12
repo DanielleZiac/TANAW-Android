@@ -98,7 +98,7 @@ public class SDGAdapter extends RecyclerView.Adapter<SDGAdapter.SDGViewHolder> {
             } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                 holder.sdgNumber.setVisibility(View.GONE);
             }
-            return true;
+            return false;
         });
 
         // Set click listener to navigate to SdgMapActivity
@@ -111,7 +111,7 @@ public class SDGAdapter extends RecyclerView.Adapter<SDGAdapter.SDGViewHolder> {
         });
 
         // Optional: Handle item click logic
-        holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(sdgItem));
+//        holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(sdgItem));
     }
 
     @Override

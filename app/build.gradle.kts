@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.picasso)
+    implementation(libs.firebase.crashlytics.buildtools)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -70,12 +71,22 @@ dependencies {
     implementation("com.google.firebase:firebase-storage")
 
 
+    // camera
+    val camerax_version = "1.4.0-alpha02"
+    implementation("androidx.camera:camera-core:${camerax_version}")
+    implementation("androidx.camera:camera-camera2:${camerax_version}")
+    implementation("androidx.camera:camera-lifecycle:${camerax_version}")
+    implementation("androidx.camera:camera-video:${camerax_version}")
+    implementation("androidx.camera:camera-view:${camerax_version}")
+    implementation("androidx.camera:camera-extensions:${camerax_version}")
+    implementation("com.google.guava:guava:30.1-android")
+
+
     // Layout
     implementation("androidx.gridlayout:gridlayout:1.0.0")
-
     implementation("com.squareup.picasso:picasso:2.8")
     implementation("com.makeramen:roundedimageview:2.3.0")
     implementation("com.google.android.material:material:1.9.0")
-
     implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation("androidx.cardview:cardview:1.0.0")
 }
