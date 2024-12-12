@@ -38,9 +38,9 @@ public class InstitutionFragment extends Fragment {
 
         // Hardcoded list of institutions
         List<Institution> institutionList = Arrays.asList(
-                new Institution("1", "BSU", "Batangas State University", "Main Campus", "bsu.edu", R.drawable.bsulogo),
-                new Institution("2", "ADMU", "Ateneo de Manila University", "Quezon City", "admu.edu", R.drawable.admulogo),
-                new Institution("3", "DLSU", "De La Salle University", "Makati", "dlsu.edu", R.drawable.dlsulogo)
+                new Institution("1", "BSU", "Batangas State University", "Alangilan", "bsu.edu", R.drawable.bsulogo),
+                new Institution("2", "ADMU", "Ateneo de Manila University", "Makati", "admu.edu", R.drawable.admulogo),
+                new Institution("3", "DLSU", "De La Salle University", "Dasmariñas", "dlsu.edu", R.drawable.dlsulogo)
         );
 
         // Set the Adapter with hardcoded data

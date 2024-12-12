@@ -36,12 +36,13 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/top2"
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/coe" />
+                android:contentDescription="@string/sdg1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/coe" />
+
 
             <View
                 android:id="@+id/bar2"
@@ -61,12 +62,12 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/top1"
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/cics" />
+                android:contentDescription="@string/sdg1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/cics" />
 
             <View
                 android:id="@+id/bar1"
@@ -86,12 +87,12 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/top3"
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/cafad" />
+                android:contentDescription="@string/sdg1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/cafad" />
 
             <View
                 android:id="@+id/bar3"
