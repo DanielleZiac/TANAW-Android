@@ -17,10 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
-import com.example.testtanaw.data.PhotoChallenges;
-import com.example.testtanaw.models.ClusterMarker;
-import com.example.testtanaw.util.CRUD;
-import com.example.testtanaw.util.ClusterManagerRenderer;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,13 +24,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.maps.android.clustering.ClusterManager;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
+
 
 public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private final int FINE_PERMISSION_CODE = 1;
@@ -129,20 +123,20 @@ public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallb
 
 
     private void updatePhotoChallenge() {
-        List<String> sdgChallenges = challenges.get(sdgNumber);
-        if (sdgChallenges != null && !sdgChallenges.isEmpty()) {
-            photoChallengeText.setText(sdgChallenges.get(currentChallengeIndex));
-        } else {
-            photoChallengeText.setText("No challenges available for this SDG.");
-        }
+//        List<String> sdgChallenges = challenges.get(sdgNumber);
+//        if (sdgChallenges != null && !sdgChallenges.isEmpty()) {
+//            photoChallengeText.setText(sdgChallenges.get(currentChallengeIndex));
+//        } else {
+//            photoChallengeText.setText("No challenges available for this SDG.");
+//        }
     }
 
     private void changePhotoChallenge() {
-        List<String> sdgChallenges = challenges.get(sdgNumber);
-        if (sdgChallenges != null && !sdgChallenges.isEmpty()) {
-            currentChallengeIndex = (currentChallengeIndex + 1) % sdgChallenges.size();
-            updatePhotoChallenge();
-        }
+//        List<String> sdgChallenges = challenges.get(sdgNumber);
+//        if (sdgChallenges != null && !sdgChallenges.isEmpty()) {
+//            currentChallengeIndex = (currentChallengeIndex + 1) % sdgChallenges.size();
+//            updatePhotoChallenge();
+//        }
     }
 
     private void showPopupMenu(View view) {

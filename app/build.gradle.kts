@@ -33,6 +33,18 @@ android {
     }
 }
 
+
+secrets {
+    propertiesFileName = "secrets.properties"
+    defaultPropertiesFileName = "local.properties"
+
+    // Configure which keys should be ignored by the plugin by providing regular expressions.
+    // "sdk.dir" is ignored by default.
+    ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
+    ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
+}
+
+
 dependencies {
 
     implementation(libs.appcompat)
@@ -40,7 +52,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.picasso)
-    implementation(libs.annotation.jvm)
+    implementation(libs.firebase.crashlytics.buildtools)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -69,13 +81,12 @@ dependencies {
     implementation("androidx.camera:camera-extensions:${camerax_version}")
     implementation("com.google.guava:guava:30.1-android")
 
+
     // Layout
     implementation("androidx.gridlayout:gridlayout:1.0.0")
-
     implementation("com.squareup.picasso:picasso:2.8")
     implementation("com.makeramen:roundedimageview:2.3.0")
     implementation("com.google.android.material:material:1.9.0")
-
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("androidx.cardview:cardview:1.0.0")
 }
