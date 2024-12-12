@@ -1,6 +1,7 @@
 package com.example.testtanaw;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,34 +11,41 @@ import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+
 import com.example.testtanaw.data.PhotoChallenges;
 import com.example.testtanaw.models.ClusterMarker;
 import com.example.testtanaw.util.CRUD;
 import com.example.testtanaw.util.ClusterManagerRenderer;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.maps.android.clustering.ClusterManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
-    private final CRUD crud = new CRUD();
-    private Location curLocation;
-    private List<CRUD.SdgPhoto> sdgPhotoList = new ArrayList<>();
-    private ClusterManager<ClusterMarker> mClusterManager;
-    private ClusterManagerRenderer mClusterManagerRenderer;
-    private final ArrayList<ClusterMarker> mClusterMarkers = new ArrayList<>();
+public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallback {
+    private final int FINE_PERMISSION_CODE = 1;
     private GoogleMap mGoogleMap;
+    Location curLocation;
+    FusedLocationProviderClient fusedLocationProviderClient;
     private TextView photoChallengeText;
-    private final List<String> challenges = PhotoChallenges.PHOTO_CHALLENGES;
+
     private int currentChallengeIndex = 0;
-    private int sdgNumber = 1;
+    private int sdgNumber;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,17 +61,12 @@ public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallb
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
-        sdgNumber = getIntent().getIntExtra("sdgNumber", 0);
+        // Retrieve data passed from the adapter
+        String sdgTitle = getIntent().getStringExtra("SDG_TITLE");
+        sdgNumber = getIntent().getIntExtra("sdgNumber", -1);
+
         toolbarTitle.setText("SDG: " + sdgNumber);
 
-        String institutionId = getIntent().getStringExtra("institutionId");
-
-        Log.d("xxxxxx", "sdgNumber: " + sdgNumber);
-        Log.d("xxxxxx", "institutionID: " + institutionId);
-
-        CompletableFuture.runAsync(() -> {
-            sdgPhotoList = crud.getSdgPhoto(sdgNumber, "today", null);
-        });
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapFragment);
@@ -78,13 +81,28 @@ public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallb
 
         fabArrow.setOnClickListener(v -> changePhotoChallenge());
 
-        fabPlus.setOnClickListener(v -> {
-            Toast.makeText(this, "Plus Button Clicked!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, CameraActivity.class);
-            startActivity(intent);
+        // Handle the Plus FAB click
+        fabPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(SdgMapActivity.this, "Plus Button Clicked!", Toast.LENGTH_SHORT).show();
+
+                // Create an Intent to open CameraActivity
+                Intent intent = new Intent(SdgMapActivity.this, CameraActivity.class);
+                intent.putExtra("PHOTOCHALLENGE", photoChallengeText.getText().toString());
+                intent.putExtra("SDGNUMBER", sdgNumber);
+                intent.putExtra("LAT", curLocation.getLatitude());
+                intent.putExtra("LONG", curLocation.getLongitude());
+
+                // Start the activity
+                startActivity(intent);
+            }
         });
 
         fabFilter.setOnClickListener(this::showPopupMenu);
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        getLastLocation();
     }
 
     @Override
@@ -96,66 +114,19 @@ public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallb
         return super.onOptionsItemSelected(item);
     }
 
-    private void addMapMarkers() {
-        Log.d("xxxxxxx", "PHOTO COUNT: " + sdgPhotoList.size());
-        mGoogleMap.clear();
-
-        if (mClusterManager == null) {
-            mClusterManager = new ClusterManager<>(getApplicationContext(), mGoogleMap);
-        }
-        if (mClusterManagerRenderer == null) {
-            mClusterManagerRenderer = new ClusterManagerRenderer(
-                    getApplicationContext(), mGoogleMap, mClusterManager, mClusterMarkers);
-            mClusterManager.setRenderer(mClusterManagerRenderer);
-        }
-
-        try {
-            if (!sdgPhotoList.isEmpty()) {
-                Log.d("tag", "sdgPhotoList: " + sdgPhotoList);
-                for (CRUD.SdgPhoto sdgPhoto : sdgPhotoList) {
-                    Log.d("tag", sdgPhoto.toString());
-
-                    ClusterMarker newClusterMarker = new ClusterMarker(
-                            sdgPhoto.getUserSdgId(),
-                            sdgPhoto.getUserId(),
-                            sdgPhoto.getSdgNumber(),
-                            sdgPhoto.getUrl(),
-                            sdgPhoto.getCaption(),
-                            sdgPhoto.getCreatedDate(),
-                            sdgPhoto.getInstitutionId(),
-                            sdgPhoto.getPhototChall(),
-                            sdgPhoto.getInstitution(),
-                            sdgPhoto.getCampus(),
-                            sdgPhoto.getInstitutionLogo(),
-                            sdgPhoto.getLat(),
-                            sdgPhoto.getLng(),
-                            sdgPhoto.getAvatarUrl()
-                    );
-
-                    mClusterManager.addItem(newClusterMarker);
-                    mClusterMarkers.add(newClusterMarker);
-                }
-            }
-        } catch (Exception e) {
-            Log.d("xxxxxx", e.getMessage());
-        }
-
-        mClusterManager.cluster();
-
-        mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
-        mGoogleMap.getUiSettings().setZoomGesturesEnabled(true);
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-        addMapMarkers();
+
+        Log.d("SdgMapActivity", "Current Location: Latitude = " + curLocation.getLatitude() + ", Longitude = " + curLocation.getLongitude());
+
+        LatLng myLoc = new LatLng(curLocation.getLatitude(), curLocation.getLongitude());
+        Log.d("SdgMapActivity", "Adding marker at: " + myLoc.toString());
+        mGoogleMap.addMarker(new MarkerOptions().position(myLoc).title("You're here!").snippet("mwehehe"));
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLoc, 15));
     }
 
-    @Override
-    public void onInfoWindowClick(Marker marker) {
-        // Implementation needed
-    }
 
     private void updatePhotoChallenge() {
         List<String> sdgChallenges = challenges.get(sdgNumber);
@@ -180,49 +151,42 @@ public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallb
         inflater.inflate(R.menu.filter_menu, popupMenu.getMenu());
 
         popupMenu.setOnMenuItemClickListener(menuItem -> {
-            if (menuItem.getItemId() == R.id.filter_all) {
-                CompletableFuture.runAsync(() -> {
-                    sdgPhotoList = crud.getSdgPhoto(sdgNumber, "all", null);
-                }).thenRun(() -> runOnUiThread(() -> {
-                    addMapMarkers();
-                    Toast.makeText(SdgMapActivity.this, "All selected", Toast.LENGTH_SHORT).show();
-                }));
-                return true;
-            } else if (menuItem.getItemId() == R.id.filter_today) {
-                CompletableFuture.runAsync(() -> {
-                    sdgPhotoList = crud.getSdgPhoto(sdgNumber, "today", null);
-                }).thenRun(() -> runOnUiThread(() -> {
-                    addMapMarkers();
-                    Toast.makeText(SdgMapActivity.this, "Today selected", Toast.LENGTH_SHORT).show();
-                }));
-                return true;
-            } else if (menuItem.getItemId() == R.id.filter_yesterday) {
-                CompletableFuture.runAsync(() -> {
-                    sdgPhotoList = crud.getSdgPhoto(sdgNumber, "yesterday", null);
-                }).thenRun(() -> runOnUiThread(() -> {
-                    addMapMarkers();
-                    Toast.makeText(SdgMapActivity.this, "Yesterday selected", Toast.LENGTH_SHORT).show();
-                }));
-                return true;
-            } else if (menuItem.getItemId() == R.id.filter_last_week) {
-                CompletableFuture.runAsync(() -> {
-                    sdgPhotoList = crud.getSdgPhoto(sdgNumber, "last week", null);
-                }).thenRun(() -> runOnUiThread(() -> {
-                    addMapMarkers();
-                    Toast.makeText(SdgMapActivity.this, "Last Week selected", Toast.LENGTH_SHORT).show();
-                }));
-                return true;
-            } else if (menuItem.getItemId() == R.id.filter_last_month) {
-                CompletableFuture.runAsync(() -> {
-                    sdgPhotoList = crud.getSdgPhoto(sdgNumber, "last month", null);
-                }).thenRun(() -> runOnUiThread(() -> {
-                    addMapMarkers();
-                    Toast.makeText(SdgMapActivity.this, "Last Month selected", Toast.LENGTH_SHORT).show();
-                }));
-                return true;
-            }
             return false;
         });
         popupMenu.show();
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == FINE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLastLocation();
+            } else {
+                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void getLastLocation() {
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_CODE);
+            return;
+        }
+        Task<Location> task = fusedLocationProviderClient.getLastLocation();
+        task.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    curLocation = location;
+
+                    SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragemnt);
+                    mapFragment.getMapAsync(SdgMapActivity.this);
+                }
+            }
+        });
+    }
+
 }
