@@ -42,7 +42,7 @@
                     android:layout_height="90dp"
                     android:contentDescription="@string/sdg1"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/sdg_1" />
+                    android:src="@drawable/toppost1" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
                     android:layout_marginTop="4dp"
                     android:background="@drawable/rounded_corner"
                     android:padding="5dp"
-                    android:text="Caption 2"
+                    android:text="Nice!"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
@@ -69,7 +69,7 @@
                     android:layout_height="100dp"
                     android:contentDescription="@string/sdg2"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/sdg_2" />
+                    android:src="@drawable/toppost2" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -77,7 +77,7 @@
                     android:padding="5dp"
                     android:background="@drawable/rounded_corner"
                     android:layout_marginTop="4dp"
-                    android:text="Caption 1"
+                    android:text="Very Innovative!"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
@@ -96,7 +96,7 @@
                     android:layout_height="90dp"
                     android:contentDescription="@string/sdg3"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/sdg_3" />
+                    android:src="@drawable/toppost3" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -104,7 +104,7 @@
                     android:layout_marginTop="4dp"
                     android:padding="5dp"
                     android:background="@drawable/rounded_corner"
-                    android:text="Caption 3"
+                    android:text="Let's Go!"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="12sp" />

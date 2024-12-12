@@ -1,6 +1,6 @@
 # TANAW: The Album of Now and Wonders
 
-
+![App Screenshot](docs/header.png)
 ## Table of Contents
 
 - [Project Overview](#project-overview)
@@ -14,18 +14,18 @@
 ## Project Overview
 A mobile app designed to promote community engagement with the UN's Sustainable Development Goals (SDGs) through a gamified experience in SDG-themed photo challenges. The platform allows users to share photos centered around occasional SDG themes, fostering awareness and collaboration while capturing memories. 
 
-
+![App Screenshot](docs/screenshots.png)
 ## Key Features
 1. **Photo Sharing and SDG Tagging**:
    - Upload and categorize photos related to specific SDGs, fostering global awareness.
 2. **Customizable Avatars**:
-   - Personalize profiles with dynamic avatars using real-time facial detection.
+   - Personalize map marker with personalized avatars.
 3. **Search and Filters**:
-   - Explore SDG-related institutions and events through advanced search tools.
+   - Explore UN-partnered institutions and easily track recent uploads though filters.
 4. **Location**:
    - Explore SDG-related content and events based on your current location.
 5. **SDG-Themed Challenges**:
-   - Participate in periodic challenges aligned with the SDGs to raise awareness and track progress.
+   - Participate in photo challenges aligned with the SDGs as you earn rewards and track your progress.
 
 
 ### Security Mechanisms
@@ -41,23 +41,24 @@ A mobile app designed to promote community engagement with the UN's Sustainable 
 ## Requirements
 - **Android Studio**: Ensure you have the latest stable version of Android Studio installed.
 - **JDK 17**
-- **Android SDK**: minimum SDK version of 24
+- **Android SDK**: minimum SDK version of 28
 - **Google Maps API Key**: Generate a Google Maps API key to use the Maps features in your app. This key should be added in the local.properties file.
-- **Supabase Keys**: Add your Supabase SUPABASE_ANON_KEY and SUPABASE_URL to your local.properties file for authentication and database access.
+- **Firebase Keys**: Add your Firebase google-services.json to your project.
 
 ### Dependencies
-- Kotlin 2.0.0.
+- Java 17
 - Jetpack Compose
-- Supabase
+- Firebase Authentication
+- Firebase Firestore
+- Firebase Storage
+- Firebase App Check
 - Google Maps SDK
 - CameraX
 
 ### Environment Variables
 The following environment variables are required for the app to work:
-- SUPABASE_ANON_KEY
-- SUPABASE_URL
 - MAPS_API_KEY
-These should be added to the local.properties file as mentioned above.
+These should be added to the local.properties file and ensure that your API key is kept private and not exposed in public repositories.
 
 
 ## Installation
@@ -72,8 +73,6 @@ These should be added to the local.properties file as mentioned above.
 - Create or edit the local.properties file at the root of the project to include the following:
 ```properties
 sdk.dir=/path/to/your/android/sdk
-SUPABASE_ANON_KEY=your-supabase-anon-key
-SUPABASE_URL=https://your-supabase-url.supabase.co/
 MAPS_API_KEY=your-maps-api-key
 ```
 - Ensure to replace the placeholders with your actual credentials.
@@ -81,7 +80,7 @@ MAPS_API_KEY=your-maps-api-key
 4. **Sync Project with Gradle**:
 - Once the local.properties file is set up, sync your project with Gradle by clicking **File > Sync Project with Gradle Files** in Android Studio.
 
-4. **Build and Run the Project**:
+5. **Build and Run the Project**:
 - After syncing, click Run to build and run the project on your emulator or device.
 
 ### Troubleshooting
@@ -94,10 +93,9 @@ MAPS_API_KEY=your-maps-api-key
 Once the app is installed and running, users can sign up and create an account. After logging in, users can:
 - Sign up and create an account.
 - Upload and share photos tagged with SDG themes.
-- Personalize their avatar using real-time facial detection.
+- Customize their avatar and personalize their profile.
 - Explore SDG-related content and events using search and filter options.
-- Participate in SDG-themed challenges and track their progress.
-- Download stickers as rewards from the challenges.
+- Participate in SDG-themed challenges, track progress, and earn stickers as rewards.
 
 ## Contributors
 
@@ -116,5 +114,3 @@ We would like to express our heartfelt gratitude to everyone who contributed to 
 3. **University and Department** for providing the resources and opportunities for this project.
 4. **External Tools and Resources** that helped in the development of the app.
 5. **United Nations SDG Framework and Related Resources** for inspiring the core concept of this project.
-
-
