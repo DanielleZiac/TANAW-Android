@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center">
 
-    <com.makeramen.roundedimageview.RoundedImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:src="@drawable/avatar"
@@ -14,6 +14,8 @@
         android:contentDescription="Profile Image"
         android:background="@drawable/rounded_corner"
         android:scaleType="centerCrop"
+        android:id="@+id/avatar"
+        app:shapeAppearanceOverlay="@style/RoundedImageView"
         />
 
     <TextView

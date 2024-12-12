@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseStorage storage;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +68,13 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigationView);
 
+        // Access the header view
+        View headerView = navigationView.getHeaderView(0);
+
+        // Access the views inside the nav_header layout
+        TextView userTextView = headerView.findViewById(R.id.username);
+        ShapeableImageView avatarImageView = headerView.findViewById(R.id.avatar);
+
         // Hamburger menu click listener to open the navigation drawer
         ImageButton hamburgerMenu = findViewById(R.id.hamburgerMenu);
         hamburgerMenu.setOnClickListener(v -> drawerLayout.openDrawer(navigationView));
@@ -81,6 +91,16 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationView.setSelectedItemId(R.id.nav_home); // Set nav_explore as selected
         }
 
+
+        // Firebase Auth and Storage instance
+        mAuth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance(Constants.BUCKET);
+        FirebaseUser authUser = mAuth.getCurrentUser();
+
+        ImageButton profileIcon = findViewById(R.id.profileIcon);
+        ShapeableImageView roundedImageView = findViewById(R.id.roundedImageView);
+
+
         // Set up listener for bottom navigation item selection
         bottomNavigationView.setOnItemSelectedListener(menuItem -> {
             if (menuItem.getItemId() == R.id.nav_explore) {
@@ -96,21 +116,17 @@ public class MainActivity extends AppCompatActivity {
                 loadFragment(new GalleryFragment());
                 return true;
             }   else if (menuItem.getItemId() == R.id.nav_stickers) {  // Add Home navigation
-                loadFragment(new StickersFragment());
+                assert authUser != null;
+                loadFragment(new StickersFragment(authUser.getUid()));
                 return true;
             }
             return false; // Return false if the item is not handled
         });
 
-        // Firebase Auth and Storage instance
-        mAuth = FirebaseAuth.getInstance();
-        storage = FirebaseStorage.getInstance(Constants.BUCKET);
-        FirebaseUser authUser = mAuth.getCurrentUser();
-
-        ImageButton profileIcon = findViewById(R.id.profileIcon);
-        ShapeableImageView roundedImageView = findViewById(R.id.roundedImageView);
 
         if (authUser != null) {
+            userTextView.setText(authUser.getDisplayName());
+
             // Show the rounded image
             roundedImageView.setVisibility(View.VISIBLE);
 
@@ -133,6 +149,16 @@ public class MainActivity extends AppCompatActivity {
                         .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                         .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
                         .into(roundedImageView);
+
+                Picasso.get()
+                        .load(uri.toString())
+                        .fit()
+                        .centerCrop()
+                        .placeholder(R.drawable.app_logo)
+                        .error(R.drawable.baseline_error_outline_24)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                        .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                        .into(avatarImageView);
 
                 roundedImageView.setOnClickListener(v -> {
                     Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
