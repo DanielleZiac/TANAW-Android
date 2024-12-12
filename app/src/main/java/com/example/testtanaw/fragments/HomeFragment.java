@@ -58,6 +58,12 @@ public class HomeFragment extends Fragment {
             floatingMenu.setVisibility(View.GONE);
         });
 
+        leaderboard.setOnClickListener(v -> {
+            fabToggleMenu.setImageResource(R.drawable.baseline_home_work_24);
+            replaceFragment(new LeaderboardFragment());
+            floatingMenu.setVisibility(View.GONE);
+        });
+
         return view;
     }
 

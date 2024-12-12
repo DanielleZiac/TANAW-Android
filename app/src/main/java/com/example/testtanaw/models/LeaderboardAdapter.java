@@ -7,38 +7,34 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.testtanaw.R;
-import com.example.testtanaw.util.CRUD;
-import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
-public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder> {
-    private final List<CRUD.LeaderboardSchool> leaderboardList;
+public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.ViewHolder> {
 
-    public LeaderboardAdapter(List<CRUD.LeaderboardSchool> leaderboardList) {
+    private final List<LeaderboardItem> leaderboardList;
+
+    public LeaderboardAdapter(List<LeaderboardItem> leaderboardList) {
         this.leaderboardList = leaderboardList;
     }
 
     @NonNull
     @Override
-    public LeaderboardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_leaderboard, parent, false);
-        return new LeaderboardViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull LeaderboardViewHolder holder, int position) {
-        CRUD.LeaderboardSchool item = leaderboardList.get(position);
-        holder.rank.setText(String.valueOf(position + 1)); // Display rank starting from 1
-        holder.score.setText(String.valueOf(item.getCount()));
-
-        Picasso.get()
-               .load(item.getDepartmentLogo())
-               .resize(1000, 1000)
-               .centerInside()
-               .placeholder(R.drawable.loading)
-               .into(holder.collegeLogo);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        LeaderboardItem item = leaderboardList.get(position);
+        holder.rank.setText(String.valueOf(position + 1));
+        holder.collegeName.setText(item.getUserName());
+        holder.collegeLogo.setImageResource(item.getLogo());
+        holder.score.setText(String.valueOf(item.getScore()));
     }
 
     @Override
@@ -46,16 +42,16 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         return leaderboardList.size();
     }
 
-    static class LeaderboardViewHolder extends RecyclerView.ViewHolder {
-        final TextView rank;
-        final ImageView collegeLogo;
-        final TextView score;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView rank, collegeName, score;
+        ImageView collegeLogo;
 
-        LeaderboardViewHolder(View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             rank = itemView.findViewById(R.id.rank);
-            collegeLogo = itemView.findViewById(R.id.collegeLogo);
+            collegeName = itemView.findViewById(R.id.college);
             score = itemView.findViewById(R.id.score);
+            collegeLogo = itemView.findViewById(R.id.collegeLogo);
         }
     }
 }
