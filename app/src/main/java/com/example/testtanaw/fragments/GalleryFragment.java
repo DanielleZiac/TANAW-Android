@@ -4,7 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -17,26 +21,42 @@ import com.example.testtanaw.util.SDGAdapter2;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 public class GalleryFragment extends Fragment {
 
     private RecyclerView sdgRecyclerView;
-    private RecyclerView galleryRecyclerView;
-    private TextView uploadsTab;
-    private TextView eventsTab;
     private SDGAdapter2 sdgAdapter2;
+    private RecyclerView galleryRecyclerView;
     private GalleryAdapter galleryAdapter;
-    private boolean isUploadsTab = true; // Tracks the active tab (uploads or events)
+    private TextView myUploadsTab, communityTab;
+    private ImageView loadingImage;
+    private List<String> images = new ArrayList<>();
+    private FirebaseAuth auth;
+    private FirebaseStorage storage;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
 
+        // Initialize Firebase
+        auth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
+
         // Initialize views
         sdgRecyclerView = view.findViewById(R.id.sdgRecyclerView);
         galleryRecyclerView = view.findViewById(R.id.galleryRecyclerView);
-        uploadsTab = view.findViewById(R.id.uploadsTab);
-        eventsTab = view.findViewById(R.id.eventsTab);
+        myUploadsTab = view.findViewById(R.id.myUploadsTab);
+        communityTab = view.findViewById(R.id.communityTab);
+        loadingImage = view.findViewById(R.id.loadingImage); // Initialize progress bar
+
+        // Set up gallery RecyclerView
+        galleryRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        galleryAdapter = new GalleryAdapter(images);
+        galleryRecyclerView.setAdapter(galleryAdapter);
 
         // SDG Data
         List<String> sdgImages = new ArrayList<>();
@@ -49,43 +69,62 @@ public class GalleryFragment extends Fragment {
         sdgRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         sdgRecyclerView.setAdapter(sdgAdapter2);
 
-        // Setup gallery RecyclerView
-        setupGalleryRecyclerView();
+        // Load My Uploads by default
+        loadMyUploads();
 
-        // Tab switching
-        uploadsTab.setOnClickListener(v -> {
-            isUploadsTab = true;
-            setupGalleryRecyclerView();
+        // Set default alpha values
+        myUploadsTab.setAlpha(1.0f);
+        communityTab.setAlpha(0.5f);
+
+        // Set Tab Click Listeners
+        myUploadsTab.setOnClickListener(v -> {
+            loadMyUploads();
+            myUploadsTab.setAlpha(1.0f);
+            communityTab.setAlpha(0.5f);
         });
 
-        eventsTab.setOnClickListener(v -> {
-            isUploadsTab = false;
-            setupGalleryRecyclerView();
+        communityTab.setOnClickListener(v -> {
+            loadCommunityUploads();
+            myUploadsTab.setAlpha(0.5f); // Set "My Uploads" tab alpha to 0.5
+            communityTab.setAlpha(1.0f);    // Set "Others" tab alpha to 1.0
         });
-
         return view;
     }
 
-    private void setupGalleryRecyclerView() {
-        // Sample images for uploads and events tabs
-        List<String> images = new ArrayList<>();
-        if (isUploadsTab) {
-            for (int i = 1; i <= 6; i++) {
-                images.add("sdglink_" + i);
-            }
-        } else {
-            for (int i = 7; i <= 12; i++) {
-                images.add("sdglink_" + i);
-            }
-        }
+    private void loadMyUploads() {
+        loadingImage.setVisibility(View.VISIBLE); // Show the loading spinner
+        String currentUser = auth.getCurrentUser().getUid();
+        StorageReference userPhotosRef = storage.getReference().child("users_sdg_photos").child(currentUser);
 
-        // Set up GalleryAdapter with sample images
-        galleryAdapter = new GalleryAdapter(images);
-        galleryRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-        galleryRecyclerView.setAdapter(galleryAdapter);
+        fetchPhotos(userPhotosRef);
+    }
 
-        // Update tab styles
-        uploadsTab.setAlpha(isUploadsTab ? 1.0f : 0.5f);
-        eventsTab.setAlpha(isUploadsTab ? 0.5f : 1.0f);
+    private void loadCommunityUploads() {
+        loadingImage.setVisibility(View.VISIBLE); // Show the loading spinner
+        StorageReference allPhotosRef = storage.getReference().child("users_sdg_photos");
+
+        fetchPhotos(allPhotosRef);
+    }
+
+    private void fetchPhotos(StorageReference reference) {
+        images.clear();
+
+        reference.listAll().addOnSuccessListener(listResult -> {
+            if (listResult.getItems().isEmpty()) {
+                Toast.makeText(getContext(), "No images available", Toast.LENGTH_SHORT).show();
+            }
+            for (StorageReference fileRef : listResult.getItems()) {
+                fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    images.add(uri.toString());
+                    galleryAdapter.notifyDataSetChanged();
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Failed to load image", Toast.LENGTH_SHORT).show();
+                });
+            }
+            loadingImage.setVisibility(View.GONE); // Hide the loading spinner
+        }).addOnFailureListener(e -> {
+            loadingImage.setVisibility(View.GONE); // Hide the loading spinner
+            Toast.makeText(getContext(), "Error fetching images", Toast.LENGTH_SHORT).show();
+        });
     }
 }

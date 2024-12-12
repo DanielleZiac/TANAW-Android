@@ -21,7 +21,6 @@
         android:overScrollMode="never" />
 
 
-
     <!-- Tabs for Uploads and Events -->
     <LinearLayout
         android:id="@+id/tabLayout"
@@ -34,29 +33,39 @@
         android:layout_marginBottom="50dp"> <!-- Add spacing between tabs and SDG -->
 
         <TextView
-            android:id="@+id/uploadsTab"
+            android:id="@+id/myUploadsTab"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="UPLOADS"
+            android:text="MY UPLOADS"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:gravity="center"
             android:paddingVertical="8dp"
             android:background="?attr/selectableItemBackground" />
 
         <TextView
-            android:id="@+id/eventsTab"
+            android:id="@+id/communityTab"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="EVENTS"
+            android:text="COMMUNITY"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:gravity="center"
             android:paddingVertical="8dp"
             android:background="?attr/selectableItemBackground" />
     </LinearLayout>
+
+    <!-- Loading skeleton ImageView -->
+    <ImageView
+        android:id="@+id/loadingImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/loading"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout"
+        app:layout_constraintBottom_toTopOf="@id/galleryRecyclerView" />
 
     <!-- Gallery Grid -->
     <androidx.recyclerview.widget.RecyclerView

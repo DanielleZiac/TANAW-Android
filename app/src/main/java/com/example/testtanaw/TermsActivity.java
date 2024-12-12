@@ -11,7 +11,7 @@ public class TermsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about_us);
+        setContentView(R.layout.activity_terms);
 
         // Find and set up the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
