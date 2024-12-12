@@ -1,14 +1,13 @@
 package com.example.testtanaw;
 
+import static com.example.testtanaw.models.Constants.DB_USERS_SDG_PHOTOS;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +16,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
+import com.example.testtanaw.models.Avatar;
+import com.example.testtanaw.models.ClusterMarker;
+import com.example.testtanaw.models.Constants;
+import com.example.testtanaw.util.ClusterManagerRenderer;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,17 +31,37 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.maps.android.clustering.ClusterManager;
 
+import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
 
 public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallback {
-    private final int FINE_PERMISSION_CODE = 1;
-    private GoogleMap mGoogleMap;
-    Location curLocation;
-    FusedLocationProviderClient fusedLocationProviderClient;
+    private static final String TAG = "SdgMapActivity";
+
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private FirebaseStorage storage;
+    private ExecutorService executorService;
+
     private TextView photoChallengeText;
 
-    private int currentChallengeIndex = 0;
-    private int sdgNumber;
+    Location curLocation;
+
+    private GoogleMap mGoogleMap;
+    private final int FINE_PERMISSION_CODE = 1;
+    FusedLocationProviderClient fusedLocationProviderClient;
+
+
+    private ClusterManager<ClusterMarker> mClusterManager;
+    private ClusterManagerRenderer mClusterManagerRenderer;
+    private final ArrayList<ClusterMarker> mClusterMarkers = new ArrayList<>();
 
 
     @Override
@@ -46,34 +69,40 @@ public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sdg_map);
 
+
+        // Initialize Auth, Firestore, and Storage
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance(Constants.BUCKET);
+        FirebaseUser authUser = mAuth.getCurrentUser();
+
+        // Retrieve data passed from the adapter
+        String sdgTitle = getIntent().getStringExtra("SDG_TITLE");
+        int sdgNumber = getIntent().getIntExtra("SDG_NUMBER", -1);
+
+        // Setup Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
-
+        // Set the SDG title dynamically
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
-        // Retrieve data passed from the adapter
-        String sdgTitle = getIntent().getStringExtra("SDG_TITLE");
-        sdgNumber = getIntent().getIntExtra("sdgNumber", -1);
-
         toolbarTitle.setText("SDG: " + sdgNumber);
 
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.mapFragment);
-        mapFragment.getMapAsync(this);
-
+        // set photo chall
         photoChallengeText = findViewById(R.id.photoChallengeText);
         FloatingActionButton fabArrow = findViewById(R.id.fab_arrow);
         FloatingActionButton fabPlus = findViewById(R.id.fab_plus);
-        FloatingActionButton fabFilter = findViewById(R.id.fab_filter);
 
-        updatePhotoChallenge();
+        // Display the first challenge for the SDG
+//        updatePhotoChallenge();
 
-        fabArrow.setOnClickListener(v -> changePhotoChallenge());
+        // Handle arrow button click to change challenges
+        fabArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                changePhotoChallenge();
+            }
+        });
 
         // Handle the Plus FAB click
         fabPlus.setOnClickListener(new View.OnClickListener() {
@@ -93,73 +122,84 @@ public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallb
             }
         });
 
-        fabFilter.setOnClickListener(this::showPopupMenu);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
+
+    private void fetchAndAddSdgPhotos() {
+        try {
+            db.collection(DB_USERS_SDG_PHOTOS).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String userId = document.getString("userId");
+                        String avatarPath = Avatar.getUserAvatarPath(userId);
+
+
+                        StorageReference avatarRef = storage.getReference().child(avatarPath);
+
+                        avatarRef.getDownloadUrl().addOnSuccessListener(uri -> {
+
+
+                            Log.d(TAG, document.getString("userSdgId"));
+                            Log.d(TAG, userId);
+                            Log.d(TAG, document.getString("sdgNumber"));
+                            Log.d(TAG, document.getString("caption"));
+                            Log.d(TAG, document.getString("sdgPhotoUrl"));
+                            Log.d(TAG, document.getString("photoChallenge"));
+                            Log.d(TAG, document.getDouble("latitude").toString());
+                            Log.d(TAG, document.getDouble("longitude").toString());
+                            Log.d(TAG, uri.toString());
+
+
+                            ClusterMarker clusterMarker = new ClusterMarker(
+                                    document.getString("userSdgId"),
+                                    userId,
+                                    document.getString("sdgNumber"),
+                                    document.getString("caption"),
+                                    document.getString("sdgPhotoUrl"),
+                                    document.getString("photoChallenge"),
+                                    document.getDouble("latitude"),
+                                    document.getDouble("longitude"),
+                                    uri.toString()
+                            );
+
+                            mClusterManager.addItem(clusterMarker);
+                            mClusterMarkers.add(clusterMarker);
+                        mClusterManager.cluster();
+                        }).addOnFailureListener(e -> Log.e(TAG, "Failed to fetch avatar for userId: " + userId, e));
+                    }
+                }
+            });
+        } catch(Exception e) {
+            Log.d(TAG, e.getMessage());
         }
-        return super.onOptionsItemSelected(item);
     }
 
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mGoogleMap = googleMap;
+    private void addMarkers() {
+        if (mGoogleMap != null) {
 
-        Log.d("SdgMapActivity", "Current Location: Latitude = " + curLocation.getLatitude() + ", Longitude = " + curLocation.getLongitude());
-
-        LatLng myLoc = new LatLng(curLocation.getLatitude(), curLocation.getLongitude());
-        Log.d("SdgMapActivity", "Adding marker at: " + myLoc.toString());
-        mGoogleMap.addMarker(new MarkerOptions().position(myLoc).title("You're here!").snippet("mwehehe"));
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLoc, 15));
-    }
-
-
-    private void updatePhotoChallenge() {
-//        List<String> sdgChallenges = challenges.get(sdgNumber);
-//        if (sdgChallenges != null && !sdgChallenges.isEmpty()) {
-//            photoChallengeText.setText(sdgChallenges.get(currentChallengeIndex));
-//        } else {
-//            photoChallengeText.setText("No challenges available for this SDG.");
-//        }
-    }
-
-    private void changePhotoChallenge() {
-//        List<String> sdgChallenges = challenges.get(sdgNumber);
-//        if (sdgChallenges != null && !sdgChallenges.isEmpty()) {
-//            currentChallengeIndex = (currentChallengeIndex + 1) % sdgChallenges.size();
-//            updatePhotoChallenge();
-//        }
-    }
-
-    private void showPopupMenu(View view) {
-        PopupMenu popupMenu = new PopupMenu(this, view);
-        MenuInflater inflater = popupMenu.getMenuInflater();
-        inflater.inflate(R.menu.filter_menu, popupMenu.getMenu());
-
-        popupMenu.setOnMenuItemClickListener(menuItem -> {
-            return false;
-        });
-        popupMenu.show();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == FINE_PERMISSION_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getLastLocation();
-            } else {
-                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
+            if (mClusterManager == null) {
+                mClusterManager = new ClusterManager<>(getApplicationContext(), mGoogleMap);
             }
+
+            if (mClusterManagerRenderer == null) {
+                mClusterManagerRenderer = new ClusterManagerRenderer(this,
+                        getApplicationContext(), mGoogleMap, mClusterManager, mClusterMarkers
+                );
+                mClusterManager.setRenderer(mClusterManagerRenderer);
+            }
+
+            fetchAndAddSdgPhotos();
+
+            float zoomLevel = 12.0f;
+            mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
+            mGoogleMap.getUiSettings().setZoomGesturesEnabled(true);
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(curLocation.getLatitude(), curLocation.getLongitude()), zoomLevel
+            ));
         }
     }
 
@@ -176,11 +216,35 @@ public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallb
                 if (location != null) {
                     curLocation = location;
 
-                    SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragemnt);
-                    mapFragment.getMapAsync(SdgMapActivity.this);
+                    // Find the SupportMapFragment and request map initialization
+                    SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
+                    if (mapFragment != null) {
+                        mapFragment.getMapAsync(SdgMapActivity.this); // Get map asynchronously
+                    } else {
+                        // Handle error if SupportMapFragment is not found
+                        Log.e(TAG, "SupportMapFragment is not found.");
+                    }
                 }
             }
         });
     }
 
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mGoogleMap = googleMap;
+        addMarkers();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == FINE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLastLocation();
+            } else {
+                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }

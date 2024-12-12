@@ -6,6 +6,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.example.testtanaw.R;
 import com.example.testtanaw.models.CustomInfoWindowData;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,8 +23,9 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         this.context = context;
     }
 
+    @Nullable
     @Override
-    public View getInfoContents(Marker marker) {
+    public View getInfoContents(@NonNull Marker marker) {
         View view = LayoutInflater.from(context).inflate(R.layout.custom_info_window, null);
 
         // Initialize the like button here if needed
@@ -41,8 +45,9 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         return view;
     }
 
+    @Nullable
     @Override
-    public View getInfoWindow(Marker marker) {
+    public View getInfoWindow(@NonNull Marker marker) {
         View view = LayoutInflater.from(context).inflate(R.layout.custom_info_window, null);
         RoundedImageView sdgContentImageView = view.findViewById(R.id.sdgContentImageView);
         TextView sdgCaptionTextView = view.findViewById(R.id.sdgCaptionTextView);
@@ -53,7 +58,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
         // Load image using Picasso
         Picasso.get()
-                .load(data.getUrl())
+                .load(data.getSdgPhotoUrl())
                 .resize(1000, 1000)
                 .centerInside()
                 .placeholder(R.drawable.loading)
@@ -61,7 +66,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
         // Set the caption and photo challenge text
         sdgCaptionTextView.setText(data.getCaption());
-        sdgPhotoChallTextView.setText(data.getPhototChall());
+        sdgPhotoChallTextView.setText(data.getPhotoChallenge());
 
         // Handle the like button toggle logic
         final boolean[] isLiked = {false};  // Array to make it effectively final

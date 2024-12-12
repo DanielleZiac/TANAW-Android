@@ -22,5 +22,4 @@ public class Constants {
     public static final String DEPT_CICS = "cics";
     public static final String DEPT_CAFAD = "cafad";
     public static final String DEPT_CET = "cet";
-
 }

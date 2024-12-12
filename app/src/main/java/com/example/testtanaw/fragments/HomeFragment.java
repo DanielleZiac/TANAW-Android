@@ -5,13 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import com.example.testtanaw.fragments.LeaderboardFragment;
-import com.example.testtanaw.fragments.InstitutionFragment;
+
+
 import com.example.testtanaw.R;
-import com.example.testtanaw.fragments.SdgHomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class HomeFragment extends Fragment {
@@ -21,9 +21,7 @@ public class HomeFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
@@ -35,14 +33,16 @@ public class HomeFragment extends Fragment {
 
         ImageView sdgHome = view.findViewById(R.id.sdg_home);
         ImageView institutions = view.findViewById(R.id.institutions);
-        //ImageView hallOfFame = view.findViewById(R.id.hallOfFame);
+
         ImageView leaderboard = view.findViewById(R.id.leaderboard);
 
         // Toggle dropdown menu visibility
         fabToggleMenu.setOnClickListener(v -> {
-            floatingMenu.setVisibility(
-                    floatingMenu.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE
-            );
+            if (floatingMenu.getVisibility() == View.VISIBLE) {
+                floatingMenu.setVisibility(View.GONE);
+            } else {
+                floatingMenu.setVisibility(View.VISIBLE);
+            }
         });
 
         // Set click listeners for dropdown menu items
@@ -58,19 +58,13 @@ public class HomeFragment extends Fragment {
             floatingMenu.setVisibility(View.GONE);
         });
 
-        leaderboard.setOnClickListener(v -> {
-            fabToggleMenu.setImageResource(R.drawable.baseline_leaderboard_24);
-            replaceFragment(new LeaderboardFragment());
-            floatingMenu.setVisibility(View.GONE);
-        });
-
         return view;
     }
 
     private void replaceFragment(Fragment fragment) {
-        getChildFragmentManager().beginTransaction()
+        getChildFragmentManager()
+                .beginTransaction()
                 .replace(R.id.fragmentContainer, fragment)
-                .addToBackStack(null)
                 .commit();
     }
 }

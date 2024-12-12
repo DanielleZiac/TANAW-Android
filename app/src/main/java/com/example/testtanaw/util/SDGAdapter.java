@@ -1,5 +1,6 @@
 package com.example.testtanaw.util;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,26 +16,27 @@ import com.example.testtanaw.models.SDGItem;
 import java.util.List;
 
 public class SDGAdapter extends RecyclerView.Adapter<SDGAdapter.SDGViewHolder> {
+
     private final List<SDGItem> sdgList;
-    private final OnItemClickListener onItemClick;
+    private final OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
-        void onItemClick(SDGItem item);
+        void onItemClick(SDGItem sdgItem);
     }
 
-    public SDGAdapter(List<SDGItem> sdgList, OnItemClickListener onItemClick) {
+    public SDGAdapter(List<SDGItem> sdgList, OnItemClickListener onItemClickListener) {
         this.sdgList = sdgList;
-        this.onItemClick = onItemClick;
+        this.onItemClickListener = onItemClickListener;
     }
 
     public static class SDGViewHolder extends RecyclerView.ViewHolder {
-        public final ImageView sdgIcon;
-        public final TextView sdgNumber;
+        public ImageView sdgIcon;
+        public TextView sdgNumber;
 
-        public SDGViewHolder(@NonNull View view) {
-            super(view);
-            sdgIcon = view.findViewById(R.id.sdgIcon);
-            sdgNumber = view.findViewById(R.id.sdgNumber);
+        public SDGViewHolder(@NonNull View itemView) {
+            super(itemView);
+            sdgIcon = itemView.findViewById(R.id.sdgIcon);
+            sdgNumber = itemView.findViewById(R.id.sdgNumber);
         }
     }
 
@@ -48,12 +50,12 @@ public class SDGAdapter extends RecyclerView.Adapter<SDGAdapter.SDGViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull SDGViewHolder holder, int position) {
-        SDGItem sdg = sdgList.get(position);
+        SDGItem sdgItem = sdgList.get(position);
 
-        holder.sdgIcon.setImageResource(sdg.getIconResId());
+        holder.sdgIcon.setImageResource(sdgItem.getIconResId());
         holder.sdgNumber.setText("SDG " + (position + 1));
 
-        // Apply alignment logic based on the index
+        // Adjust margins dynamically based on position
         int marginTop;
         int marginBottom;
         int marginLeft;
@@ -62,7 +64,6 @@ public class SDGAdapter extends RecyclerView.Adapter<SDGAdapter.SDGViewHolder> {
         switch (position % 6) {
             case 1:
             case 4:
-                // Justify-center
                 marginTop = 50;
                 marginBottom = -50;
                 marginLeft = 0;
@@ -70,14 +71,12 @@ public class SDGAdapter extends RecyclerView.Adapter<SDGAdapter.SDGViewHolder> {
                 break;
             case 2:
             case 3:
-                // Justify-end
                 marginTop = 100;
                 marginBottom = -100;
                 marginLeft = 0;
                 marginRight = 0;
                 break;
             default:
-                // Justify-start
                 marginTop = 0;
                 marginBottom = 0;
                 marginLeft = 0;
@@ -85,7 +84,6 @@ public class SDGAdapter extends RecyclerView.Adapter<SDGAdapter.SDGViewHolder> {
                 break;
         }
 
-        // Apply dynamic margins
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
         params.setMargins(marginLeft, marginTop, marginRight, marginBottom);
         holder.itemView.setLayoutParams(params);
@@ -93,41 +91,27 @@ public class SDGAdapter extends RecyclerView.Adapter<SDGAdapter.SDGViewHolder> {
         // Initially hide the title
         holder.sdgNumber.setVisibility(View.GONE);
 
-        // Set the touch listener to detect press and release
+        // Set touch listener for showing/hiding the title
         holder.itemView.setOnTouchListener((v, event) -> {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    // Show title when pressed
-                    holder.sdgNumber.setVisibility(View.VISIBLE);
-                    break;
-                case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_CANCEL:
-                    // Hide title when released
-                    holder.sdgNumber.setVisibility(View.GONE);
-                    break;
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                holder.sdgNumber.setVisibility(View.VISIBLE);
+            } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                holder.sdgNumber.setVisibility(View.GONE);
             }
-
-            // Detect click event and call performClick for accessibility
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                v.performClick(); // Call performClick to ensure proper accessibility behavior
-            }
-
-            // Return true to indicate that the touch event has been handled
-            return true;
+            return false;
         });
 
-        // Set onClickListener for SDG image to navigate to the new activity
+        // Set click listener to navigate to SdgMapActivity
         holder.itemView.setOnClickListener(v -> {
-            // Create an Intent to open the SDGDetailActivity
-            Intent intent = new Intent(holder.itemView.getContext(), SdgMapActivity.class);
-
-            // Pass the SDG title (or other relevant information) to the new activity
-            intent.putExtra("SDG_TITLE", sdg.getTitle());
-            intent.putExtra("sdgNumber", position + 1);
-
-            // Start the new activity
-            holder.itemView.getContext().startActivity(intent);
+            Context context = holder.itemView.getContext();
+            Intent intent = new Intent(context, SdgMapActivity.class);
+            intent.putExtra("SDG_TITLE", sdgItem.getTitle());
+            intent.putExtra("SDG_NUMBER", position + 1);
+            context.startActivity(intent);
         });
+
+        // Optional: Handle item click logic
+//        holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(sdgItem));
     }
 
     @Override

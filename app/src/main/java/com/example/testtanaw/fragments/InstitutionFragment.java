@@ -1,66 +1,63 @@
 package com.example.testtanaw.fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testtanaw.R;
+import com.example.testtanaw.models.Institution;
+import com.example.testtanaw.models.InstitutionAdapter;  // Make sure the adapter class is imported here
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link InstitutionFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.Arrays;
+import java.util.List;
+
 public class InstitutionFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public InstitutionFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment InstitutionFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static InstitutionFragment newInstance(String param1, String param2) {
-        InstitutionFragment fragment = new InstitutionFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    private RecyclerView institutionRecyclerView;
+    private InstitutionAdapter institutionAdapter;
+    private Button galleryButton;  // Declare the gallery button
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_institution, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_institution, container, false);
+
+        // Initialize RecyclerView
+        institutionRecyclerView = rootView.findViewById(R.id.institutionRecyclerView);
+        institutionRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        institutionRecyclerView.setHasFixedSize(true);
+
+        // Example data: Initialize the list of institutions with the correct data
+        List<Institution> institutionList = Arrays.asList(
+                new Institution("1", "BSU", "Batangas State University", "Main Campus", "bsu.edu", R.drawable.bsulogo),
+                new Institution("2", "ADMU", "Ateneo de Manila University", "Quezon City", "admu.edu", R.drawable.admulogo),
+                new Institution("3", "DLSU", "De La Salle University", "Makati", "dlsu.edu", R.drawable.dlsulogo)
+        );
+
+        // Set the Adapter with the institution list
+        institutionAdapter = new InstitutionAdapter(institutionList);
+        institutionRecyclerView.setAdapter(institutionAdapter);
+
+        // Initialize the button
+        galleryButton = rootView.findViewById(R.id.galleryButton);
+
+        // Set the OnClickListener to navigate to the GalleryFragment
+        galleryButton.setOnClickListener(v -> {
+            // Begin the fragment transaction
+            GalleryFragment galleryFragment = new GalleryFragment();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, galleryFragment) // Replace with the container ID
+                    .addToBackStack(null)  // Optional: Adds this transaction to the back stack
+                    .commit();
+        });
+
+        return rootView;
     }
 }
