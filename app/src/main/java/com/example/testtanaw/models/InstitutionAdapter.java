@@ -5,50 +5,57 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.testtanaw.R;
+import com.example.testtanaw.models.Institution;
+
 import java.util.List;
 
 public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.InstitutionViewHolder> {
-    private final List<Institution> institutions;
 
+    private List<Institution> institutions;
+
+    // Constructor to initialize the institution list
     public InstitutionAdapter(List<Institution> institutions) {
         this.institutions = institutions;
     }
 
-    @NonNull
+    // Inflates the item layout and returns the ViewHolder
     @Override
-    public InstitutionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_institution, parent, false);
+    public InstitutionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_institution, parent, false);
         return new InstitutionViewHolder(view);
     }
 
+    // Binds the data to the ViewHolder
     @Override
-    public void onBindViewHolder(@NonNull InstitutionViewHolder holder, int position) {
+    public void onBindViewHolder(InstitutionViewHolder holder, int position) {
         Institution institution = institutions.get(position);
         holder.bind(institution);
     }
 
+    // Returns the size of the list
     @Override
     public int getItemCount() {
         return institutions.size();
     }
 
-    static class InstitutionViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView institutionLogo;
-        private final TextView institutionName;
+    // Inner ViewHolder to hold the item view
+    public class InstitutionViewHolder extends RecyclerView.ViewHolder {
+        private ImageView institutionLogo;
+        private TextView institutionName;
 
-        InstitutionViewHolder(View itemView) {
+        public InstitutionViewHolder(View itemView) {
             super(itemView);
             institutionLogo = itemView.findViewById(R.id.institutionLogo);
             institutionName = itemView.findViewById(R.id.institutionName);
         }
 
-        void bind(Institution institution) {
+        public void bind(Institution institution) {
             institutionLogo.setImageResource(institution.getLogoResId());
-            institutionName.setText(institution.getInstitution());
+
         }
     }
 }
