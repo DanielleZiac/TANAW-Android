@@ -19,6 +19,7 @@ import com.example.testtanaw.fragments.ExploreFragment;
 import com.example.testtanaw.fragments.GalleryFragment;
 import com.example.testtanaw.fragments.HomeFragment;
 import com.example.testtanaw.fragments.InboxFragment;
+import com.example.testtanaw.fragments.StickersFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.example.testtanaw.models.Avatar;
@@ -93,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }   else if (menuItem.getItemId() == R.id.nav_gallery) {  // Add Home navigation
                 loadFragment(new GalleryFragment());
+                return true;
+            }   else if (menuItem.getItemId() == R.id.nav_stickers) {  // Add Home navigation
+                loadFragment(new StickersFragment());
                 return true;
             }
             return false; // Return false if the item is not handled
