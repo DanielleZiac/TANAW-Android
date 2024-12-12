@@ -106,7 +106,7 @@ public class SDGAdapter extends RecyclerView.Adapter<SDGAdapter.SDGViewHolder> {
             Context context = holder.itemView.getContext();
             Intent intent = new Intent(context, SdgMapActivity.class);
             intent.putExtra("SDG_TITLE", sdgItem.getTitle());
-            intent.putExtra("sdgNumber", position + 1);
+            intent.putExtra("SDG_NUMBER", position + 1);
             context.startActivity(intent);
         });
 

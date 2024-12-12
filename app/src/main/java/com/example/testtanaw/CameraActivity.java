@@ -322,10 +322,10 @@ public class CameraActivity extends AppCompatActivity {
         });
     }
 
-    private void saveUsersSdgPhotoDataToFirestore(UserSdgPhoto userSdgPhoto) {
+    private void saveUsersSdgPhotoDataToFirestore(UserSdgPhoto userSdgPhoto, String uuid) {
         // Save data to Firestore under the "users_sdg_photos" collection
         db.collection(Constants.DB_USERS_SDG_PHOTOS)
-                .document(userSdgPhoto.getSdgNumber())
+                .document(userSdgPhoto.getUserSdgId())
                 .set(userSdgPhoto)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -357,7 +357,7 @@ public class CameraActivity extends AppCompatActivity {
 
         // Your upload logic here
         uploadUsersSdgPhoto(newSdgPhoto, path);
-        saveUsersSdgPhotoDataToFirestore(newSdgPhoto);
+        saveUsersSdgPhotoDataToFirestore(newSdgPhoto, uuid);
     }
 
     private void retakePhoto() {
