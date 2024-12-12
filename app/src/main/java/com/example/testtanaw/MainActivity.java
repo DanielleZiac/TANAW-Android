@@ -16,6 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.testtanaw.fragments.FeedbackModalFragment;
 import com.example.testtanaw.fragments.ExploreFragment;
+import com.example.testtanaw.fragments.GalleryFragment;
 import com.example.testtanaw.fragments.HomeFragment;
 import com.example.testtanaw.fragments.InboxFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -89,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }   else if (menuItem.getItemId() == R.id.nav_inbox) {  // Add Home navigation
                 loadFragment(new InboxFragment());
+                return true;
+            }   else if (menuItem.getItemId() == R.id.nav_gallery) {  // Add Home navigation
+                loadFragment(new GalleryFragment());
                 return true;
             }
             return false; // Return false if the item is not handled
