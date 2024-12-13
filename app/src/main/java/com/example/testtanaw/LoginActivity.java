@@ -1,6 +1,8 @@
 package com.example.testtanaw;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,9 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.testtanaw.adapters.InstitutionSpinnerAdapter;
+import com.example.testtanaw.models.Avatar;
 import com.example.testtanaw.models.Constants;
 import com.example.testtanaw.models.Institution;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,7 +27,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,6 +39,7 @@ import java.util.Objects;
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private FirebaseFirestore db;
+    private FirebaseStorage storage;
     private FirebaseAuth mAuth;
     private static final int LIMIT = 50;
     private EditText srCodeInput;
@@ -44,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         // Initialize Firebase instances
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance(Constants.BUCKET);
 
         // Initialize views
         srCodeInput = findViewById(R.id.sr_code_input);
@@ -126,12 +137,86 @@ public class LoginActivity extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
-                        // Start MainActivity
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish(); // Close LoginActivity
+                        // Check if the user exists
+                        if (task.getResult().exists()) {
+                            db.collection(Constants.DB_AVATARS).document(userId)
+                                    .get()
+                                    .addOnCompleteListener(avatarTask -> {
+                                        if (avatarTask.isSuccessful() && avatarTask.getResult() != null) {
+                                            // Check if the avatar exists
+                                            if (avatarTask.getResult().exists()) {
+                                                // Avatar exists, proceed to the main activity
+                                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            } else {
+                                                // Avatar doesn't exist, upload a default one
+                                                String path = Avatar.getUserAvatarPath(userId);
+                                                Avatar newAvatar = new Avatar(userId, path, "cics", null, null, "boy", "shirt", null, "none");
+                                                uploadDefaultAvatar(userId, path);
+                                                saveAvatarDataToFirestore(newAvatar);
+                                            }
+                                        } else {
+                                            Toast.makeText(LoginActivity.this, "Failed to fetch user avatar",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        } else {
+                            Toast.makeText(LoginActivity.this, "User does not exist",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Toast.makeText(LoginActivity.this, "Failed to fetch user data",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
+    private byte[] drawableToBitmap() {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.avatar);
+
+        // Convert the Bitmap to a byte array
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+
+    private void uploadDefaultAvatar(String userId, String path) {
+        StorageReference storageRef = storage.getReference();
+        StorageReference avatarImageRef = storageRef.child(path);
+
+        byte[] data = drawableToBitmap();
+
+        UploadTask uploadTask = avatarImageRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e(TAG, "Avatar image upload failed.", exception);
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.d(TAG, "Avatar image uploaded.");
+            }
+        });
+    }
+
+    private void saveAvatarDataToFirestore(Avatar avatar) {
+        // Save data to Firestore under the "avatars" collection
+        db.collection(Constants.DB_AVATARS)
+                .document(avatar.getUserId())
+                .set(avatar)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(LoginActivity.this, "Avatar data saved.", Toast.LENGTH_SHORT).show();
+
+                        // redirect to AvatarActivity
+                        Intent intent = new Intent(LoginActivity.this, AvatarActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Failed to save avatar data: " + task.getException().getMessage(),
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
