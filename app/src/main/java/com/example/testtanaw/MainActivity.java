@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 loadFragment(new InboxFragment());
                 return true;
             }   else if (menuItem.getItemId() == R.id.nav_gallery) {  // Add Home navigation
-                loadFragment(new GalleryFragment());
+                loadFragment(new GalleryFragment(authUser.getUid()));
                 return true;
             }   else if (menuItem.getItemId() == R.id.nav_stickers) {  // Add Home navigation
                 assert authUser != null;

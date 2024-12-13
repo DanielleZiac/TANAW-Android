@@ -52,7 +52,7 @@ public class InstitutionFragment extends Fragment {
 
         galleryButton.setOnClickListener(v -> {
             // Begin the fragment transaction
-            GalleryFragment galleryFragment = new GalleryFragment();
+            GalleryFragment galleryFragment = new GalleryFragment("asdasdsa");
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, galleryFragment) // Replace with the container ID
                     .addToBackStack(null)  // Optional: Adds this transaction to the back stack

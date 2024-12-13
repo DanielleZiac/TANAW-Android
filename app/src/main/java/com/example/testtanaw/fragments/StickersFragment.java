@@ -163,7 +163,7 @@ public class StickersFragment extends Fragment {
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/png"); // MIME type
         values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES); // Save to Pictures folder
 
-// Get content resolver to insert the image into MediaStore
+        // Get content resolver to insert the image into MediaStore
         ContentResolver contentResolver = getActivity().getContentResolver();
         Uri imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
