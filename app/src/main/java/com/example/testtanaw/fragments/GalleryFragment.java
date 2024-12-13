@@ -1,14 +1,13 @@
 package com.example.testtanaw.fragments;
 
+import static com.example.testtanaw.models.Constants.DB_USERS_SDG_PHOTOS;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -16,115 +15,154 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.testtanaw.R;
+import com.example.testtanaw.models.Constants;
 import com.example.testtanaw.util.GalleryAdapter;
 import com.example.testtanaw.util.SDGAdapter2;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
 public class GalleryFragment extends Fragment {
+    private static final String TAG = "GalleryFragment";
 
     private RecyclerView sdgRecyclerView;
-    private SDGAdapter2 sdgAdapter2;
     private RecyclerView galleryRecyclerView;
+    private TextView uploadsTab;
+    private TextView eventsTab;
+    private SDGAdapter2 sdgAdapter2;
     private GalleryAdapter galleryAdapter;
-    private TextView myUploadsTab, communityTab;
-    private ImageView loadingImage;
-    private List<String> images = new ArrayList<>();
-    private FirebaseAuth auth;
+    private boolean isUploadsTab = true; // Tracks the active tab (uploads or events)
+
+    private final String userId;
+    private FirebaseFirestore db;
     private FirebaseStorage storage;
+
+    public GalleryFragment(String userId) {
+        this.userId = userId;
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_gallery, container, false);
+        // Initialize Firebase instances
+        db = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance(Constants.BUCKET);
 
-        // Initialize Firebase
-        auth = FirebaseAuth.getInstance();
-        storage = FirebaseStorage.getInstance();
+        View view = inflater.inflate(R.layout.fragment_gallery, container, false);
 
         // Initialize views
         sdgRecyclerView = view.findViewById(R.id.sdgRecyclerView);
         galleryRecyclerView = view.findViewById(R.id.galleryRecyclerView);
-        myUploadsTab = view.findViewById(R.id.myUploadsTab);
-        communityTab = view.findViewById(R.id.communityTab);
-        loadingImage = view.findViewById(R.id.loadingImage); // Initialize progress bar
+        uploadsTab = view.findViewById(R.id.uploadsTab);
+        eventsTab = view.findViewById(R.id.eventsTab);
 
-        // Set up gallery RecyclerView
-        galleryRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        galleryAdapter = new GalleryAdapter(images);
-        galleryRecyclerView.setAdapter(galleryAdapter);
-
-        // SDG Data
+        // SDG Data (Example)
         List<String> sdgImages = new ArrayList<>();
         for (int i = 1; i <= 17; i++) {
             sdgImages.add("sdg_" + i); // Image names for SDGs
         }
+
+        // Generate SDG list and update UI
+        getUserSdgsById((sdgPhotoUrls) -> {
+            // Once SDG photo URLs are fetched, update the Gallery RecyclerView
+            setupGalleryRecyclerView(sdgPhotoUrls);
+
+            // Tab switching
+            uploadsTab.setOnClickListener(v -> {
+                isUploadsTab = true;
+                setupGalleryRecyclerView(sdgPhotoUrls);  // Refresh with empty for now
+            });
+
+            eventsTab.setOnClickListener(v -> {
+                isUploadsTab = false;
+                setupGalleryRecyclerView(sdgPhotoUrls);  // Refresh with empty for now
+            });
+        });
 
         // Horizontal RecyclerView for SDGs
         sdgAdapter2 = new SDGAdapter2(sdgImages);
         sdgRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         sdgRecyclerView.setAdapter(sdgAdapter2);
 
-        // Load My Uploads by default
-        loadMyUploads();
 
-        // Set default alpha values
-        myUploadsTab.setAlpha(1.0f);
-        communityTab.setAlpha(0.5f);
 
-        // Set Tab Click Listeners
-        myUploadsTab.setOnClickListener(v -> {
-            loadMyUploads();
-            myUploadsTab.setAlpha(1.0f);
-            communityTab.setAlpha(0.5f);
-        });
-
-        communityTab.setOnClickListener(v -> {
-            loadCommunityUploads();
-            myUploadsTab.setAlpha(0.5f); // Set "My Uploads" tab alpha to 0.5
-            communityTab.setAlpha(1.0f);    // Set "Others" tab alpha to 1.0
-        });
         return view;
     }
 
-    private void loadMyUploads() {
-        loadingImage.setVisibility(View.VISIBLE); // Show the loading spinner
-        String currentUser = auth.getCurrentUser().getUid();
-        StorageReference userPhotosRef = storage.getReference().child("users_sdg_photos").child(currentUser);
+    private void setupGalleryRecyclerView(List<String> sdgPhotoUrls) {
+        // Set up GalleryAdapter with the fetched SDG photo URLs
+        galleryAdapter = new GalleryAdapter(sdgPhotoUrls);
+        galleryRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+        galleryRecyclerView.setAdapter(galleryAdapter);
 
-        fetchPhotos(userPhotosRef);
+        // Update tab styles
+        uploadsTab.setAlpha(isUploadsTab ? 1.0f : 0.5f);
+        eventsTab.setAlpha(isUploadsTab ? 0.5f : 1.0f);
     }
 
-    private void loadCommunityUploads() {
-        loadingImage.setVisibility(View.VISIBLE); // Show the loading spinner
-        StorageReference allPhotosRef = storage.getReference().child("users_sdg_photos");
+    private void getUserSdgsById(SdgsUrlListCallback callback) {
+        List<String> sdgPhotoUrls = new ArrayList<>();
+        final int[] totalDocuments = {0}; // Track number of documents
+        final int[] processedDocuments = {0}; // Track processed documents
 
-        fetchPhotos(allPhotosRef);
-    }
+        db.collection(DB_USERS_SDG_PHOTOS)
+                .whereEqualTo("userId", userId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        totalDocuments[0] = task.getResult().size();  // Total documents to process
 
-    private void fetchPhotos(StorageReference reference) {
-        images.clear();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String sdgPhotoUrl = document.getString("sdgPhotoUrl");
+                            try {
+                                if (sdgPhotoUrl != null) {
+                                    StorageReference storageRef = storage.getReference();
+                                    StorageReference userSdgPhotoRef = storageRef.child(sdgPhotoUrl);
 
-        reference.listAll().addOnSuccessListener(listResult -> {
-            if (listResult.getItems().isEmpty()) {
-                Toast.makeText(getContext(), "No images available", Toast.LENGTH_SHORT).show();
-            }
-            for (StorageReference fileRef : listResult.getItems()) {
-                fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                    images.add(uri.toString());
-                    galleryAdapter.notifyDataSetChanged();
-                }).addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Failed to load image", Toast.LENGTH_SHORT).show();
+                                    userSdgPhotoRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                                        Log.d(TAG, uri.toString());
+                                        sdgPhotoUrls.add(uri.toString());
+
+                                        // Increment processedDocuments counter after adding a URL
+                                        if (++processedDocuments[0] == totalDocuments[0]) {
+                                            // All documents processed, return the list via callback
+                                            callback.onResult(sdgPhotoUrls);
+                                        }
+                                    }).addOnFailureListener(e -> {
+                                        // Handle failure to fetch download URL
+                                        Log.e(TAG, "Error fetching download URL: ", e);
+
+                                        // Increment processedDocuments counter even on failure
+                                        if (++processedDocuments[0] == totalDocuments[0]) {
+                                            callback.onResult(sdgPhotoUrls);  // Return the result
+                                        }
+                                    });
+                                } else {
+                                    // Increment counter if there's no valid URL
+                                    if (++processedDocuments[0] == totalDocuments[0]) {
+                                        callback.onResult(sdgPhotoUrls);  // Return the result
+                                    }
+                                }
+                            } catch (Exception e) {
+                                Log.e(TAG, "Error: " + sdgPhotoUrl, e);
+
+                                // Increment processedDocuments counter even on exception
+                                if (++processedDocuments[0] == totalDocuments[0]) {
+                                    callback.onResult(sdgPhotoUrls);  // Return the result
+                                }
+                            }
+                        }
+                    } else {
+                        Log.e(TAG, "Error fetching data: ", task.getException());
+                        callback.onResult(new ArrayList<>());  // Return an empty list on failure
+                    }
                 });
-            }
-            loadingImage.setVisibility(View.GONE); // Hide the loading spinner
-        }).addOnFailureListener(e -> {
-            loadingImage.setVisibility(View.GONE); // Hide the loading spinner
-            Toast.makeText(getContext(), "Error fetching images", Toast.LENGTH_SHORT).show();
-        });
+    }
+
+    public interface SdgsUrlListCallback {
+        void onResult(List<String> sdgPhotoUrls);
     }
 }

@@ -7,34 +7,34 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.testtanaw.R;
+
 import java.util.List;
 
-/**
- * Adapter for displaying leaderboard items in a RecyclerView
- */
-public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder> {
-    @NonNull private final List<LeaderboardItem> leaderboardList;
+public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.ViewHolder> {
 
-    public LeaderboardAdapter(@NonNull List<LeaderboardItem> leaderboardList) {
+    private final List<LeaderboardItem> leaderboardList;
+
+    public LeaderboardAdapter(List<LeaderboardItem> leaderboardList) {
         this.leaderboardList = leaderboardList;
     }
 
     @NonNull
     @Override
-    public LeaderboardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_leaderboard, parent, false);
-        return new LeaderboardViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull LeaderboardViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         LeaderboardItem item = leaderboardList.get(position);
         holder.rank.setText(String.valueOf(position + 1));
-        holder.userName.setText(item.getUserName());
-        holder.score.setText(String.valueOf(item.getScore()));
+        holder.collegeName.setText(item.getUserName());
         holder.collegeLogo.setImageResource(item.getLogo());
+        holder.score.setText(String.valueOf(item.getScore()));
     }
 
     @Override
@@ -42,18 +42,16 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         return leaderboardList.size();
     }
 
-    public static class LeaderboardViewHolder extends RecyclerView.ViewHolder {
-        @NonNull private final TextView rank;
-        @NonNull private final TextView userName;
-        @NonNull private final ImageView collegeLogo;
-        @NonNull private final TextView score;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView rank, collegeName, score;
+        ImageView collegeLogo;
 
-        public LeaderboardViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             rank = itemView.findViewById(R.id.rank);
-            userName = itemView.findViewById(R.id.userName);
-            collegeLogo = itemView.findViewById(R.id.collegeLogo);
+            collegeName = itemView.findViewById(R.id.college);
             score = itemView.findViewById(R.id.score);
+            collegeLogo = itemView.findViewById(R.id.collegeLogo);
         }
     }
 }

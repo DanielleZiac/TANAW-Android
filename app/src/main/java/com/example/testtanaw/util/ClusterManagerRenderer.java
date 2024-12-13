@@ -78,7 +78,6 @@ public class ClusterManagerRenderer extends DefaultClusterRenderer<ClusterMarker
 
                         Marker newMarker = map.addMarker(newMarkerOptions);
 
-                        Log.d(TAG, "IM HEREEEEE");
                         Log.d(TAG, item.getUserSdgId());
                         Log.d(TAG, item.getUserId());
                         Log.d(TAG, item.getSdgNumber());

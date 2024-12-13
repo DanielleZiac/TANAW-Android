@@ -32,7 +32,6 @@
                 android:layout_marginHorizontal="8dp"
                 android:scaleType="centerCrop"
                 app:riv_corner_radius="16dp"
-                android:src="@drawable/avatar"
                 app:flow_horizontalBias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

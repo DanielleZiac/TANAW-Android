@@ -7,12 +7,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
+import android.util.Log;
 import com.example.testtanaw.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder> {
+    private static final String TAG = "GalleryAdapter";
+
 
     private final List<String> images;
 
@@ -38,9 +41,19 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
     @Override
     public void onBindViewHolder(@NonNull GalleryViewHolder holder, int position) {
-        Context context = holder.itemView.getContext();
-        String imageUrl = images.get(position);
-        Glide.with(context).load(imageUrl).into(holder.imageView);
+//        Context context = holder.itemView.getContext();
+//        int resourceId = context.getResources().getIdentifier(images.get(position), "drawable", context.getPackageName());
+//        holder.imageView.setImageResource(resourceId);
+        Log.d(TAG, images.get(position));
+        Log.d(TAG, images.get(0));
+        Log.d(TAG, "henlo");
+        Picasso.get()
+                .load(images.get(position))
+                .fit()
+                .centerCrop()
+                .placeholder(R.drawable.loading)
+                .error(R.drawable.baseline_error_outline_24)
+                .into(holder.imageView);
     }
 
     @Override

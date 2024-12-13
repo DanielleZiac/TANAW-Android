@@ -1,6 +1,7 @@
 package com.example.testtanaw.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -55,7 +56,6 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         ImageView likeButton = view.findViewById(R.id.like_button);
 
         CustomInfoWindowData data = (CustomInfoWindowData) marker.getTag();
-
         // Load image using Picasso
         Picasso.get()
                 .load(data.getSdgPhotoUrl())
@@ -63,6 +63,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
                 .centerInside()
                 .placeholder(R.drawable.loading)
                 .into(sdgContentImageView);
+
 
         // Set the caption and photo challenge text
         sdgCaptionTextView.setText(data.getCaption());

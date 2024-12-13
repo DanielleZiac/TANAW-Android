@@ -49,6 +49,7 @@ public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallb
     private FirebaseFirestore db;
     private FirebaseStorage storage;
     private ExecutorService executorService;
+    private int sdgNumber;
 
     private TextView photoChallengeText;
 
@@ -78,7 +79,7 @@ public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallb
 
         // Retrieve data passed from the adapter
         String sdgTitle = getIntent().getStringExtra("SDG_TITLE");
-        int sdgNumber = getIntent().getIntExtra("SDG_NUMBER", -1);
+        sdgNumber = getIntent().getIntExtra("SDG_NUMBER", -1);
 
         // Setup Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -130,7 +131,8 @@ public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallb
 
     private void fetchAndAddSdgPhotos() {
         try {
-            db.collection(DB_USERS_SDG_PHOTOS).get().addOnCompleteListener(task -> {
+            Log.d(TAG, String.valueOf(sdgNumber));
+            db.collection(DB_USERS_SDG_PHOTOS).whereEqualTo("sdgNumber", String.valueOf(sdgNumber)).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful() && task.getResult() != null) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         String userId = document.getString("userId");
@@ -138,36 +140,36 @@ public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallb
 
 
                         StorageReference avatarRef = storage.getReference().child(avatarPath);
+                        StorageReference sdgImageRef = storage.getReference().child(document.getString("sdgPhotoUrl"));
 
                         avatarRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                            sdgImageRef.getDownloadUrl().addOnSuccessListener(sdgUri -> {
+                                Log.d(TAG, document.getString("userSdgId"));
+                                Log.d(TAG, userId);
+                                Log.d(TAG, document.getString("sdgNumber"));
+                                Log.d(TAG, document.getString("caption"));
+                                Log.d(TAG, sdgUri.toString());
+                                Log.d(TAG, document.getString("photoChallenge"));
+                                Log.d(TAG, document.getDouble("latitude").toString());
+                                Log.d(TAG, document.getDouble("longitude").toString());
+                                Log.d(TAG, uri.toString());
 
+                                ClusterMarker clusterMarker = new ClusterMarker(
+                                        document.getString("userSdgId"),
+                                        userId,
+                                        document.getString("sdgNumber"),
+                                        document.getString("caption"),
+                                        sdgUri.toString(),
+                                        document.getString("photoChallenge"),
+                                        document.getDouble("latitude"),
+                                        document.getDouble("longitude"),
+                                        uri.toString()
+                                );
 
-                            Log.d(TAG, document.getString("userSdgId"));
-                            Log.d(TAG, userId);
-                            Log.d(TAG, document.getString("sdgNumber"));
-                            Log.d(TAG, document.getString("caption"));
-                            Log.d(TAG, document.getString("sdgPhotoUrl"));
-                            Log.d(TAG, document.getString("photoChallenge"));
-                            Log.d(TAG, document.getDouble("latitude").toString());
-                            Log.d(TAG, document.getDouble("longitude").toString());
-                            Log.d(TAG, uri.toString());
-
-
-                            ClusterMarker clusterMarker = new ClusterMarker(
-                                    document.getString("userSdgId"),
-                                    userId,
-                                    document.getString("sdgNumber"),
-                                    document.getString("caption"),
-                                    document.getString("sdgPhotoUrl"),
-                                    document.getString("photoChallenge"),
-                                    document.getDouble("latitude"),
-                                    document.getDouble("longitude"),
-                                    uri.toString()
-                            );
-
-                            mClusterManager.addItem(clusterMarker);
-                            mClusterMarkers.add(clusterMarker);
-                        mClusterManager.cluster();
+                                mClusterManager.addItem(clusterMarker);
+                                mClusterMarkers.add(clusterMarker);
+                                mClusterManager.cluster();
+                            }).addOnFailureListener(e -> Log.e(TAG, "Failed to fetch sdgPhoto for userId: " + userId, e));
                         }).addOnFailureListener(e -> Log.e(TAG, "Failed to fetch avatar for userId: " + userId, e));
                     }
                 }

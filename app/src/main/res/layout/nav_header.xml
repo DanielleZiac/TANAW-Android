@@ -3,15 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="200dp"
     android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:src="@drawable/avatar"
+        app:riv_corner_radius="30dp"
         android:contentDescription="Profile Image"
         android:background="@drawable/rounded_corner"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:id="@+id/avatar"
+        app:shapeAppearanceOverlay="@style/RoundedImageView"
+        />
 
     <TextView
         android:id="@+id/username"
