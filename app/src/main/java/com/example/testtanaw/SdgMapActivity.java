@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
+import com.example.testtanaw.data.PhotoChallenges;
 import com.example.testtanaw.models.Avatar;
 import com.example.testtanaw.models.ClusterMarker;
 import com.example.testtanaw.models.Constants;
@@ -38,8 +40,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.maps.android.clustering.ClusterManager;
+import android.content.SharedPreferences;
+
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -85,6 +90,15 @@ public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallb
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Set the toolbar title to be centered
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false); // Disable default title
+        }
+
+        // Enable the back button in the toolbar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         // Set the SDG title dynamically
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setText("SDG: " + sdgNumber);
@@ -95,13 +109,13 @@ public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallb
         FloatingActionButton fabPlus = findViewById(R.id.fab_plus);
 
         // Display the first challenge for the SDG
-//        updatePhotoChallenge();
+        changePhotoChallenge();
 
         // Handle arrow button click to change challenges
         fabArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                changePhotoChallenge();
+                changePhotoChallenge();
             }
         });
 
@@ -126,6 +140,41 @@ public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallb
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
+    }
+
+    private void changePhotoChallenge() {
+        // Get the list of challenges for the current SDG number
+        List<String> challenges = PhotoChallenges.PHOTO_CHALLENGES.get(sdgNumber);
+
+        if (challenges != null && !challenges.isEmpty()) {
+            // Get the current challenge index and increment it to show the next challenge
+            int currentIndex = getCurrentChallengeIndex();
+            int nextIndex = (currentIndex + 1) % challenges.size();  // Loop back to the first challenge if it's the last one
+            String nextChallenge = challenges.get(nextIndex);
+
+            // Update the TextView to display the next challenge
+            photoChallengeText.setText(nextChallenge);
+
+            // Store the index of the current challenge (so you can navigate through them)
+            saveCurrentChallengeIndex(nextIndex);
+        } else {
+            // Handle case if no challenges are found for the current SDG
+            photoChallengeText.setText("No challenges available for this SDG.");
+        }
+    }
+
+    private int getCurrentChallengeIndex() {
+        SharedPreferences sharedPreferences = getSharedPreferences("ChallengePrefs", MODE_PRIVATE);
+        return sharedPreferences.getInt("currentChallengeIndex", 0);  // Default to 0 if not set
+    }
+
+
+    private void saveCurrentChallengeIndex(int index) {
+        // Save the current index to SharedPreferences or another persistent storage
+        SharedPreferences sharedPreferences = getSharedPreferences("ChallengePrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("currentChallengeIndex", index);
+        editor.apply();  // Apply changes asynchronously
     }
 
 
@@ -248,5 +297,17 @@ public class SdgMapActivity extends AppCompatActivity implements OnMapReadyCallb
                 Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            // This will navigate back to the previous activity
+            onBackPressed(); // Optionally, you can customize the behavior if needed
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

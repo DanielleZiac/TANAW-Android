@@ -30,8 +30,7 @@ public class GalleryFragment extends Fragment {
 
     private RecyclerView sdgRecyclerView;
     private RecyclerView galleryRecyclerView;
-    private TextView uploadsTab;
-    private TextView eventsTab;
+    private TextView myUploadsTab, communityTab;
     private SDGAdapter2 sdgAdapter2;
     private GalleryAdapter galleryAdapter;
     private boolean isUploadsTab = true; // Tracks the active tab (uploads or events)
@@ -56,8 +55,8 @@ public class GalleryFragment extends Fragment {
         // Initialize views
         sdgRecyclerView = view.findViewById(R.id.sdgRecyclerView);
         galleryRecyclerView = view.findViewById(R.id.galleryRecyclerView);
-        uploadsTab = view.findViewById(R.id.uploadsTab);
-        eventsTab = view.findViewById(R.id.eventsTab);
+        myUploadsTab = view.findViewById(R.id.myUploadsTab);
+        communityTab = view.findViewById(R.id.communityTab);
 
         // SDG Data (Example)
         List<String> sdgImages = new ArrayList<>();
@@ -66,19 +65,19 @@ public class GalleryFragment extends Fragment {
         }
 
         // Generate SDG list and update UI
-        getUserSdgsById((sdgPhotoUrls) -> {
+        getUserSdgsById(sdgPhotoUrls -> {
             // Once SDG photo URLs are fetched, update the Gallery RecyclerView
-            setupGalleryRecyclerView(sdgPhotoUrls);
+            setupGalleryRecyclerView(sdgPhotoUrls);  // Display user's photos initially
 
             // Tab switching
-            uploadsTab.setOnClickListener(v -> {
+            myUploadsTab.setOnClickListener(v -> {
                 isUploadsTab = true;
-                setupGalleryRecyclerView(sdgPhotoUrls);  // Refresh with empty for now
+                getUserSdgsById(this::setupGalleryRecyclerView);  // Refresh with user photos
             });
 
-            eventsTab.setOnClickListener(v -> {
+            communityTab.setOnClickListener(v -> {
                 isUploadsTab = false;
-                setupGalleryRecyclerView(sdgPhotoUrls);  // Refresh with empty for now
+                getCommunitySdgs(this::setupGalleryRecyclerView);  // Refresh with community photos
             });
         });
 
@@ -86,8 +85,6 @@ public class GalleryFragment extends Fragment {
         sdgAdapter2 = new SDGAdapter2(sdgImages);
         sdgRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         sdgRecyclerView.setAdapter(sdgAdapter2);
-
-
 
         return view;
     }
@@ -99,12 +96,12 @@ public class GalleryFragment extends Fragment {
         galleryRecyclerView.setAdapter(galleryAdapter);
 
         // Update tab styles
-        uploadsTab.setAlpha(isUploadsTab ? 1.0f : 0.5f);
-        eventsTab.setAlpha(isUploadsTab ? 0.5f : 1.0f);
+        myUploadsTab.setAlpha(isUploadsTab ? 1.0f : 0.5f);
+        communityTab.setAlpha(isUploadsTab ? 0.5f : 1.0f);
     }
 
     private void getUserSdgsById(SdgsUrlListCallback callback) {
-        List<String> sdgPhotoUrls = new ArrayList<>();
+        List<String> sdgPhotoUrls = new ArrayList<>(); // Defined once at the method level
         final int[] totalDocuments = {0}; // Track number of documents
         final int[] processedDocuments = {0}; // Track processed documents
 
@@ -161,6 +158,65 @@ public class GalleryFragment extends Fragment {
                     }
                 });
     }
+
+    private void getCommunitySdgs(SdgsUrlListCallback callback) {
+        List<String> sdgPhotoUrls = new ArrayList<>(); // Defined once at the method level
+        final int[] totalDocuments = {0}; // Track number of documents
+        final int[] processedDocuments = {0}; // Track processed documents
+
+        db.collection(DB_USERS_SDG_PHOTOS)
+                .get()  // Get all community photos
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        totalDocuments[0] = task.getResult().size();  // Total documents to process
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String sdgPhotoUrl = document.getString("sdgPhotoUrl");
+                            try {
+                                if (sdgPhotoUrl != null) {
+                                    StorageReference storageRef = storage.getReference();
+                                    StorageReference userSdgPhotoRef = storageRef.child(sdgPhotoUrl);
+
+                                    userSdgPhotoRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                                        Log.d(TAG, uri.toString());
+                                        sdgPhotoUrls.add(uri.toString());
+
+                                        // Increment processedDocuments counter after adding a URL
+                                        if (++processedDocuments[0] == totalDocuments[0]) {
+                                            // All documents processed, return the list via callback
+                                            callback.onResult(sdgPhotoUrls);
+                                        }
+                                    }).addOnFailureListener(e -> {
+                                        // Handle failure to fetch download URL
+                                        Log.e(TAG, "Error fetching download URL: ", e);
+
+                                        // Increment processedDocuments counter even on failure
+                                        if (++processedDocuments[0] == totalDocuments[0]) {
+                                            callback.onResult(sdgPhotoUrls);  // Return the result
+                                        }
+                                    });
+                                } else {
+                                    // Increment counter if there's no valid URL
+                                    if (++processedDocuments[0] == totalDocuments[0]) {
+                                        callback.onResult(sdgPhotoUrls);  // Return the result
+                                    }
+                                }
+                            } catch (Exception e) {
+                                Log.e(TAG, "Error: " + sdgPhotoUrl, e);
+
+                                // Increment processedDocuments counter even on exception
+                                if (++processedDocuments[0] == totalDocuments[0]) {
+                                    callback.onResult(sdgPhotoUrls);  // Return the result
+                                }
+                            }
+                        }
+                    } else {
+                        Log.e(TAG, "Error fetching data: ", task.getException());
+                        callback.onResult(new ArrayList<>());  // Return an empty list on failure
+                    }
+                });
+    }
+
 
     public interface SdgsUrlListCallback {
         void onResult(List<String> sdgPhotoUrls);

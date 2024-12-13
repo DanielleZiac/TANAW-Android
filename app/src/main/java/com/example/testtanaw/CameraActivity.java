@@ -3,7 +3,9 @@ package com.example.testtanaw;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -275,11 +277,37 @@ public class CameraActivity extends AppCompatActivity {
                                 // Convert the byte array to Bitmap
                                 Bitmap bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
 
+                                // Get the correct orientation based on the image's EXIF data
+                                ExifInterface exif = new ExifInterface(new FileInputStream(file));
+                                int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                                Matrix matrix = new Matrix();
+                                if (rotation == ExifInterface.ORIENTATION_ROTATE_90) {
+                                    matrix.postRotate(90);
+                                } else if (rotation == ExifInterface.ORIENTATION_ROTATE_180) {
+                                    matrix.postRotate(180);
+                                } else if (rotation == ExifInterface.ORIENTATION_ROTATE_270) {
+                                    matrix.postRotate(270);
+                                }
+
+                                // Apply the rotation to the Bitmap
+                                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+                                // Crop the Bitmap to fit inside the PreviewView bounds if necessary
+                                int previewWidth = ((PreviewView) findViewById(R.id.cameraView)).getWidth();
+                                int previewHeight = ((PreviewView) findViewById(R.id.cameraView)).getHeight();
+
+                                // Ensure the aspect ratio is maintained for cropping
+                                int cropWidth = Math.min(bitmap.getWidth(), previewWidth);
+                                int cropHeight = Math.min(bitmap.getHeight(), previewHeight);
+
+                                Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, 0, 0, cropWidth, cropHeight);
+
                                 // Get the ImageView from the layout
                                 ImageView capturedImageView = findViewById(R.id.imgView);
 
                                 // Set the Bitmap to the ImageView to display the captured image
-                                capturedImageView.setImageBitmap(bitmap);
+                                capturedImageView.setImageBitmap(croppedBitmap);
+
 
                             }
 
