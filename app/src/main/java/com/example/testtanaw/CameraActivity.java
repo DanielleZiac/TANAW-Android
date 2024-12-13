@@ -362,7 +362,7 @@ public class CameraActivity extends AppCompatActivity {
                         Toast.makeText(CameraActivity.this, "User Sdg Photo data saved.", Toast.LENGTH_SHORT).show();
 
 //                         redirect to MainActivity
-                        Intent intent = new Intent(CameraActivity.this, SdgMapActivity.class);
+                        Intent intent = new Intent(CameraActivity.this, MainActivity.class);
                         startActivity(intent);
                     } else {
                         Toast.makeText(CameraActivity.this, task.getException().getMessage(),
