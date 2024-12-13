@@ -41,12 +41,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
     @Override
     public void onBindViewHolder(@NonNull GalleryViewHolder holder, int position) {
-//        Context context = holder.itemView.getContext();
-//        int resourceId = context.getResources().getIdentifier(images.get(position), "drawable", context.getPackageName());
-//        holder.imageView.setImageResource(resourceId);
-        Log.d(TAG, images.get(position));
-        Log.d(TAG, images.get(0));
-        Log.d(TAG, "henlo");
         Picasso.get()
                 .load(images.get(position))
                 .fit()

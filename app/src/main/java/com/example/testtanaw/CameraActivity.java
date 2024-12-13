@@ -1,8 +1,10 @@
 package com.example.testtanaw;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
@@ -275,12 +277,18 @@ public class CameraActivity extends AppCompatActivity {
                                 // Convert the byte array to Bitmap
                                 Bitmap bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
 
+                                // Rotate if needed (assuming you determine the required angle)
+                                int angle = 90;
+                                bitmap = rotateImage(bitmap, angle);
+
+                                // Crop the Bitmap to a 1x1 (square) aspect ratio
+                                bitmap = cropToSquare(bitmap);
+
                                 // Get the ImageView from the layout
                                 ImageView capturedImageView = findViewById(R.id.imgView);
 
                                 // Set the Bitmap to the ImageView to display the captured image
                                 capturedImageView.setImageBitmap(bitmap);
-
                             }
 
                         } catch (Exception e) {
@@ -294,6 +302,28 @@ public class CameraActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    private Bitmap rotateImage(Bitmap source, int angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+    }
+
+    private Bitmap cropToSquare(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        int newDimension = Math.min(width, height);  // Take the smallest side for square
+
+        // Calculate the center of the bitmap
+        int x = (width - newDimension) / 2;
+        int y = (height - newDimension) / 2;
+
+        // Crop the image to a square
+        Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, x, y, newDimension, newDimension);
+
+        return croppedBitmap;
     }
 
     private void uploadUsersSdgPhoto(UserSdgPhoto userSdgPhoto, String path) {
@@ -331,9 +361,9 @@ public class CameraActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Toast.makeText(CameraActivity.this, "User Sdg Photo data saved.", Toast.LENGTH_SHORT).show();
 
-                        // redirect to MainActivity
-//                        Intent intent = new Intent(CameraActivity.this, MainActivity.class);
-//                        startActivity(intent);
+//                         redirect to MainActivity
+                        Intent intent = new Intent(CameraActivity.this, SdgMapActivity.class);
+                        startActivity(intent);
                     } else {
                         Toast.makeText(CameraActivity.this, task.getException().getMessage(),
                                 Toast.LENGTH_SHORT).show();
@@ -346,7 +376,6 @@ public class CameraActivity extends AppCompatActivity {
         LocalDateTime now = LocalDateTime.now();
 
         String captionText = caption.getText().toString();
-        Toast.makeText(this, "Uploading photo with caption: " + captionText, Toast.LENGTH_SHORT).show();
 
         if (authUser != null) {
             path = UserSdgPhoto.getUserSdgPhotoPath(String.valueOf(sdgNumber), uuid);
@@ -355,13 +384,24 @@ public class CameraActivity extends AppCompatActivity {
             Toast.makeText(this, "No user is currently logged in.", Toast.LENGTH_SHORT).show();
         }
 
-        // Your upload logic here
-        uploadUsersSdgPhoto(newSdgPhoto, path);
-        saveUsersSdgPhotoDataToFirestore(newSdgPhoto, uuid);
+
+        if (!captionText.isEmpty()) {
+            // Your upload logic here
+            Toast.makeText(this, "Uploading photo with caption: " + captionText, Toast.LENGTH_SHORT).show();
+            uploadUsersSdgPhoto(newSdgPhoto, path);
+            saveUsersSdgPhotoDataToFirestore(newSdgPhoto, uuid);
+        } else {
+            Toast.makeText(this, "Add caption", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void retakePhoto() {
         Toast.makeText(this, "Retaking Photo!", Toast.LENGTH_SHORT).show();
+
+        // clear img
+        ImageView capturedImageView = findViewById(R.id.imgView);
+        capturedImageView.setImageBitmap(null);
+
         setInitialState();
     }
 
@@ -413,7 +453,7 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     private int aspectRatio(int width, int height) {
-        double previewRatio = Math.max(width, height) / (double) Math.min(width, height);
+        double previewRatio = Math.max(height, width) / (double) Math.min(height, width);
         if (Math.abs(previewRatio - (4.0 / 3.0)) <= Math.abs(previewRatio - (16.0 / 9.0))) {
             return AspectRatio.RATIO_4_3;
         } else {
