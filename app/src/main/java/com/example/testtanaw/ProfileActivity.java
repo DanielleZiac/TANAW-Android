@@ -73,6 +73,7 @@ public class ProfileActivity extends BaseActivity {
         updateFirstAndLastNameButton = findViewById(R.id.updateFirstAndLastNameButton);
 
         if (userUid != null) {
+            Log.d(TAG, "USER_UID: " + userUid);
             StorageReference storageRef = storage.getReference();
             String path = Avatar.getUserAvatarPath(userUid);
             StorageReference avatarImageRef = storageRef.child(path);

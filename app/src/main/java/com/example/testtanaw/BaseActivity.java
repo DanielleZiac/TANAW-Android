@@ -37,10 +37,6 @@ public class BaseActivity extends AppCompatActivity {
             loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(loginIntent);
             finish();
-        } else {
-            Intent mainIntent = new Intent(this, MainActivity.class);
-            startActivity(mainIntent);
-            finish();
         }
     }
 }
