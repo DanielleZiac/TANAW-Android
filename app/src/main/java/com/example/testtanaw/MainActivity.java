@@ -3,6 +3,7 @@ package com.example.testtanaw;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -223,5 +224,21 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);  // Optional: allows back navigation
         transaction.commit();
+    }
+
+    public void onNavLogout(MenuItem m) {
+        // Sign out the user
+        mAuth.signOut();
+
+        // Show a toast to confirm sign-out
+        Toast.makeText(MainActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+
+        // Redirect to LoginActivity
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
+        // Finish the current activity to prevent going back
+        finish();
     }
 }
