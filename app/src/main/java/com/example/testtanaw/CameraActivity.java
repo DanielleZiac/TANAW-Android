@@ -184,7 +184,7 @@ public class CameraActivity extends AppCompatActivity {
             Log.d("tag", "Width: " + width + ", Height: " + height);
         } else {
             // For older APIs, use the deprecated method
-                    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             width = displayMetrics.widthPixels;
             height = displayMetrics.heightPixels;
 
