@@ -255,8 +255,8 @@ public class ProfileActivity extends BaseActivity {
         // Show a toast to confirm sign-out
         Toast.makeText(ProfileActivity.this, "Signed out successfully", Toast.LENGTH_SHORT).show();
 
-        // Redirect to MainActivity
-        Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+        // Redirect to LoginActivity
+        Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
