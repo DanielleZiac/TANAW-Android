@@ -77,7 +77,7 @@
                     android:layout_width="170dp"
                     android:layout_height="50dp"
                     android:text="22-07924"
-                    android:textSize="26sp"
+                    android:textSize="24sp"
                     android:textStyle="bold"
                     android:autoSizeTextType="uniform"
                     android:autoSizeStepGranularity="1sp" />
@@ -130,6 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:background="@color/teal_300" />
 
         <LinearLayout
