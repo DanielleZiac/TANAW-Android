@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
 
     private FirebaseAuth mAuth;
+    private FirebaseUser authUser;
     private FirebaseStorage storage;
 
 
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         // Firebase Auth and Storage instance
         mAuth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance(Constants.BUCKET);
-        FirebaseUser authUser = mAuth.getCurrentUser();
+        authUser = mAuth.getCurrentUser();
 
         ImageButton profileIcon = findViewById(R.id.profileIcon);
         ShapeableImageView roundedImageView = findViewById(R.id.roundedImageView);
@@ -189,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (itemId == R.id.nav_settings) {
                 Intent settingsIntent = new Intent(MainActivity.this, ProfileActivity.class);
+                settingsIntent.putExtra("USER_UID", authUser.getUid());
                 startActivity(settingsIntent);
             } else if (itemId == R.id.nav_about) {
                 Intent aboutIntent = new Intent(MainActivity.this, AboutUsActivity.class);
