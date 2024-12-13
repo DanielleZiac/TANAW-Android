@@ -14,7 +14,7 @@
 ## Project Overview
 A mobile app designed to promote community engagement with the UN's Sustainable Development Goals (SDGs) through a gamified experience in SDG-themed photo challenges. The platform allows users to share photos centered around occasional SDG themes, fostering awareness and collaboration while capturing memories. 
 
-![App Screenshot](docs/screenshots.png)
+![App Screenshot](docs/layouts.png)
 ## Key Features
 1. **Photo Sharing and SDG Tagging**:
    - Upload and categorize photos related to specific SDGs, fostering global awareness.
