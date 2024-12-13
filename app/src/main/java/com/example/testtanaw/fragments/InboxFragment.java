@@ -38,21 +38,21 @@ public class InboxFragment extends Fragment {
                 1,
                 "Image Uploaded Successfully",
                 "Your image has been uploaded successfully!",
-                "2024-11-25 02:06 PM",
+                "2024-12-13 02:06 PM",
                 false
         ));
         messages.add(new Message(
                 2,
                 "Action Reminder",
                 "Check out the latest updates in your dashboard.",
-                "2024-11-25 02:02 PM",
+                "2024-12-13 02:02 PM",
                 false
         ));
         messages.add(new Message(
                 3,
                 "Avatar Update Confirmation",
                 "Your profile has been updated successfully.",
-                "2024-11-25 02:02 PM",
+                "2024-12-13 02:02 PM",
                 true
         ));
 

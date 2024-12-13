@@ -45,6 +45,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
                 .load(images.get(position))
                 .fit()
                 .centerCrop()
+                .rotate(90)
                 .placeholder(R.drawable.loading)
                 .error(R.drawable.baseline_error_outline_24)
                 .into(holder.imageView);

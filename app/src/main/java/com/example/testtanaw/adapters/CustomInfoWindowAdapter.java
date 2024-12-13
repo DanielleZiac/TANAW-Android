@@ -61,6 +61,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
                 .load(data.getSdgPhotoUrl())
                 .resize(1000, 1000)
                 .centerInside()
+                .rotate(90)
                 .placeholder(R.drawable.loading)
                 .into(sdgContentImageView);
 
