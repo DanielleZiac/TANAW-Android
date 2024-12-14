@@ -65,10 +65,10 @@ These should be added to the local.properties file and ensure that your API key 
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/username/TANAW.git
+   git clone https://github.com/DanielleZiac/TANAW.git
    ```
 2. **Open the Project in Android Studio**:
-- Open Android Studio and navigate to the your-repository directory and open the project.
+- Open Android Studio and navigate to the TANAW-Android directory and open the project.
 3. **Configure the Local Properties**:
 - Create or edit the local.properties file at the root of the project to include the following:
 ```properties
